@@ -1,0 +1,8 @@
+.vscode
+*.o
+*.a
+libft/*.a
+a.out
+minishell
+.DS_Store
+readline
