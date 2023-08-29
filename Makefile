@@ -1,1 +1,1 @@
-NAME = minishell`
+NAME = minishell
