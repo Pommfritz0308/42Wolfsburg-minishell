@@ -1,9 +1,11 @@
 #include <unistd.h>
-#include <readline.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#include "libft/libft.h"
 
-int	parse()
+int	parse(char *prompt)
 {
-	if ("exit")
+	if (!ft_strncmp(prompt, "exit", 4))
 		return (0);
 	return (1);
 }
@@ -18,5 +20,4 @@ int	main(void)
 		if (!parse(prompt))
 			break ;
 	}
-	clean_everything();
 }

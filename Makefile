@@ -18,10 +18,10 @@ BONUS_OBJS = $(BONUS:.c=.o)
 
 CC = cc
 RM = rm -f
-CFLAGS = -Wall -Werror -Wextra -g -I libft/
+CFLAGS = -Wall -Werror -Wextra
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
-LIBS = -L$(LIBFT_DIR) -lft
+LIBS = -L$(LIBFT_DIR) -lft -lreadline -L/Users/$(USER)/.brew/opt/readline/lib -I/Users/$(USER)/.brew/opt/readline/include
 
 NAME = minishell
 
