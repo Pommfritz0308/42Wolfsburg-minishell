@@ -1,7 +1,16 @@
-#include <unistd.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include "libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
+/*   Updated: 2023/08/29 16:00:45 by psimonen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 int	parse(char *prompt)
 {
