@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 12:53:37 by psimonen          #+#    #+#             */
-/*   Updated: 2023/08/30 12:54:19 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/08/30 13:34:28 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**split_by_char(char *s, char sep, int special_case)
+char	**split_by_char(char *s, char sep)
 {
 	s = 0;
 	sep = 0;
@@ -30,7 +30,7 @@ void	parse(char *user_input, t_cmd *cmds)
 {
 	char	**commands;
 
-	commands = split_by_char(resolve_env(user_input), '|', 1);
+	commands = split_by_char(resolve_env(user_input), '|');
 	while (*commands)
 	{
 		if (!cmds)

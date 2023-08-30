@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fbohling <fbohling@student.42.fr>          +#+  +:+       +#+         #
+#    By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 12:30:22 by fbohling          #+#    #+#              #
-#    Updated: 2023/05/23 17:45:05 by fbohling         ###   ########.fr        #
+#    Updated: 2023/08/30 13:38:40 by fbohling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,13 +24,13 @@ SRCS			=	ft_isalnum.c ft_isprint.c \
 					ft_lstnew.c ft_lstadd_front.c  ft_lstsize.c ft_lstlast.c \
 					ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c \
 					ft_strupper.c ft_strtolower.c ft_atof.c ft_free_array.c ft_split_with_quotations.c \
-					ft_count_char.c
-					
+					ft_count_char.c ft_split_with_str.c
+
 OBJS			= $(SRCS:.c=.o)
 
 CC				= gcc
 RM				= rm -f
-CFLAGS			= -Wall -Wextra -Werror -g -I. 
+CFLAGS			= -Wall -Wextra -Werror -g -I.
 
 NAME			= libft.a
 

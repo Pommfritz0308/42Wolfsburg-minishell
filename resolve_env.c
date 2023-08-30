@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   resolve_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 12:49:08 by psimonen          #+#    #+#             */
 /*   Updated: 2023/08/30 14:55:00 by psimonen         ###   ########.fr       */
