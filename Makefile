@@ -6,13 +6,15 @@
 #    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/08/30 12:55:35 by psimonen         ###   ########.fr        #
+#    Updated: 2023/08/30 13:23:18 by psimonen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+NAME = minishell
+
 OBJ_DIR = build
 
-_SRC = main resolve_env parse exec
+_SRC = main resolve_env parse exec signals
 
 SRCS = $(addsuffix .c, $(_SRC))
 OBJS = $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(_SRC)))
@@ -25,17 +27,20 @@ RM = rm -f
 CFLAGS = -Wall -Werror -Wextra
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
-LIBS = -L$(LIBFT_DIR) -lft -lreadline -L/Users/$(USER)/.brew/opt/readline/lib -I/Users/$(USER)/.brew/opt/readline/include
-
-NAME = minishell
+LIBS = \
+	-L$(LIBFT_DIR) \
+	-lft \
+	-lreadline \
+	-L/Users/$(USER)/.brew/opt/readline/lib \
+	-I/Users/$(USER)/.brew/opt/readline/include
 
 all: $(NAME)
 
-$(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
-
 $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
+
+$(LIBFT):
+	$(MAKE) -C $(LIBFT_DIR)
 
 $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -58,4 +63,3 @@ bonus: $(BONUS_OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) -o $(NAME) $(BONUS_OBJS) $(LIBS)
 
 .PHONY: all clean fclean bonus re
-
