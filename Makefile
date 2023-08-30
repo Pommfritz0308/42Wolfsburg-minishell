@@ -6,7 +6,7 @@
 #    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/08/30 13:23:18 by psimonen         ###   ########.fr        #
+#    Updated: 2023/08/30 16:21:08 by psimonen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 OBJ_DIR = build
 
-_SRC = main resolve_env parse exec signals
+_SRC = main resolve_env parse_cmd cmd parse exec signals
 
 SRCS = $(addsuffix .c, $(_SRC))
 OBJS = $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(_SRC)))

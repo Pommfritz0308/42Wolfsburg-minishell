@@ -6,30 +6,41 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/08/30 13:49:50 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/08/30 16:23:37 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
 
+typedef struct		s_rdrct
+{
+	int				fd;
+	char			*word;
+	int				open_flags;
+	int				heredoc;
+	char			*limiter;
+	struct s_rdrct	*next;
+}					t_rdrct;
 typedef struct		s_cmd
 {
 	char			*cmd;
 	char			**args;
-	int				*in_fds;
-	int				*out_fds;
+	t_rdrct			*in_rdrcts;
+	t_rdrct			*out_rdrcts;
 	struct s_cmd	*next_cmd;
 	int				next_cmd_cnd;
 }					t_cmd;
 char	*resolve_env(char *s);
-void	parse(char *user_input, t_cmd *cmds);
+void	parse(char *user_input, t_cmd **cmds);
+t_cmd	*parse_cmd(char *s);
 int		exec_cmds(t_cmd *cmds);
 void	handle_signals();
+t_cmd	*new_cmd_node();
 #endif
