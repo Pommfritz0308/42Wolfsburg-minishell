@@ -1,40 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/30 12:53:37 by psimonen          #+#    #+#             */
-/*   Updated: 2023/08/30 15:41:29 by psimonen         ###   ########.fr       */
+/*   Created: 2023/08/30 16:21:11 by psimonen          #+#    #+#             */
+/*   Updated: 2023/08/30 16:23:20 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**split_by_char(char *s, char sep)
+t_cmd	*new_cmd_node()
 {
-	s = 0;
-	sep = 0;
-	return (0);
-}
+	t_cmd	*res;
 
-void	parse(char *user_input, t_cmd **cmds)
-{
-	char	**commands;
-	t_cmd	*buf;
-
-	commands = split_by_char(resolve_env(user_input), '|');
-	buf = *cmds;
-	while (*commands)
-	{
-		if (!buf)
-			*cmds = parse_cmd(*commands);
-		else
-		{
-			buf->next_cmd  = parse_cmd(*commands);
-			buf = buf->next_cmd;
-		}
-		commands++;
-	}
+	res = (t_cmd *)malloc(sizeof(t_cmd));
+	if (!res)
+		return (0);
+	res->next_cmd = 0;
+	return (res);
 }

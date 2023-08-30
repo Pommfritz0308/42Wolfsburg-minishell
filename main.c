@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
-/*   Updated: 2023/08/30 14:55:16 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/08/30 15:14:03 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main(void)
 			prompt = "\e[0;32mminishell$\e[0m ";
 		user_input = readline(prompt);
 		add_history(user_input);
-		//parse(user_input, cmds);
+		//parse(user_input, &cmds);
 		exit_code = exec_cmds(cmds);
 		if (exit_code == -1)
 		{
