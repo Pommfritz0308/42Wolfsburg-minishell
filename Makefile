@@ -6,7 +6,7 @@
 #    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/08/30 16:21:08 by psimonen         ###   ########.fr        #
+#    Updated: 2023/08/30 19:51:24 by psimonen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,15 +24,14 @@ BONUS_OBJS = $(BONUS:.c=.o)
 
 CC = cc
 RM = rm -f
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -I/Users/$(USER)/.brew/Cellar/readline/8.2.1/include
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 LIBS = \
 	-L$(LIBFT_DIR) \
 	-lft \
 	-lreadline \
-	-L/Users/$(USER)/.brew/opt/readline/lib \
-	-I/Users/$(USER)/.brew/opt/readline/include
+	-L/Users/$(USER)/.brew/Cellar/readline/8.2.1/lib
 
 all: $(NAME)
 
