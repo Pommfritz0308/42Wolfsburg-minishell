@@ -2,6 +2,7 @@
 *.o
 *.a
 libft/*.a
+build
 a.out
 minishell
 .DS_Store

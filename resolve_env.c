@@ -1,42 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   resolve_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
-/*   Updated: 2023/08/30 12:55:51 by psimonen         ###   ########.fr       */
+/*   Created: 2023/08/30 12:49:08 by psimonen          #+#    #+#             */
+/*   Updated: 2023/08/30 12:50:17 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
+char	*resolve_env(char *s)
 {
-	char	*prompt;
-	char	*user_input;
-	int		exit_code;
-	t_cmd	*cmds;
+	int	inside_quote;
+	int	i;
 
-	exit_code = EXIT_SUCCESS;
-	cmds = 0;
-	while (1)
+	inside_quote = 0;
+	i = -1;
+	while (s && s[++i])
 	{
-		if (exit_code)
-			prompt = "\e[0;31mminishell$\e[0m ";
-		else
-			prompt = "\e[0;32mminishell$\e[0m ";
-		user_input = readline(prompt);
-		add_history(user_input);
-		parse(user_input, cmds);
-		exit_code = exec_cmds(cmds);
-		if (exit_code == -1)
+		if (s[i] == '\'')
 		{
-			exit_code = EXIT_SUCCESS;
-			break ;
+			if (inside_quote)
+				inside_quote = 0;
+			else
+				inside_quote = 1;
+			continue ;
 		}
-
+		if (s[i] == '$' && ft_isalnum(s[i+1]))
+		{
+			i++;
+		}
 	}
-	return (exit_code);
+	return (0);
 }
