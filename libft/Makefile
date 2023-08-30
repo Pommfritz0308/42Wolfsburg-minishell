@@ -24,7 +24,7 @@ SRCS			=	ft_isalnum.c ft_isprint.c \
 					ft_lstnew.c ft_lstadd_front.c  ft_lstsize.c ft_lstlast.c \
 					ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c \
 					ft_strupper.c ft_strtolower.c ft_atof.c ft_free_array.c ft_split_with_quotations.c \
-					ft_count_char.c ft_split_with_char.c
+					ft_count_char.c ft_split_with_str.c
 
 OBJS			= $(SRCS:.c=.o)
 
