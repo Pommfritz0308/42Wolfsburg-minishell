@@ -1,42 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
-/*   Updated: 2023/08/30 12:55:51 by psimonen         ###   ########.fr       */
+/*   Created: 2023/08/30 12:53:37 by psimonen          #+#    #+#             */
+/*   Updated: 2023/08/30 12:54:19 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
+char	**split_by_char(char *s, char sep, int special_case)
 {
-	char	*prompt;
-	char	*user_input;
-	int		exit_code;
-	t_cmd	*cmds;
+	s = 0;
+	sep = 0;
+	special_case = 0;
+	return (0);
+}
 
-	exit_code = EXIT_SUCCESS;
-	cmds = 0;
-	while (1)
+t_cmd	*fill_cmd(char *s)
+{
+	s = 0;
+	return (0);
+}
+
+void	parse(char *user_input, t_cmd *cmds)
+{
+	char	**commands;
+
+	commands = split_by_char(resolve_env(user_input), '|', 1);
+	while (*commands)
 	{
-		if (exit_code)
-			prompt = "\e[0;31mminishell$\e[0m ";
+		if (!cmds)
+			cmds = fill_cmd(*commands);
 		else
-			prompt = "\e[0;32mminishell$\e[0m ";
-		user_input = readline(prompt);
-		add_history(user_input);
-		parse(user_input, cmds);
-		exit_code = exec_cmds(cmds);
-		if (exit_code == -1)
-		{
-			exit_code = EXIT_SUCCESS;
-			break ;
-		}
-
+			cmds->next_cmd  = fill_cmd(*commands);
+		commands++;
 	}
-	return (exit_code);
 }

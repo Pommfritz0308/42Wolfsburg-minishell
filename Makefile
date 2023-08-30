@@ -3,15 +3,19 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+         #
+#    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/08/29 15:06:07 by fbohling         ###   ########.fr        #
+#    Updated: 2023/08/30 12:55:35 by psimonen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS = main.c
-OBJS = $(SRCS:.c=.o)
+OBJ_DIR = build
+
+_SRC = main resolve_env parse exec
+
+SRCS = $(addsuffix .c, $(_SRC))
+OBJS = $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(_SRC)))
 
 BONUS =
 BONUS_OBJS = $(BONUS:.c=.o)
@@ -32,6 +36,12 @@ $(LIBFT):
 
 $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
+
+$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
 
 clean:
 	$(RM) $(OBJS)

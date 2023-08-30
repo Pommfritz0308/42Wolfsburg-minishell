@@ -33,7 +33,8 @@
 
 #### Command parsing:
 
-- Find all input pipes < and heredocs << (except ones inside '' or ""), open file descriptors, fill fd_in array (int *). For heredocs we can use -1.
-- Find all output pipes > >> (except ones inside '' or ""), open file descriptors, fill fd_out array.
+- Find all input redirections < and heredocs << (except ones inside '' or ""), open file descriptors, fill fd_in array (int *). For heredocs we can use -1.
+- Find all output redirections > >> (except ones inside '' or ""), open file descriptors, fill fd_out array.
+- Split what remains by whitespaces (except whitespaces inside '' or "");
 - Fill cmd with the first remaining word (after removing redirections from prompt).
 - Fill args with the rest.
