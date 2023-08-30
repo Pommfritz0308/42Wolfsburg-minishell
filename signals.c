@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 13:17:04 by psimonen          #+#    #+#             */
-/*   Updated: 2023/08/30 13:30:48 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/08/30 19:59:11 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,21 @@
 
 void	handler(int signum)
 {
-	if (signum == SIGQUIT)
-		return;
-	printf("Catched signal %d\n", signum);
+	if (signum == SIGINT)
+	{
+		rl_replace_line("\rHi", 0);
+		rl_redisplay();
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		return ;
+	}
+	//printf("Catched signal %d\n", signum);
 }
 
 void	handle_signals()
 {
-	signal(SIGQUIT, handler);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, handler);
 }

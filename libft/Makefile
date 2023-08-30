@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+         #
+#    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 12:30:22 by fbohling          #+#    #+#              #
-#    Updated: 2023/08/30 13:38:40 by fbohling         ###   ########.fr        #
+#    Updated: 2023/08/30 20:12:32 by psimonen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

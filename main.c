@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
-/*   Updated: 2023/08/30 15:14:03 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/08/30 18:36:15 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	main(void)
 	int		exit_code;
 	t_cmd	*cmds;
 
+	handle_signals();
 	exit_code = EXIT_SUCCESS;
 	cmds = 0;
-	handle_signals();
 	while (1)
 	{
 		if (exit_code)
