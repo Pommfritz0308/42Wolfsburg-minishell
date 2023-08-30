@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   resolve_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 12:49:08 by psimonen          #+#    #+#             */
-/*   Updated: 2023/08/30 12:50:17 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/08/30 13:25:16 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*resolve_env(char *s)
 				inside_quote = 1;
 			continue ;
 		}
-		if (s[i] == '$' && ft_isalnum(s[i+1]))
+		if (s[i] == '$' && ft_isalnum(s[i + 1]))
 		{
 			i++;
 		}
