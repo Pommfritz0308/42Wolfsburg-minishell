@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/08/30 16:23:37 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/08/30 20:03:24 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,18 @@ typedef struct		s_cmd
 	struct s_cmd	*next_cmd;
 	int				next_cmd_cnd;
 }					t_cmd;
+
+typedef struct s_split2
+{
+	int		count;
+	int		*matches;
+	char	**arr;
+	size_t	s1_len;
+	size_t	s2_len;
+	int		arr_len;
+	int		arr_y;
+}	t_split2;
+
 char	*resolve_env(char *s);
 void	parse(char *user_input, t_cmd **cmds);
 t_cmd	*parse_cmd(char *s);
