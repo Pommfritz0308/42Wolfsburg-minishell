@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/01 16:35:47 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/01 16:36:37 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <readline/history.h>
 # include "libft/libft.h"
 
-typedef struct		s_rdrct
+typedef struct s_rdrct
 {
 	int				fd;
 	char			*word;
@@ -28,7 +28,8 @@ typedef struct		s_rdrct
 	char			*limiter;
 	struct s_rdrct	*next;
 }					t_rdrct;
-typedef struct		s_cmd
+
+typedef struct s_cmd
 {
 	char			*cmd;
 	char			**args;
@@ -37,19 +38,6 @@ typedef struct		s_cmd
 	struct s_cmd	*next_cmd;
 	int				next_cmd_cnd;
 }					t_cmd;
-
-typedef struct s_split2
-{
-	int		count;
-	int		*matches;
-	char	**arr;
-	size_t	s1_len;
-	size_t	s2_len;
-	int		arr_len;
-	int		arr_y;
-	char	*s1;
-	char	*s2;
-}	t_split2;
 
 char	*resolve_env(char *s);
 void	parse(char *user_input, t_cmd **cmds);
