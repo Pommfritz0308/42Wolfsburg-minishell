@@ -6,7 +6,7 @@
 #    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/08/30 19:51:24 by psimonen         ###   ########.fr        #
+#    Updated: 2023/09/01 17:03:27 by psimonen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 OBJ_DIR = build
 
-_SRC = main resolve_env parse_cmd cmd parse exec signals
+_SRC = main resolve_env parse_cmd cmd parse exec signals init errors debug
 
 SRCS = $(addsuffix .c, $(_SRC))
 OBJS = $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(_SRC)))
@@ -30,6 +30,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 LIBS = \
 	-L$(LIBFT_DIR) \
 	-lft \
+	-ltermcap \
 	-lreadline \
 	-L/Users/$(USER)/.brew/Cellar/readline/8.2.1/lib
 
