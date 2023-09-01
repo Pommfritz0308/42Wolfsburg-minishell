@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
-/*   Updated: 2023/08/30 18:36:15 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/01 12:32:28 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,28 @@ int	main(void)
 	int		exit_code;
 	t_cmd	*cmds;
 
+	init_settings();
 	handle_signals();
 	exit_code = EXIT_SUCCESS;
 	cmds = 0;
 	while (1)
 	{
 		if (exit_code)
-			prompt = "\e[0;31mminishell$\e[0m ";
+			prompt = FAILED_PROMPT;
 		else
-			prompt = "\e[0;32mminishell$\e[0m ";
+			prompt = SUCCESS_PROMPT;
 		user_input = readline(prompt);
-		add_history(user_input);
+		if (user_input && *user_input)
+			add_history(user_input);
 		//parse(user_input, &cmds);
+		parse_cmd(user_input);
+		free(user_input);
 		exit_code = exec_cmds(cmds);
 		if (exit_code == -1)
 		{
 			exit_code = EXIT_SUCCESS;
 			break ;
 		}
-
 	}
 	return (exit_code);
 }

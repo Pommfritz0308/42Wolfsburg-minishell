@@ -3,32 +3,77 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/01 16:36:37 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/01 17:10:28 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include <stdio.h>
+# include <fcntl.h>
+# include <term.h>
 # include <stdlib.h>
+# include <errno.h>
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
+# include "errnu.h"
 
+// Settings
+# define SUCCESS_PROMPT	"\e[0;32mminishell\e[0m$ "
+# define FAILED_PROMPT	"\e[0;31mminishell\e[0m$ "
+# define MINISHELLRC	"/.minishellrc"
+
+typedef enum e_token_type
+{
+	WORD,
+	PARANTHESIS,
+	AND,
+	OR,
+	WILDCARD,
+	PIPE,
+	REDIRECTION,
+	END
+}					t_tocken_type;
+typedef struct s_tocken
+{
+	t_tocken_type	type;
+	char			*val;
+}					t_tocken;
+typedef struct s_tree
+{
+	struct s_tree	*left;
+	struct s_tree	*right;
+	t_tocken		*tocken;
+}					t_tree;
+
+t_tree	*new_node(void)
+{
+	t_tree	*node;
+
+	node = (t_tree *)malloc(sizeof(t_tree));
+	if (!node)
+		return (0);
+	node->left = 0;
+	node->right = 0;
+	node->tocken = 0;
+	return (node);
+}
 typedef struct s_rdrct
 {
-	int				fd;
+	int				in_fd;
+	int				out_fd;
 	char			*word;
 	int				open_flags;
 	int				heredoc;
+	int				stderr_to_1;
 	char			*limiter;
 	struct s_rdrct	*next;
 }					t_rdrct;
-
 typedef struct s_cmd
 {
 	char			*cmd;
@@ -43,6 +88,14 @@ char	*resolve_env(char *s);
 void	parse(char *user_input, t_cmd **cmds);
 t_cmd	*parse_cmd(char *s);
 int		exec_cmds(t_cmd *cmds);
-void	handle_signals();
-t_cmd	*new_cmd_node();
+void	handle_signals(void);
+t_cmd	*new_cmd_node(void);
+t_rdrct	*new_rdrct_node(void);
+int		ft_new_putchar(int c);
+void	init_settings(void);
+void	ft_perror(char *msg);
+
+// Debug
+void	print_t_rdrct(t_rdrct *node);
+void	print_t_cmd(t_cmd *cmd);
 #endif

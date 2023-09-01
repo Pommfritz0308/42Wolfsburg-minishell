@@ -6,13 +6,13 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 15:08:52 by psimonen          #+#    #+#             */
-/*   Updated: 2023/08/30 18:17:09 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/01 12:35:23 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		check_flag(char *flags, char curr)
+int	check_flag(char *flags, char curr)
 {
 	static char	flag;
 	int			res;
@@ -34,12 +34,93 @@ int		check_flag(char *flags, char curr)
 	return (res);
 }
 
-void	parse_out(char *s, int i, t_cmd *res)
+char	*next_word(char *s, int *i)
 {
-	s = 0;
-	i = 0;
-	res = 0;
-	return ;
+	int		len;
+	char	*res;
+
+	while (s && *s && (*s == ' ' || *s == '\t'))
+	{
+		s++;
+		(*i)++;
+	}
+	len = 0;
+	while (s && s[len] && s[len] != ' ' && s[len] != '\t'
+		&& s[len] != '\n' && s[len] != '>' && s[len] != '<')
+		len++;
+	res = (char *)malloc(sizeof(char) * (len + 1));
+	if (!res)
+		return (0);
+	res[len] = 0;
+	(*i) += len;
+	ft_strlcpy(res, s, len + 1);
+	return (res);
+}
+
+void	parse_out(char *s, int *i, t_cmd *res)
+{
+	t_rdrct	*node;
+	int		start;
+	int		end;
+
+	if (!res->out_rdrcts)
+	{
+		res->out_rdrcts = new_rdrct_node();
+		if (!res->out_rdrcts)
+			return ;
+	}
+	node = res->out_rdrcts;
+	node->open_flags = O_WRONLY | O_CREAT;
+	while (node->next)
+		node = node->next;
+	start = *i;
+	end = *i;
+	if (start - 1 > 0 && s[start - 1] == '&')
+	{
+		node->stderr_to_1 = 1;
+		start--;
+	}
+	while (start && --start && ft_isdigit(s[start]))
+		;
+	if (!ft_isdigit(s[start]))
+		start++;
+	if (start != *i)
+		node->in_fd = ft_atoi(s + start);
+	else
+		node->in_fd = 1;
+	if (s[++end] == '>')
+	{
+		node->open_flags |= O_APPEND;
+		end++;
+		(*i)++;
+	}
+	if (s[end] == '|')
+	{
+		end++;
+		(*i)++;
+	}
+	if (s[end] == '&' && !ft_isdigit(s[end + 1]))
+	{
+		if (node->stderr_to_1)
+		{
+			errno = SYNTAX;
+			ft_perror("minishell");
+			return ;
+		}
+		node->stderr_to_1 = 1;
+		(*i)++;
+	}
+	else if (s[end] == '&')
+	{
+		node->out_fd = ft_atoi(s + ++end);
+		print_t_rdrct(node);
+		(*i)++;
+		while (ft_isdigit(s[*i]))
+			(*i)++;
+		return ;
+	}
+	node->word = next_word(s + end, i);
+	print_t_rdrct(node);
 }
 
 t_cmd	*parse_cmd(char *s)
@@ -48,12 +129,14 @@ t_cmd	*parse_cmd(char *s)
 	t_cmd	*res;
 
 	res = new_cmd_node();
+	if (!res)
+		return (0);
 	i = -1;
 	while (s[++i])
 	{
 		if (s[i] == '>' && !check_flag("\'\"", s[i]))
 		{
-			parse_out(s, i, res);
+			parse_out(s, &i, res);
 		}
 		else if (s[i] == '<' && !check_flag("\'\"", s[i]))
 		{

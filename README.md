@@ -38,3 +38,8 @@
 - Split what remains by whitespaces (except whitespaces inside '' or "");
 - Fill cmd with the first remaining word (after removing redirections from prompt).
 - Fill args with the rest.
+
+### Settings
+
+Minishell config file is ~/.minishellrc.
+Minishell changes INPUTRC environment variable to ~/.minishellrc.

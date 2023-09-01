@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 12:53:37 by psimonen          #+#    #+#             */
-/*   Updated: 2023/08/30 15:41:29 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/01 12:33:06 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	parse(char *user_input, t_cmd **cmds)
 			*cmds = parse_cmd(*commands);
 		else
 		{
-			buf->next_cmd  = parse_cmd(*commands);
+			buf->next_cmd = parse_cmd(*commands);
 			buf = buf->next_cmd;
 		}
 		commands++;
