@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
+#    By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 12:30:22 by fbohling          #+#    #+#              #
-#    Updated: 2023/08/30 20:12:32 by psimonen         ###   ########.fr        #
+#    Updated: 2023/09/01 17:33:57 by fbohling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SRCS			=	ft_isalnum.c ft_isprint.c \
 					ft_lstnew.c ft_lstadd_front.c  ft_lstsize.c ft_lstlast.c \
 					ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c \
 					ft_strupper.c ft_strtolower.c ft_atof.c ft_free_array.c ft_split_with_quotations.c \
-					ft_count_char.c ft_split_with_str.c
+					ft_count_char.c
 
 OBJS			= $(SRCS:.c=.o)
 
