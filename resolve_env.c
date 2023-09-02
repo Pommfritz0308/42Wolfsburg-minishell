@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 12:49:08 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/01 12:27:08 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/02 10:37:27 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,45 +61,68 @@ int	calc_len(char *s)
 	return (len);
 }
 
-void	resolve_env_helper(char *s, char **res, char *val, int (*ijq)[3])
+int		not_backslash(char *s, int pos)
 {
-	while (s && s[++(*ijq)[0]])
+	int	backslashes;
+
+	if (!pos)
+		return (1);
+	backslashes = 0;
+	while (--pos && s[pos] == '\\')
+		backslashes++;
+	if (backslashes % 2 == 0)
+		return (1);
+	return (0);
+}
+
+void	resolve_env_helper(char *s, char **res, char *val, int (*ijqd)[4])
+{
+	while (s && s[++(*ijqd)[0]])
 	{
-		if (s[(*ijq)[0]] == '\'')
+		if (s[(*ijqd)[0]] == '\'' && !(*ijqd)[3])
 		{
-			if ((*ijq)[2])
-				(*ijq)[2] = 0;
+			if ((*ijqd)[2])
+				(*ijqd)[2] = 0;
 			else
-				(*ijq)[2] = 1;
+				(*ijqd)[2] = 1;
 		}
-		if (!(*ijq)[2] && s[(*ijq)[0]] == '$' && ft_isalnum(s[(*ijq)[0] + 1]))
+		else if (s[(*ijqd)[0]] == '\"' && !(*ijqd)[2])
 		{
-			val = get_env(s, &(*ijq)[0]);
+			if ((*ijqd)[3])
+				(*ijqd)[3] = 0;
+			else
+				(*ijqd)[3] = 1;
+		}
+		else if (!(*ijqd)[2] && s[(*ijqd)[0]] == '$' && ft_isalnum(s[(*ijqd)[0] + 1])
+			&& not_backslash(s, (*ijqd)[0]))
+		{
+			val = get_env(s, &(*ijqd)[0]);
 			if (val)
 			{
-				ft_strlcpy(*res + (*ijq)[1], val, ft_strlen(val) + 1);
-				(*ijq)[1] += ft_strlen(val);
+				ft_strlcpy(*res + (*ijqd)[1], val, ft_strlen(val) + 1);
+				(*ijqd)[1] += ft_strlen(val);
 			}
 		}
 		else
-			(*res)[(*ijq)[1]++] = s[(*ijq)[0]];
+			(*res)[(*ijqd)[1]++] = s[(*ijqd)[0]];
 	}
-	(*res)[(*ijq)[1]] = 0;
+	(*res)[(*ijqd)[1]] = 0;
 }
 
 char	*resolve_env(char *s)
 {
-	int		ijq[3];
+	int		ijqd[4];
 	char	*res;
 	char	*val;
 
 	res = (char *)malloc(sizeof(char) * (calc_len(s) + 1));
 	if (!res)
 		return (0);
-	ijq[0] = -1;
-	ijq[1] = 0;
-	ijq[2] = 0;
+	ijqd[0] = -1;
+	ijqd[1] = 0;
+	ijqd[2] = 0;
+	ijqd[3] = 0;
 	val = 0;
-	resolve_env_helper(s, &res, val, &ijq);
+	resolve_env_helper(s, &res, val, &ijqd);
 	return (res);
 }
