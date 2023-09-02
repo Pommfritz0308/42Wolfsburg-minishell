@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/02 16:37:33 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/02 16:39:05 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	main(void)
 		//parse(user_input, &cmds);
 		//parse_cmd(user_input);
 		//tokenize(user_input);
+		free(user_input);
 		exit_code = exec_cmds(cmds);
 		if (exit_code == -1)
 		{
