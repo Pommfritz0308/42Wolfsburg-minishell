@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/02 16:32:56 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/03 09:15:28 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ typedef enum e_token_type
 	PARANTHESIS,
 	AND,
 	OR,
-	WILDCARD,
 	PIPE,
 	REDIRECTION,
 	END
@@ -42,12 +41,6 @@ typedef enum e_token_type
 typedef enum e_parser_state
 {
 	TOKEN_,
-	PARANTHESIS_,
-	AND_,
-	OR_,
-	WILDCARD_,
-	PIPE_,
-	REDIRECTION_,
 	SPACE_
 }					t_parser_state;
 typedef struct s_tocken

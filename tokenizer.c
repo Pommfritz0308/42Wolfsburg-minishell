@@ -54,24 +54,32 @@ char	*slice_str(char *s, int start, int end)
 	return (res);
 }
 
-t_tree	*tokenize(char *s)
+int	str_contains(char c, char *s)
+{
+	while (s && *s)
+	{
+		if (*s == c)
+			return (1);
+		s++;
+	}
+	return (0);
+}
+
+void	lexer(char *s)
 {
 	int				s_d_quote[2];
-	int				paranthesis;
 	int				backslash;
 	int				token_start;
 	t_parser_state	state;
+	char			*token;
 	int				i;
-	t_tocken		*token;
 
 	s_d_quote[0] = 0;
 	s_d_quote[1] = 0;
-	paranthesis = 0;
 	backslash = 0;
 	token_start = -1;
 	state = SPACE_;
 	i = -1;
-	token = new_tocken();
 	while (s && s[++i])
 	{
 		if (s_d_quote[0])
@@ -82,56 +90,25 @@ t_tree	*tokenize(char *s)
 			s_d_quote[0] = !s_d_quote[0];
 		else if (s[i] == '\"' && !s_d_quote[0] && !backslash)
 			s_d_quote[1] = !s_d_quote[1];
-		else if (s[i] == '(' && !s_d_quote[0] && !s_d_quote[1] && !backslash)
-			paranthesis++;
-		else if (s[i] == ')' && !s_d_quote[0] && !s_d_quote[1] && !backslash)
-			paranthesis--;
-		else if (s[i] == '&' && s[i + 1] == '&' && !s_d_quote[0] && !s_d_quote[1] && !backslash)
+		if ((str_contains(s[i], " \t|><()") || (s[i] == '&' && s[i + 1] == '&'))
+			&& !s_d_quote[0] && !s_d_quote[1] && !backslash)
 		{
-			state = AND_;
-			i++;
-		}
-		else if (s[i] == '|' && s[i + 1] == '|' && !s_d_quote[0] && !s_d_quote[1] && !backslash)
-		{
-			state = OR_;
-			i++;
-		}
-		else if (s[i] == '|' && !s_d_quote[0] && !s_d_quote[1] && !backslash)
-			state = PIPE_;
-		else if (s[i] == '>' && s[i + 1] == '>' && !s_d_quote[0] && !s_d_quote[1] && !backslash)
-		{
-			state = REDIRECTION_;
-			i++;
-		}
-		else if (s[i] == '<' && s[i + 1] == '<' && !s_d_quote[0] && !s_d_quote[1] && !backslash)
-		{
-			state = REDIRECTION_;
-			i++;
-		}
-		else if (s[i] == '<' && s[i + 1] == '>' && !s_d_quote[0] && !s_d_quote[1] && !backslash)
-		{
-			state = REDIRECTION_;
-			i++;
-		}
-		else if (s[i] == '>' && !s_d_quote[0] && !s_d_quote[1] && !backslash)
-			state = REDIRECTION_;
-		else if (s[i] == '<' && !s_d_quote[0] && !s_d_quote[1] && !backslash)
-			state = REDIRECTION_;
-		if ((s[i] == ' ' || s[i] == '\t' || s[i] == '|' || s[i] == '&' || s[i] == '>' || s[i] == '<') && !s_d_quote[0] && !s_d_quote[1] && !backslash)
-		{
-			if (state != SPACE_)
+			if (state == TOKEN_)
 			{
-				token->val = slice_str(s, token_start, state != TOKEN_ ? i - 2 : i - 1);
-				printf("Token %d val: |%s|\n", token->type, token->val);
-				token = new_tocken();
-				token_start = -1;
+				token = slice_str(s, token_start, i - 1);
+				printf("Token val: |%s|\n", token);
 			}
-			if (state != TOKEN_ && state != SPACE_)
+			if (str_contains(s[i], "|&><()"))
 			{
-				token->type = (t_tocken_type)state;
-				printf("Token %d val: |%s|\n", token->type, token->val);
-				token = new_tocken();
+				token_start = i;
+				if ((s[i] == '&' && s[i + 1] == '&') || (s[i] == '|' && s[i + 1] == '|')
+					|| (s[i] == '>' && s[i + 1] == '>')
+					|| (s[i] == '<' && s[i + 1] == '<') || (s[i] == '<' && s[i + 1] == '>'))
+					i++;
+				token = slice_str(s, token_start, i);
+				printf("Token val: |%s|\n", token);
 			}
+			token_start = -1;
 			state = SPACE_;
 		}
 		else
@@ -143,8 +120,7 @@ t_tree	*tokenize(char *s)
 	}
 	if (state == TOKEN_)
 	{
-		token->val = slice_str(s, token_start, i);
-		printf("Token %d val: |%s|\n", token->type, token->val);
+		token = slice_str(s, token_start, i);
+		printf("Token val: |%s|\n", token);
 	}
-	return (0);
 }
