@@ -13,10 +13,10 @@
 - [ ] Builtins:
 	- [ ] echo
 	- [ ] cd
-	- [ ] pwd
+	- [x] pwd
 	- [ ] export
 	- [ ] unset
-	- [ ] env
+	- [x] env
 	- [ ] exit
 - [ ] Testing, leaks
 

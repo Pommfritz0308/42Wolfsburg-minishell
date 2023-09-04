@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: frederik <frederik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/03 09:15:28 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/04 19:52:48 by frederik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <readline/history.h>
 # include "libft/libft.h"
 # include "errnu.h"
+# include <stdbool.h>
 
 // Settings
 # define SUCCESS_PROMPT	"\e[0;32mminishell\e[0m$ "
@@ -74,6 +75,12 @@ typedef struct s_cmd
 	struct s_cmd	*next_cmd;
 	int				next_cmd_cnd;
 }					t_cmd;
+
+typedef struct s_builtins
+{
+	char	**env;
+	int		env_size;
+}	t_builtins;
 
 char	*resolve_env(char *s);
 void	parse(char *user_input, t_cmd **cmds);
