@@ -7,7 +7,5 @@ void	env_(char **envp)
 
 	i = -1;
 	while (envp[++i])
-	{
 		printf("%s\n", envp[i]);
-	}
 }
