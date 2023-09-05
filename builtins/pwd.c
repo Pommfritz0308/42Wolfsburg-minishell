@@ -1,7 +1,7 @@
 #include "../minishell.h"
 #include "../errnu.h"
 
-int	pwd_(void)
+int	ft_pwd(void)
 {
 	char	*pwd;
 
