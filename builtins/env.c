@@ -1,7 +1,7 @@
 #include "../minishell.h"
 #include "../errnu.h"
 
-void	env_(char **envp)
+void	ft_env(char **envp)
 {
 	int	i;
 
