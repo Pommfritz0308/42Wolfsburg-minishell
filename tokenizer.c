@@ -65,13 +65,14 @@ int	str_contains(char c, char *s)
 	return (0);
 }
 
-void	lexer(char *s)
+char	*next_token(char *s, int *pos)
 {
 	int				s_d_quote[2];
 	int				backslash;
 	int				token_start;
+	int				operator_start;
 	t_parser_state	state;
-	char			*token;
+	char			*operator;
 	int				i;
 
 	s_d_quote[0] = 0;
@@ -79,9 +80,11 @@ void	lexer(char *s)
 	backslash = 0;
 	token_start = -1;
 	state = SPACE_;
-	i = -1;
-	while (s && s[++i])
+	i = *pos;
+	while (s && s[i])
 	{
+		operator_start = -1;
+		operator = 0;
 		if (s_d_quote[0])
 			backslash = 0;
 		else
@@ -93,21 +96,40 @@ void	lexer(char *s)
 		if ((str_contains(s[i], " \t|><()") || (s[i] == '&' && s[i + 1] == '&'))
 			&& !s_d_quote[0] && !s_d_quote[1] && !backslash)
 		{
+			if (str_contains(s[i], "<>"))
+			{
+				operator_start = i;
+				if (i - 1 >= 0 & s[i - 1] == '&')
+					operator_start--;
+				while (--operator_start >= 0 && ft_isdigit(s[operator_start]))
+					;
+				operator_start++;
+				if ((s[i] == '>' && s[i + 1] == '>') || (s[i] == '<' && s[i + 1] == '<') || (s[i] == '<' && s[i + 1] == '>') || (s[i] == '>' && s[i + 1] == '|'))
+					i++;
+				operator = slice_str(s, operator_start, i);
+			}
+			else if (str_contains(s[i], "|&()"))
+			{
+				operator_start = i;
+				if ((s[i] == '&' && s[i + 1] == '&') || (s[i] == '|' && s[i + 1] == '|'))
+					i++;
+				operator = slice_str(s, operator_start, i);
+			}
 			if (state == TOKEN_)
 			{
-				token = slice_str(s, token_start, i - 1);
-				printf("Token val: |%s|\n", token);
+				*pos = i;
+				if (operator_start == -1)
+					return (slice_str(s, token_start, i - 1));
+				else if (operator_start > token_start)
+				{
+					free(operator);
+					*pos = operator_start;
+					return (slice_str(s, token_start, operator_start - 1));
+				}
 			}
-			if (str_contains(s[i], "|&><()"))
-			{
-				token_start = i;
-				if ((s[i] == '&' && s[i + 1] == '&') || (s[i] == '|' && s[i + 1] == '|')
-					|| (s[i] == '>' && s[i + 1] == '>')
-					|| (s[i] == '<' && s[i + 1] == '<') || (s[i] == '<' && s[i + 1] == '>'))
-					i++;
-				token = slice_str(s, token_start, i);
-				printf("Token val: |%s|\n", token);
-			}
+			*pos = i + 1;
+			if (operator)
+				return (operator);
 			token_start = -1;
 			state = SPACE_;
 		}
@@ -117,10 +139,23 @@ void	lexer(char *s)
 			if (token_start == -1)
 				token_start = i;
 		}
+		i++;
 	}
+	*pos = i + 1;
 	if (state == TOKEN_)
+		return (slice_str(s, token_start, i));
+	return (0);
+}
+
+void	tokenize(char *s)
+{
+	char	*token;
+	int		i;
+
+	token = next_token(s, &i);
+	while (token)
 	{
-		token = slice_str(s, token_start, i);
-		printf("Token val: |%s|\n", token);
+		printf("tok: %s\n", token);
+		token = next_token(s, &i);
 	}
 }
