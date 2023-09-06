@@ -7,5 +7,8 @@ void	ft_env(char **envp)
 
 	i = -1;
 	while (envp[++i])
-		printf("%s\n", envp[i]);
+	{
+		if (ft_strchr(envp[i], '='))
+			printf("%s\n", envp[i]);
+	}
 }

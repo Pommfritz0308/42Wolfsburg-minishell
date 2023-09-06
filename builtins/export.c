@@ -4,29 +4,47 @@
 int	ft_export(t_builtins *data, char *arg)
 {
 	char	**temp;
-	int		ret;
 	int		i;
+	int		len;
 
 	i = -1;
+	data->flag = 0;
 	temp = new_env(data, arg);
 	if (!check_identifier(temp[0]))
-	{
-		ft_putstr_fd("minishell: export: `", 2);
-		ft_putstr_fd(temp[0], 2);
-		ft_putendl_fd("\': not a valid identifier", 2);
-		ret = EXIT_FAILURE;
-	}
+		return (EXIT_FAILURE);
 	else
 	{
 		while (data->env[++i])
 		{
-			if ()
+			if (!ft_strncmp(data->env[i],
+					temp[0], ft_find_pos(data->env[i], '=')))
+			{
+				data->flag = 1;
+				break ;
+			}
 		}
+		ch_env(data, temp, i, arg);
+		ft_free_array(temp);
 	}
-	return (ret);
+	return (EXIT_SUCCESS);
 }
 
-char	**new_env(t_builtins *data, char *arg)
+void	ch_env(t_builtins *data, char **pair, int i, char *arg)
+{
+	if (data->flag == 1)
+	{
+		free(data->env[i]);
+		data->env[i] = ft_strdup(arg);
+	}
+	else
+	{
+		data->env_size++;
+		realloc_env(data, data->env_size);
+		data->env[data->env_size] = ft_strdup(arg);
+	}
+}
+
+char	**identifier_value_pair(t_builtins *data, char *arg)
 {
 	char	**new_env;
 	char	*eq_sign;
@@ -46,11 +64,21 @@ bool	check_identifier(char *arg)
 
 	i = -1;
 	if (!arg[0] | !arg)
+	{
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putendl_fd("\': not a valid identifier", 2);
 		return (false);
+	}
 	while (arg[++i])
 	{
 		if (arg[i] == '_' | !ft_isalpha(arg[i]))
+		{
+			ft_putstr_fd("minishell: export: `", 2);
+			ft_putstr_fd(arg[0], 2);
+			ft_putendl_fd("\': not a valid identifier", 2);
 			return (false);
+		}
 	}
 	return (true);
 }

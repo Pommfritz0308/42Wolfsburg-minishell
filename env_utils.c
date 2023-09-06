@@ -16,3 +16,18 @@ bool	env_cpy(t_builtins *data, char **envp)
 		data->env[i] = ft_strdup(envp[i]);
 	return (true);
 }
+
+char	**realloc_env(t_builtins *data, int size)
+{
+	char	**new_env;
+	int		i;
+
+	i = -1;
+	new_env = ft_calloc(size + 1, sizeof(char *));
+	while (data->env[++i])
+	{
+		new_env[i] = ft_strdup(data->env[i]);
+		free(data->env[i]);
+	}
+	free(data->env);
+}

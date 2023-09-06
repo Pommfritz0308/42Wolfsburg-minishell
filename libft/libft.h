@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbohling <fbohling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 16:05:54 by fbohling          #+#    #+#             */
-/*   Updated: 2023/06/06 16:59:50 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/06 16:20:40 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,6 @@ void	ft_free_array(char **arr);
 char	**ft_split_with_quotations(char const *s, char c);
 int		ft_count_char(char *s, char c);
 void	check_for_quotes(t_split *split, char *temp);
+int		ft_find_pos(char *str, char c);
 
 #endif
