@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: frederik <frederik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/01 17:10:28 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/04 19:52:48 by frederik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <readline/history.h>
 # include "libft/libft.h"
 # include "errnu.h"
+# include <stdbool.h>
 
 // Settings
 # define SUCCESS_PROMPT	"\e[0;32mminishell\e[0m$ "
@@ -34,11 +35,15 @@ typedef enum e_token_type
 	PARANTHESIS,
 	AND,
 	OR,
-	WILDCARD,
 	PIPE,
 	REDIRECTION,
 	END
 }					t_tocken_type;
+typedef enum e_parser_state
+{
+	TOKEN_,
+	SPACE_
+}					t_parser_state;
 typedef struct s_tocken
 {
 	t_tocken_type	type;
@@ -50,19 +55,6 @@ typedef struct s_tree
 	struct s_tree	*right;
 	t_tocken		*tocken;
 }					t_tree;
-
-t_tree	*new_node(void)
-{
-	t_tree	*node;
-
-	node = (t_tree *)malloc(sizeof(t_tree));
-	if (!node)
-		return (0);
-	node->left = 0;
-	node->right = 0;
-	node->tocken = 0;
-	return (node);
-}
 typedef struct s_rdrct
 {
 	int				in_fd;
@@ -84,6 +76,12 @@ typedef struct s_cmd
 	int				next_cmd_cnd;
 }					t_cmd;
 
+typedef struct s_builtins
+{
+	char	**env;
+	int		env_size;
+}	t_builtins;
+
 char	*resolve_env(char *s);
 void	parse(char *user_input, t_cmd **cmds);
 t_cmd	*parse_cmd(char *s);
@@ -94,6 +92,7 @@ t_rdrct	*new_rdrct_node(void);
 int		ft_new_putchar(int c);
 void	init_settings(void);
 void	ft_perror(char *msg);
+t_tree	*tokenize(char *s);
 
 // Debug
 void	print_t_rdrct(t_rdrct *node);

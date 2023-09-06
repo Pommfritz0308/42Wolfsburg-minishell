@@ -1,9 +1,18 @@
 #include "../minishell.h"
+#include "../errnu.h"
 
-char	*pwd(void)
+int	ft_pwd(void)
 {
-	char	*cwd;
+	char	*pwd;
 
-	cwd = getcwd(NULL, 0); // remember to free buff
-	return (cwd);
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+	{
+		ft_perror("pwd");
+		return (EXIT_FAILURE);
+	}
+	else
+		printf("%s\n", pwd);
+	free(pwd);
+	return (EXIT_SUCCESS);
 }
