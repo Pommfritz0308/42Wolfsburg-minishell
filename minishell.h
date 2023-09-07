@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/06 19:03:27 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/07 13:41:25 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,11 @@ int		ft_new_putchar(int c);
 void	init_settings(void);
 void	ft_perror(char *msg);
 t_tree	*tokenize(char *s);
+void	ft_env(char **envp);
+int		env_cpy(t_builtins *data, char **envp);
+int		ft_export(t_builtins *data, char *arg);
+char	**realloc_env(t_builtins *data, int size);
+void	ch_env(t_builtins *data, int i, char *arg);
 
 // Debug
 void	print_t_rdrct(t_rdrct *node);
