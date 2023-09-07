@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include "errnu.h"
 
-bool	env_cpy(t_builtins *data, char **envp)
+int	env_cpy(t_builtins *data, char **envp)
 {
 	int			i;
 
@@ -11,10 +11,10 @@ bool	env_cpy(t_builtins *data, char **envp)
 		data->env_size++;
 	data->env = ft_calloc(data->env_size + 1, sizeof(char *));
 	if (!data->env)
-		return (false);
+		return (EXIT_FAILURE);
 	while (++i < data->env_size)
 		data->env[i] = ft_strdup(envp[i]);
-	return (true);
+	return (EXIT_SUCCESS);
 }
 
 char	**realloc_env(t_builtins *data, int size)
@@ -30,4 +30,25 @@ char	**realloc_env(t_builtins *data, int size)
 		free(data->env[i]);
 	}
 	free(data->env);
+	return (new_env);
 }
+
+
+// position[0]
+// position[1]
+// position[2]
+// position[3][0]
+
+
+// if (strcmp(position[0], position[1]));
+
+// void	swap(void *one, void *two)
+// {
+// 	void	*temp;
+
+// 	temp = one;
+// 	one = two;
+// 	two = temp;
+// }
+
+
