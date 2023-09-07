@@ -67,6 +67,8 @@ int	ft_export(t_builtins *data, char *arg)
 
 	i = -1;
 	data->flag = 0;
+	if (!arg)
+		print_export(data);
 	temp = identifier_value_pair(arg);
 	if (!check_identifier(temp))
 		return (EXIT_FAILURE);
