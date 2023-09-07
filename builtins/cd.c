@@ -1,8 +1,17 @@
 #include "../minishell.h"
+#include "../errnu.h"
 
-cd ~ getenv("HOME");
-
-void	cd(char *arg)
+int	cd(char *arg)
 {
-	if
+	char	*pwd;
+
+	pwd = NULL;
+	if (!arg | !arg[0])
+		return (EXIT_SUCCESS);
+	if (chdir(arg))
+	{
+		ft_perror("cd");
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }
