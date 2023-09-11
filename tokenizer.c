@@ -200,7 +200,6 @@ t_tree	*new_tree_node(void)
 	node->left = 0;
 	node->right = 0;
 	node->tocken = 0;
-	node->cmd = 0;
 	node->args = 0;
 	node->redirections = 0;
 	return (node);
@@ -340,10 +339,7 @@ t_tree	*build_ast(char *s, size_t *i)
 			{
 				if (!redir_ready)
 					paste_redir_word(buf->redirections, token->val);
-				if (!buf->cmd)
-					buf->cmd = token->val;
-				else
-					ft_lstadd_back(&buf->args, ft_lstnew(token->val));
+				ft_lstadd_back(&buf->args, ft_lstnew(token->val));
 				redir_ready = 1;
 				free (token);
 			}

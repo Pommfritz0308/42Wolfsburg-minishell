@@ -17,19 +17,6 @@ void	print_t_rdrct(t_rdrct *node)
 	);
 }
 
-void	print_t_cmd(t_cmd *cmd)
-{
-	printf(
-		"T_cmd %p\nCmd:\t\t%s\nnext:\t\t%p\nnext_cmd_cnd:\t%d\nin_rdrcts\t:%p\nout_rdrcts:\t%p\n\n",
-		cmd,
-		cmd->cmd,
-		cmd->next_cmd,
-		cmd->next_cmd_cnd,
-		cmd->in_rdrcts,
-		cmd->out_rdrcts
-	);
-}
-
 void	print_tree_helper(t_tree *tree, int pos)
 {
 	int i;
