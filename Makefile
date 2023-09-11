@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+         #
+#    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/09/06 19:47:04 by fbohling         ###   ########.fr        #
+#    Updated: 2023/09/11 15:12:05 by psimonen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 OBJ_DIR = build
 
-_SRC = main resolve_env parse_cmd cmd parse exec signals init errors debug tokenizer
+_SRC = main resolve_env parse_cmd cmd parse exec signals init errors debug tokenizer executor
 
 SRCS = $(addsuffix .c, $(_SRC))
 OBJS = $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(_SRC)))
