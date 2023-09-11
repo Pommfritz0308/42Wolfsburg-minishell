@@ -21,26 +21,52 @@ char	**lst_to_tab(t_list *lst)
 	return (res);
 }
 
-int	exec_cmd(t_tree *tree)
+int	exec_cmd(char *cmd, char **args, int fd_in, int fd_out, char **env)
 {
-	if (!fork())
+	int		pid;
+	char	*full_cmd;
+
+	pid = fork();
+	if (!pid)
 	{
-		execve(tree->cmd, lst_to_tab(tree->args), 0);
+		if (fd_in > 0 && (dup2(fd_in, 0) < 0 || dup2(fd_out, 1) < 0))
+			return (0);
+		full_cmd = path_to_exec(cmd, env);
+		if (execve(full_cmd, args, env) < 0)
+			return (0);
+	}
+	return (pid);
+}
+
+int	exec_recursive(t_tree *tree, char **env, int fd_in, int fd_out)
+{
+	int	res;
+	int	fd[2];
+
+	if (tree->tocken && tree->tocken->type == PIPE)
+	{
+		pipe(fd);
+		exec_recursive(tree->left, env, fd_in, fd[1]);
+		close(fd[1]);
+		exec_recursive(tree->right, env, fd[0], fd_out);
+	}
+	if (tree->left)
+		res = exec_recursive(tree->left, env, fd_in, fd_out);
+	if (tree->right && tree->tocken && tree->tocken->type == AND && !res)
+		return (exec_recursive(tree->right, env, fd_in, fd_out));
+	if (tree->right && tree->tocken && tree->tocken->type == OR && res)
+		return (exec_recursive(tree->right, env, fd_in, fd_out));
+	if (tree->cmd)
+		return (exec_cmd(tree->cmd, lst_to_tab(tree->args), fd_in, fd_out, env));
+	else if (tree->tocken && tree->tocken->type == PIPE)
+	{
+		fd[0] = fd_in;
+		fd[1] = fd_out;
 	}
 	return (0);
 }
 
-int	execute(t_tree *tree)
+int	execute(t_tree *tree, char **env)
 {
-	int	res;
-
-	if (tree->left)
-		res = execute(tree->left);
-	if (tree->right && tree->tocken && tree->tocken->type == AND && !res)
-		return (execute(tree->right));
-	if (tree->right && tree->tocken && tree->tocken->type == OR && res)
-		return (execute(tree->right));
-	if (tree->cmd)
-		return (exec_cmd(tree));
-	return (0);
+	return (exec_recursive(tree, env, 0, 1));
 }

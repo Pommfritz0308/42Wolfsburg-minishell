@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/11 15:13:45 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/11 15:52:59 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <fcntl.h>
 # include <term.h>
 # include <stdlib.h>
+# include <unistd.h>
 # include <errno.h>
 # include <signal.h>
 # include <readline/readline.h>
@@ -112,7 +113,9 @@ int		ft_export(t_builtins *data, char *arg);
 char	**realloc_env(t_builtins *data, int size);
 void	ch_env(t_builtins *data, int i, char *arg);
 t_tree	*ast(char *s);
-int		execute(t_tree *tree);
+int		execute(t_tree *tree, char **env);
+char	*path_to_exec(char *exec, char **env);
+int		str_contains(char c, char *s);
 
 // Debug
 void	print_t_rdrct(t_rdrct *node);
