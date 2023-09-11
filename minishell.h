@@ -6,11 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/09/11 15:11:09 by psimonen         ###   ########.fr       */
-=======
-/*   Updated: 2023/09/11 14:41:09 by psimonen         ###   ########.fr       */
->>>>>>> tokenizer, executor - work in progress
+/*   Updated: 2023/09/11 15:13:45 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
