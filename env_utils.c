@@ -32,23 +32,3 @@ char	**realloc_env(t_builtins *data, int size)
 	free(data->env);
 	return (new_env);
 }
-
-
-// position[0]
-// position[1]
-// position[2]
-// position[3][0]
-
-
-// if (strcmp(position[0], position[1]));
-
-// void	swap(void *one, void *two)
-// {
-// 	void	*temp;
-
-// 	temp = one;
-// 	one = two;
-// 	two = temp;
-// }
-
-
