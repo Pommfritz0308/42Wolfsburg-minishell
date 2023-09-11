@@ -9,3 +9,6 @@ minishell
 readline
 .json
 test*
+*.dSYM
+.antlr
+*.g4
