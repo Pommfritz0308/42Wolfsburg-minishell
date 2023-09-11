@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/11 15:52:59 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/11 18:54:41 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ typedef struct s_tree
 	struct s_tree	*left;
 	struct s_tree	*right;
 	t_tocken		*tocken;
-	char			*cmd;
 	t_list			*args;
 	t_rdr_l			*redirections;
 }					t_tree;
@@ -82,8 +81,8 @@ typedef struct s_rdrct
 }					t_rdrct;
 typedef struct s_cmd
 {
-	char			*cmd;
 	char			**args;
+	char			*cmd;
 	t_rdrct			*in_rdrcts;
 	t_rdrct			*out_rdrcts;
 	struct s_cmd	*next_cmd;

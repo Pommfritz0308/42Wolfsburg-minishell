@@ -49,6 +49,7 @@ int	exec_recursive(t_tree *tree, char **env, int fd_in, int fd_out)
 		exec_recursive(tree->left, env, fd_in, fd[1]);
 		close(fd[1]);
 		exec_recursive(tree->right, env, fd[0], fd_out);
+		return (0);
 	}
 	if (tree->left)
 		res = exec_recursive(tree->left, env, fd_in, fd_out);
@@ -56,8 +57,11 @@ int	exec_recursive(t_tree *tree, char **env, int fd_in, int fd_out)
 		return (exec_recursive(tree->right, env, fd_in, fd_out));
 	if (tree->right && tree->tocken && tree->tocken->type == OR && res)
 		return (exec_recursive(tree->right, env, fd_in, fd_out));
-	if (tree->cmd)
-		return (exec_cmd(tree->cmd, lst_to_tab(tree->args), fd_in, fd_out, env));
+	if (tree->args)
+	{
+		waitpid(exec_cmd(tree->args->content, lst_to_tab(tree->args), fd_in, fd_out, env), 0, 0);
+		return (0);
+	}
 	else if (tree->tocken && tree->tocken->type == PIPE)
 	{
 		fd[0] = fd_in;
