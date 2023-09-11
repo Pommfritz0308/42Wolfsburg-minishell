@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 16:05:54 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/07 16:27:16 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/11 18:09:21 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,6 @@ int		ft_count_char(char *s, char c);
 void	check_for_quotes(t_split *split, char *temp);
 int		ft_find_pos(char *str, char c);
 int		ft_isupper(char c);
+char	**ft_2d_array_cpy(char	**src);
 
 #endif

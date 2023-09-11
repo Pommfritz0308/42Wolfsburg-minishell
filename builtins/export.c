@@ -1,9 +1,57 @@
 #include "../minishell.h"
 #include "../errnu.h"
 
-void	ch_env(t_builtins *data, int i, char *arg)
+void	print_export_helper(t_builtins *data)
 {
-	if (data->flag == 1)
+	int		i;
+	char	**pair;
+
+	i = 0;
+	while (data->temp_arr[i])
+	{
+		pair = identifier_value_pair(data->temp_arr[i]);
+		if (pair[1])
+			printf("declare -x %s=\"%s\"\n", pair[0], pair[1]);
+		else
+			printf("declare -x %s\n", pair[0]);
+		ft_free_array(pair);
+		i++;
+	}
+}
+
+void	print_export(t_builtins *data)
+{
+	int		i;
+	int		j;
+
+	i = -1;
+	data->temp_arr = ft_2d_array_cpy(data->env);
+	while (++i < data->env_size)
+	{
+		j = i + 1;
+		while (j < data->env_size)
+		{
+			data->n = ft_find_pos(data->temp_arr[i], '=');
+			if (data->n == -1)
+				data->n = ft_strlen(data->temp_arr[i]);
+			if (ft_strncmp(data->temp_arr[i], data->temp_arr[j], data->n) > 0)
+			{
+				data->temp = data->temp_arr[i];
+				data->temp_arr[i] = data->temp_arr[j];
+				data->temp_arr[j] = data->temp;
+			}
+			j++;
+		}
+	}
+	print_export_helper(data);
+	ft_free_array(data->temp_arr);
+}
+
+void	ch_env(t_builtins *data, int i, char *arg, char **pair)
+{
+	if (!pair[1] || data->env == NULL)
+		return ;
+	else if (data->flag == 1)
 	{
 		free(data->env[i]);
 		data->env[i] = ft_strdup(arg);
@@ -60,32 +108,37 @@ bool	check_identifier(char **arg)
 	return (true);
 }
 
+void	ft_export_helper(t_builtins *data, char **temp, int i, char *arg)
+{
+	while (data->env[++i])
+	{
+		if (!ft_strncmp(data->env[i],
+				temp[0], ft_find_pos(data->env[i], '=')))
+		{
+			data->flag = 1;
+			break ;
+		}
+	}
+	ch_env(data, i, arg, temp);
+	ft_free_array(temp);
+	return ;
+}
+
 int	ft_export(t_builtins *data, char *arg)
 {
 	char	**temp;
 	int		i;
 
-	i = -1;
-	data->flag = 0;
-	if (!arg)
-		print_export(data);
-	temp = identifier_value_pair(arg);
-	if (!check_identifier(temp))
-		return (EXIT_FAILURE);
-	else
+	if (arg)
 	{
-		while (data->env[++i])
-		{
-			if (!ft_strncmp(data->env[i],
-					temp[0], ft_find_pos(data->env[i], '=')))
-			{
-				data->flag = 1;
-				break ;
-			}
-		}
-		ch_env(data, i, arg);
-		ft_free_array(temp);
+		i = -1;
+		data->flag = 0;
+		temp = identifier_value_pair(arg);
+		if (!check_identifier(temp))
+			return (EXIT_FAILURE);
+		else
+			ft_export_helper(data, temp, i, arg);
 	}
+	print_export(data);
 	return (EXIT_SUCCESS);
 }
-
