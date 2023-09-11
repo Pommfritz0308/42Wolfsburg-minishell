@@ -315,9 +315,7 @@ t_tree	*build_ast(char *s, size_t *i)
 	buf = 0;
 	while (token)
 	{
-		if (token->type == PIPE)
-			paste_token(ast, token);
-		else if (token->type == AND || token->type == OR)
+		if (token->type == AND || token->type == OR || token->type == PIPE)
 		{
 			if (!ast->tocken)
 				ast->tocken = token;

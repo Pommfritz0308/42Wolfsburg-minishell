@@ -6,13 +6,13 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/11 15:09:29 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/11 16:43:04 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
+int	main(int ac, char **av, char **env)
 {
 	char	*prompt;
 	char	*user_input;
@@ -21,6 +21,7 @@ int	main(void)
 
 	init_settings();
 	handle_signals();
+	av[0][0] = ac;
 	exit_code = EXIT_SUCCESS;
 	cmds = 0;
 	while (1)
@@ -32,7 +33,8 @@ int	main(void)
 		user_input = readline(prompt);
 		if (user_input && *user_input)
 			add_history(user_input);
-		execute(ast(user_input));
+		//print_ast(user_input);
+		execute(ast(user_input), env);
 		free(user_input);
 		exit_code = exec_cmds(cmds);
 		if (exit_code == -1)
