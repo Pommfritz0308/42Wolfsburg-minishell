@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/11 15:52:59 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/11 18:36:39 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,9 @@ typedef struct s_builtins
 	char	**env;
 	int		env_size;
 	int		flag;
+	char	*temp;
+	char	**temp_arr;
+	int		n;
 }	t_builtins;
 
 char	*resolve_env(char *s);
@@ -111,11 +114,12 @@ void	ft_env(char **envp);
 int		env_cpy(t_builtins *data, char **envp);
 int		ft_export(t_builtins *data, char *arg);
 char	**realloc_env(t_builtins *data, int size);
-void	ch_env(t_builtins *data, int i, char *arg);
-t_tree	*ast(char *s);
-int		execute(t_tree *tree, char **env);
-char	*path_to_exec(char *exec, char **env);
-int		str_contains(char c, char *s);
+void	ch_env(t_builtins *data, int i, char *arg, char **pair);
+int		ft_pwd(void);
+int		cd(char *arg);
+void	print_export(t_builtins *data);
+char	**identifier_value_pair(char *arg);
+void	ft_export_helper(t_builtins *data, char **temp, int i, char *arg);
 
 // Debug
 void	print_t_rdrct(t_rdrct *node);
