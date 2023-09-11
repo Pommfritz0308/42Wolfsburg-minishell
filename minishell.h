@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/07 13:41:25 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/11 15:13:45 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,15 @@
 typedef enum e_token_type
 {
 	WORD,
-	PARANTHESIS,
+	REDIR_OUT,
+	REDIR_IN,
+	REDIR_CLOSE,
+	REDIR_HEREDOC,
+	PARANTH_OPEN,
+	PARANTH_CLOSE,
+	PIPE,
 	AND,
 	OR,
-	PIPE,
-	REDIRECTION,
 	END
 }					t_tocken_type;
 typedef enum e_parser_state
@@ -49,11 +53,20 @@ typedef struct s_tocken
 	t_tocken_type	type;
 	char			*val;
 }					t_tocken;
+typedef struct s_rdr_l
+{
+	t_tocken		*token;
+	char			*word;
+	struct s_rdr_l	*next;
+}					t_rdr_l;
 typedef struct s_tree
 {
 	struct s_tree	*left;
 	struct s_tree	*right;
 	t_tocken		*tocken;
+	char			*cmd;
+	t_list			*args;
+	t_rdr_l			*redirections;
 }					t_tree;
 typedef struct s_rdrct
 {
@@ -93,14 +106,17 @@ t_rdrct	*new_rdrct_node(void);
 int		ft_new_putchar(int c);
 void	init_settings(void);
 void	ft_perror(char *msg);
-t_tree	*tokenize(char *s);
 void	ft_env(char **envp);
 int		env_cpy(t_builtins *data, char **envp);
 int		ft_export(t_builtins *data, char *arg);
 char	**realloc_env(t_builtins *data, int size);
 void	ch_env(t_builtins *data, int i, char *arg);
+t_tree	*ast(char *s);
+int		execute(t_tree *tree);
 
 // Debug
 void	print_t_rdrct(t_rdrct *node);
 void	print_t_cmd(t_cmd *cmd);
+void	print_tree(t_tree *tree);
+void	print_ast(char *s);
 #endif
