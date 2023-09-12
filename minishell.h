@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/12 14:31:04 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/12 16:02:14 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int			ft_export(t_env *data, char **args);
 char		**realloc_env(t_env *data, int size);
 void		ch_env(t_env *data, int i, char *arg);
 int			ft_pwd(void);
-int			cd(char *arg);
+int			ft_cd(t_env *env, char *arg);
 void		print_export(t_env *data);
 char		**identifier_value_pair(char *arg);
 void		ft_export_helper(t_env *data, char **temp, int i, char *arg);
