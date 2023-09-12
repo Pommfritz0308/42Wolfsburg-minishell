@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/12 10:43:31 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/12 13:30:14 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 int	main(int ac, char **av, char **env)
 {
-	char	*prompt;
-	char	*user_input;
-	int		exit_code;
+	char		*prompt;
+	char		*user_input;
+	int			exit_code;
+	t_env		data;
 
 	init_settings();
+	data = init_env(env);
 	handle_signals();
 	av[0][0] = ac;
 	exit_code = EXIT_SUCCESS;
@@ -33,7 +35,7 @@ int	main(int ac, char **av, char **env)
 		{
 			add_history(user_input);
 			//print_ast(user_input);
-			exit_code = execute(ast(user_input), env);
+			exit_code = execute(ast(user_input), &data);
 		}
 		free(user_input);
 		if (exit_code == -1)

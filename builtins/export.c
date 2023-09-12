@@ -1,7 +1,7 @@
 #include "../minishell.h"
 #include "../errnu.h"
 
-void	print_export_helper(t_builtins *data)
+void	print_export_helper(t_env *data)
 {
 	int		i;
 	char	**pair;
@@ -19,7 +19,7 @@ void	print_export_helper(t_builtins *data)
 	}
 }
 
-void	print_export(t_builtins *data)
+void	print_export(t_env *data)
 {
 	int		i;
 	int		j;
@@ -47,7 +47,7 @@ void	print_export(t_builtins *data)
 	ft_free_array(data->temp_arr);
 }
 
-void	ch_env(t_builtins *data, int i, char *arg, char **pair)
+void	ch_env(t_env *data, int i, char *arg, char **pair)
 {
 	if (!pair[1] || data->env == NULL)
 		return ;
@@ -108,7 +108,7 @@ bool	check_identifier(char **arg)
 	return (true);
 }
 
-void	ft_export_helper(t_builtins *data, char **temp, int i, char *arg)
+void	ft_export_helper(t_env *data, char **temp, int i, char *arg)
 {
 	while (data->env[++i])
 	{
@@ -124,7 +124,7 @@ void	ft_export_helper(t_builtins *data, char **temp, int i, char *arg)
 	return ;
 }
 
-int	ft_export(t_builtins *data, char *arg)
+int	ft_export(t_env *data, char *arg)
 {
 	char	**temp;
 	int		i;
@@ -139,6 +139,7 @@ int	ft_export(t_builtins *data, char *arg)
 		else
 			ft_export_helper(data, temp, i, arg);
 	}
-	print_export(data);
+	else
+		print_export(data);
 	return (EXIT_SUCCESS);
 }

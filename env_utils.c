@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include "errnu.h"
 
-int	env_cpy(t_builtins *data, char **envp)
+int	env_cpy(t_env *data, char **envp)
 {
 	int			i;
 
@@ -17,7 +17,7 @@ int	env_cpy(t_builtins *data, char **envp)
 	return (EXIT_SUCCESS);
 }
 
-char	**realloc_env(t_builtins *data, int size)
+char	**realloc_env(t_env *data, int size)
 {
 	char	**new_env;
 	int		i;
