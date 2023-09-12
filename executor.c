@@ -38,39 +38,39 @@ int	exec_cmd(char *cmd, char **args, int fd_in, int fd_out, char **env)
 	return (pid);
 }
 
-int	exec_recursive(t_tree *tree, char **env, int fd_in, int fd_out)
+int	exec_recursive(t_tree *tree, char **env, int fd_in, int fd_out, int wait_flag)
 {
-	int	res;
 	int	fd[2];
+	int	exit_code;
 
+	exit_code = 0;
 	if (tree->tocken && tree->tocken->type == PIPE)
 	{
 		pipe(fd);
-		exec_recursive(tree->left, env, fd_in, fd[1]);
+		exec_recursive(tree->left, env, fd_in, fd[1], WNOHANG);
 		close(fd[1]);
-		exec_recursive(tree->right, env, fd[0], fd_out);
-		return (0);
+		exit_code = exec_recursive(tree->right, env, fd[0], fd_out, wait_flag);
+		return (exit_code);
+	}
+	if (tree->left && tree->tocken && (tree->tocken->type == OR || tree->tocken->type == AND))
+	{
+		exit_code = exec_recursive(tree->left, env, fd_in, fd_out, wait_flag);
+		if (tree->right && tree->tocken->type == AND && !exit_code)
+			return (exec_recursive(tree->right, env, fd_in, fd_out, wait_flag));
+		if (tree->right && tree->tocken->type == OR && exit_code)
+			return (exec_recursive(tree->right, env, fd_in, fd_out, wait_flag));
+		return (exit_code);
 	}
 	if (tree->left)
-		res = exec_recursive(tree->left, env, fd_in, fd_out);
-	if (tree->right && tree->tocken && tree->tocken->type == AND && !res)
-		return (exec_recursive(tree->right, env, fd_in, fd_out));
-	if (tree->right && tree->tocken && tree->tocken->type == OR && res)
-		return (exec_recursive(tree->right, env, fd_in, fd_out));
-	if (tree->args)
-	{
-		waitpid(exec_cmd(tree->args->content, lst_to_tab(tree->args), fd_in, fd_out, env), 0, 0);
-		return (0);
-	}
-	else if (tree->tocken && tree->tocken->type == PIPE)
-	{
-		fd[0] = fd_in;
-		fd[1] = fd_out;
-	}
-	return (0);
+		exit_code = exec_recursive(tree->left, env, fd_in, fd_out, wait_flag);
+	if (tree->tocken && tree->tocken->type == WORD && tree->args)
+		waitpid(exec_cmd(tree->args->content, lst_to_tab(tree->args), fd_in, fd_out, env), &exit_code, wait_flag);
+	if (tree->right)
+		return (exec_recursive(tree->right, env, fd_in, fd_out, wait_flag));
+	return (exit_code);
 }
 
 int	execute(t_tree *tree, char **env)
 {
-	return (exec_recursive(tree, env, 0, 1));
+	return (exec_recursive(tree, env, 0, 1, 0));
 }

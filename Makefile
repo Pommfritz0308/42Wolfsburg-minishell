@@ -6,7 +6,7 @@
 #    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/09/11 15:42:47 by psimonen         ###   ########.fr        #
+#    Updated: 2023/09/12 10:41:11 by psimonen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 OBJ_DIR = build
 
-_SRC = main resolve_env parse_cmd cmd parse exec signals init errors debug tokenizer executor path
+_SRC = main resolve_env parser signals init errors debug tokenizer executor path str_utils tree_utils
 
 SRCS = $(addsuffix .c, $(_SRC))
 OBJS = $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(_SRC)))
