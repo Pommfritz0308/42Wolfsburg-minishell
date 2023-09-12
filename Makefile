@@ -6,7 +6,7 @@
 #    By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/09/12 14:17:57 by fbohling         ###   ########.fr        #
+#    Updated: 2023/09/12 15:09:47 by fbohling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ OBJ_DIR = build
 BUILTINS_DIR = builtins
 
 _SRC = main resolve_env parser signals init errors debug tokenizer executor path str_utils tree_utils env_utils
-_BUILTINS_SRC = export export_2
+_BUILTINS_SRC = export export_2 pwd env cd
 
 
 SRCS = $(addsuffix .c, $(_SRC))

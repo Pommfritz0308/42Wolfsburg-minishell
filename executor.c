@@ -24,7 +24,7 @@ char	**lst_to_tab(t_list *lst)
 int	exec_cmd(char *cmd, char **args, int fd_in, int fd_out, t_env *env)
 {
 	int		pid;
-	char	*full_cmd;
+	// char	*full_cmd;
 
 	pid = fork();
 	if (!pid)
@@ -35,12 +35,18 @@ int	exec_cmd(char *cmd, char **args, int fd_in, int fd_out, t_env *env)
 		{
 			ft_export(env, args);
 		}
-		else
-		{
-			full_cmd = path_to_exec(cmd, env->env);
-			if (execve(full_cmd, args, env->env) < 0)
-				return (0);
-		}
+		if (!ft_strncmp(cmd, "pwd", ft_strlen("pwd")))
+			ft_pwd();
+		if (!ft_strncmp(cmd, "env", ft_strlen("env")))
+			ft_env(env->env);
+		if (!ft_strncmp(cmd, "cd", ft_strlen("cd")))
+			ft_cd(args[1], env);
+		// else
+		// {
+		// 	full_cmd = path_to_exec(cmd, env->env);
+		// 	if (execve(full_cmd, args, env->env) < 0)
+		// 		return (0);
+		// }
 	}
 	return (pid);
 }
