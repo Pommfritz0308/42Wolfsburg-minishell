@@ -90,7 +90,7 @@ t_tocken	*next_token(char *s, size_t *pos)
 			if (str_contains(s[i], "<>"))
 			{
 				operator_start = i;
-				if (i - 1 >= 0 & s[i - 1] == '&')
+				if (i - 1 >= 0 && s[i - 1] == '&')
 					operator_start--;
 				while (--operator_start >= 0 && ft_isdigit(s[operator_start]))
 					;
