@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/12 16:02:14 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/12 16:57:18 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int			execute(t_tree *tree, t_env *env);
 char		*path_to_exec(char *exec, char **env);
 int			str_contains(char c, char *s);
 bool		check_identifier(char **arg, char *str);
+void		redirections(t_rdr_l *redirections);
 // String utils
 char		*slice_str(char *s, int start, int end);
 int			str_contains(char c, char *s);
