@@ -21,7 +21,7 @@ char	**lst_to_tab(t_list *lst)
 	return (res);
 }
 
-int	exec_cmd(char *cmd, char **args, int fd_in, int fd_out, char **env)
+int	exec_cmd(char *cmd, char **args, int fd_in, int fd_out, t_env *env)
 {
 	int		pid;
 	char	*full_cmd;
@@ -31,14 +31,21 @@ int	exec_cmd(char *cmd, char **args, int fd_in, int fd_out, char **env)
 	{
 		if (fd_in > 0 && (dup2(fd_in, 0) < 0 || dup2(fd_out, 1) < 0))
 			return (0);
-		full_cmd = path_to_exec(cmd, env);
-		if (execve(full_cmd, args, env) < 0)
-			return (0);
+		if (!ft_strncmp(cmd, "export", ft_strlen("export")))
+		{
+			ft_export(env, args[1]);
+		}
+		else
+		{
+			full_cmd = path_to_exec(cmd, env->env);
+			if (execve(full_cmd, args, env->env) < 0)
+				return (0);
+		}
 	}
 	return (pid);
 }
 
-int	exec_recursive(t_tree *tree, char **env, int fd_in, int fd_out, int wait_flag)
+int	exec_recursive(t_tree *tree, t_env *env, int fd_in, int fd_out, int wait_flag)
 {
 	int	fd[2];
 	int	exit_code;
@@ -70,7 +77,7 @@ int	exec_recursive(t_tree *tree, char **env, int fd_in, int fd_out, int wait_fla
 	return (exit_code);
 }
 
-int	execute(t_tree *tree, char **env)
+int	execute(t_tree *tree, t_env *env)
 {
 	return (exec_recursive(tree, env, 0, 1, 0));
 }

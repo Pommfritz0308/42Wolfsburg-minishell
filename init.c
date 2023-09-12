@@ -8,6 +8,14 @@ void	print_asciiart(void)
 	printf("\e[0m");
 }
 
+t_env	init_env(char **env)
+{
+	t_env	new;
+
+	env_cpy(&new, env);
+	return (new);
+}
+
 void	init_settings(void)
 {
 	int		fd;

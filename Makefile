@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
+#    By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/09/12 10:41:11 by psimonen         ###   ########.fr        #
+#    Updated: 2023/09/12 13:41:42 by fbohling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,10 +14,16 @@ NAME = minishell
 
 OBJ_DIR = build
 
-_SRC = main resolve_env parser signals init errors debug tokenizer executor path str_utils tree_utils
+BUILTINS_DIR = builtins
+
+_SRC = main resolve_env parser signals init errors debug tokenizer executor path str_utils tree_utils env_utils
+_BUILTINS_SRC = export
+
 
 SRCS = $(addsuffix .c, $(_SRC))
+SRCS += $(addprefix $(BUILTINS_DIR)/, $(addsuffix .c, $(_BUILTINS_SRC)))
 OBJS = $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(_SRC)))
+OBJS += $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(_BUILTINS_SRC)))
 
 BONUS =
 BONUS_OBJS = $(BONUS:.c=.o)
@@ -43,6 +49,9 @@ $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
 $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/%.o: $(BUILTINS_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR):

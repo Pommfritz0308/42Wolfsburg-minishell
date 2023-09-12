@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/12 10:41:58 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/12 13:33:28 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ typedef struct s_tree
 	t_list			*args;
 	t_rdr_l			*redirections;
 }					t_tree;
-typedef struct s_builtins
+typedef struct s_env
 {
 	char	**env;
 	int		env_size;
@@ -76,7 +76,7 @@ typedef struct s_builtins
 	char	*temp;
 	char	**temp_arr;
 	int		n;
-}	t_builtins;
+}	t_env;
 
 char		*resolve_env(char *s);
 void		handle_signals(void);
@@ -84,18 +84,18 @@ int			ft_new_putchar(int c);
 void		init_settings(void);
 void		ft_perror(char *msg);
 void		ft_env(char **envp);
-int			env_cpy(t_builtins *data, char **envp);
-int			ft_export(t_builtins *data, char *arg);
-char		**realloc_env(t_builtins *data, int size);
-void		ch_env(t_builtins *data, int i, char *arg, char **pair);
+int			env_cpy(t_env *data, char **envp);
+int			ft_export(t_env *data, char *arg);
+char		**realloc_env(t_env *data, int size);
+void		ch_env(t_env *data, int i, char *arg, char **pair);
 int			ft_pwd(void);
 int			cd(char *arg);
-void		print_export(t_builtins *data);
+void		print_export(t_env *data);
 char		**identifier_value_pair(char *arg);
-void		ft_export_helper(t_builtins *data, char **temp, int i, char *arg);
+void		ft_export_helper(t_env *data, char **temp, int i, char *arg);
 t_tocken	*next_token(char *s, size_t *pos);
 t_tree		*ast(char *s);
-int			execute(t_tree *tree, char **env);
+int			execute(t_tree *tree, t_env *env);
 char		*path_to_exec(char *exec, char **env);
 int			str_contains(char c, char *s);
 // String utils
@@ -114,6 +114,8 @@ t_tree		*paste_token(t_tree *ast, t_tocken *token);
 void		paste_redir_word(t_rdr_l *redirs, char *word);
 t_rdr_l		*new_redir(t_tocken *token);
 void		paste_redir(t_rdr_l **redirs, t_tocken *token);
+// Env
+t_env		init_env(char **env);
 // Debug
 void		print_tree(t_tree *tree);
 void		print_ast(char *s);
