@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/12 13:33:28 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/12 14:31:04 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ void		init_settings(void);
 void		ft_perror(char *msg);
 void		ft_env(char **envp);
 int			env_cpy(t_env *data, char **envp);
-int			ft_export(t_env *data, char *arg);
+int			ft_export(t_env *data, char **args);
 char		**realloc_env(t_env *data, int size);
-void		ch_env(t_env *data, int i, char *arg, char **pair);
+void		ch_env(t_env *data, int i, char *arg);
 int			ft_pwd(void);
 int			cd(char *arg);
 void		print_export(t_env *data);
@@ -98,6 +98,7 @@ t_tree		*ast(char *s);
 int			execute(t_tree *tree, t_env *env);
 char		*path_to_exec(char *exec, char **env);
 int			str_contains(char c, char *s);
+bool		check_identifier(char **arg, char *str);
 // String utils
 char		*slice_str(char *s, int start, int end);
 int			str_contains(char c, char *s);

@@ -33,7 +33,7 @@ int	exec_cmd(char *cmd, char **args, int fd_in, int fd_out, t_env *env)
 			return (0);
 		if (!ft_strncmp(cmd, "export", ft_strlen("export")))
 		{
-			ft_export(env, args[1]);
+			ft_export(env, args);
 		}
 		else
 		{
