@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/11 19:20:58 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/12 10:41:58 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,27 +68,6 @@ typedef struct s_tree
 	t_list			*args;
 	t_rdr_l			*redirections;
 }					t_tree;
-typedef struct s_rdrct
-{
-	int				in_fd;
-	int				out_fd;
-	char			*word;
-	int				open_flags;
-	int				heredoc;
-	int				stderr_to_1;
-	char			*limiter;
-	struct s_rdrct	*next;
-}					t_rdrct;
-typedef struct s_cmd
-{
-	char			**args;
-	char			*cmd;
-	t_rdrct			*in_rdrcts;
-	t_rdrct			*out_rdrcts;
-	struct s_cmd	*next_cmd;
-	int				next_cmd_cnd;
-}					t_cmd;
-
 typedef struct s_builtins
 {
 	char	**env;
@@ -99,30 +78,43 @@ typedef struct s_builtins
 	int		n;
 }	t_builtins;
 
-char	*resolve_env(char *s);
-void	parse(char *user_input, t_cmd **cmds);
-t_cmd	*parse_cmd(char *s);
-int		exec_cmds(t_cmd *cmds);
-void	handle_signals(void);
-t_cmd	*new_cmd_node(void);
-t_rdrct	*new_rdrct_node(void);
-int		ft_new_putchar(int c);
-void	init_settings(void);
-void	ft_perror(char *msg);
-void	ft_env(char **envp);
-int		env_cpy(t_builtins *data, char **envp);
-int		ft_export(t_builtins *data, char *arg);
-char	**realloc_env(t_builtins *data, int size);
-void	ch_env(t_builtins *data, int i, char *arg, char **pair);
-int		ft_pwd(void);
-int		cd(char *arg);
-void	print_export(t_builtins *data);
-char	**identifier_value_pair(char *arg);
-void	ft_export_helper(t_builtins *data, char **temp, int i, char *arg);
-
+char		*resolve_env(char *s);
+void		handle_signals(void);
+int			ft_new_putchar(int c);
+void		init_settings(void);
+void		ft_perror(char *msg);
+void		ft_env(char **envp);
+int			env_cpy(t_builtins *data, char **envp);
+int			ft_export(t_builtins *data, char *arg);
+char		**realloc_env(t_builtins *data, int size);
+void		ch_env(t_builtins *data, int i, char *arg, char **pair);
+int			ft_pwd(void);
+int			cd(char *arg);
+void		print_export(t_builtins *data);
+char		**identifier_value_pair(char *arg);
+void		ft_export_helper(t_builtins *data, char **temp, int i, char *arg);
+t_tocken	*next_token(char *s, size_t *pos);
+t_tree		*ast(char *s);
+int			execute(t_tree *tree, char **env);
+char		*path_to_exec(char *exec, char **env);
+int			str_contains(char c, char *s);
+// String utils
+char		*slice_str(char *s, int start, int end);
+int			str_contains(char c, char *s);
+char		**str_split(char const *s, char c);
+char		*str_join(char const *s1, char const *s2, char *sep);
+char		*str_unescape(char *s);
+char		last_char(char *s);
+// Tree utils
+t_tree		*new_tree_node(void);
+void		add_new_head(t_tree **ast, t_tocken *token);
+void		paste_tree(t_tree *ast, t_tree *subtree);
+void		paste_node(t_tree *ast, t_tree *node);
+t_tree		*paste_token(t_tree *ast, t_tocken *token);
+void		paste_redir_word(t_rdr_l *redirs, char *word);
+t_rdr_l		*new_redir(t_tocken *token);
+void		paste_redir(t_rdr_l **redirs, t_tocken *token);
 // Debug
-void	print_t_rdrct(t_rdrct *node);
-void	print_t_cmd(t_cmd *cmd);
-void	print_tree(t_tree *tree);
-void	print_ast(char *s);
+void		print_tree(t_tree *tree);
+void		print_ast(char *s);
 #endif
