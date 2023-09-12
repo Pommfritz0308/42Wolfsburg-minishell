@@ -49,101 +49,90 @@ t_tocken_type	define_token_type(char *s, size_t i)
 	
 }
 
+void	check_quotes_backslash(char *s, int (*sdbtosi)[7])
+{
+	if ((*sdbtosi)[0])
+		(*sdbtosi)[2] = 0;
+	else
+		(*sdbtosi)[2] = is_backslash(s, (*sdbtosi)[6]);
+	if (s[(*sdbtosi)[6]] == '\'' && !(*sdbtosi)[1] && !(*sdbtosi)[2])
+		(*sdbtosi)[0] = !(*sdbtosi)[0];
+	else if (s[(*sdbtosi)[6]] == '\"' && !(*sdbtosi)[0] && !(*sdbtosi)[2])
+		(*sdbtosi)[1] = !(*sdbtosi)[1];
+}
+
 t_tocken	*next_token(char *s, size_t *pos)
 {
-	int				s_d_quote[2];
-	int				backslash;
-	int				token_start;
-	int				operator_start;
-	t_parser_state	state;
-	char			*operator;
-	size_t			i;
+	int				sdbtosi[7]; // 0 Single quote | 1 double quote | 2 backspace | 3 token_start | 4 operator_start | 5 state | 6 i
 	t_tocken		*token;
 
 	if (!s  || *pos >= ft_strlen(s))
 		return (0);
-	s_d_quote[0] = 0;
-	s_d_quote[1] = 0;
-	backslash = 0;
-	token_start = -1;
-	state = SPACE_;
-	i = *pos;
+	sdbtosi[0] = 0;
+	sdbtosi[1] = 0;
+	sdbtosi[2] = 0;
+	sdbtosi[3] = -1;
+	sdbtosi[5] = 1;
+	sdbtosi[6] = *pos;
 	token = new_tocken();
 	token->type = WORD;
-	while (s && s[i])
+	while (s && s[sdbtosi[6]] && str_contains(s[sdbtosi[6]], " \t"))
+		sdbtosi[6]++;
+	while (s && s[sdbtosi[6]])
 	{
-		operator_start = -1;
-		operator = 0;
-		if (s_d_quote[0])
-			backslash = 0;
-		else
-			backslash = is_backslash(s, i);
-		if (s[i] == '\'' && !s_d_quote[1] && !backslash)
-			s_d_quote[0] = !s_d_quote[0];
-		else if (s[i] == '\"' && !s_d_quote[0] && !backslash)
-			s_d_quote[1] = !s_d_quote[1];
+		check_quotes_backslash(s, &sdbtosi);
 		//if (s[i] == '$' && !s_d_quote[0] && !backslash && ft_isalnum(s[i + 1]))
-		if ((str_contains(s[i], " \t|><()") || (s[i] == '&' && s[i + 1] == '&'))
-			&& !s_d_quote[0] && !s_d_quote[1] && !backslash)
+		if ((str_contains(s[sdbtosi[6]], "|><()") || (s[sdbtosi[6]] == '&' && s[sdbtosi[6] + 1] == '&'))
+			&& !sdbtosi[0] && !sdbtosi[1] && !sdbtosi[2])
 		{
-			token->type = define_token_type(s, i);
-			if (str_contains(s[i], "<>"))
+			sdbtosi[4] = sdbtosi[6];
+			token->type = define_token_type(s, sdbtosi[6]);
+			if (str_contains(s[sdbtosi[6]], "<>"))
 			{
-				operator_start = i;
-				if (i >= 1 && s[i - 1] == '&')
-					operator_start--;
-				while (--operator_start >= 0 && ft_isdigit(s[operator_start]))
+				if (sdbtosi[6] >= 1 && s[sdbtosi[6] - 1] == '&')
+					sdbtosi[4]--;
+				while (--sdbtosi[4] >= 0 && ft_isdigit(s[sdbtosi[4]]))
 					;
-				operator_start++;
-				if ((s[i] == '>' && s[i + 1] == '>') || (s[i] == '<' && s[i + 1] == '<')
-					|| (s[i] == '<' && s[i + 1] == '>') || (s[i] == '>' && s[i + 1] == '|'))
-					i++;
-				if (s[i + 1] == '&')
-					i++;
-				token->val = slice_str(s, operator_start, i);
-				*pos = i + 1;
-				return (token);
+				sdbtosi[4]++;
+				if ((s[sdbtosi[6]] == '>' && s[sdbtosi[6] + 1] == '>') || (s[sdbtosi[6]] == '<' && s[sdbtosi[6] + 1] == '<')
+					|| (s[sdbtosi[6]] == '<' && s[sdbtosi[6] + 1] == '>') || (s[sdbtosi[6]] == '>' && s[sdbtosi[6] + 1] == '|'))
+					sdbtosi[6]++;
+				if (s[sdbtosi[6] + 1] == '&')
+					sdbtosi[6]++;
 			}
-			else if (str_contains(s[i], "|&()"))
+			else if ((s[sdbtosi[6]] == '&' && s[sdbtosi[6] + 1] == '&') || (s[sdbtosi[6]] == '|' && s[sdbtosi[6] + 1] == '|'))
+				sdbtosi[6]++;
+			if (sdbtosi[3] != -1 && sdbtosi[4] > sdbtosi[3])
 			{
-				operator_start = i;
-				if ((s[i] == '&' && s[i + 1] == '&') || (s[i] == '|' && s[i + 1] == '|'))
-					i++;
-				token->val = slice_str(s, operator_start, i);
-				*pos = i + 1;
-				return (token);
+				*pos = sdbtosi[4];
+				token->type = WORD;
+				token-> val = slice_str(s, sdbtosi[3], sdbtosi[4] - 1);
 			}
-			if (state == TOKEN_)
+			else
 			{
-				*pos = i;
-				if (operator_start == -1)
-					token->val = slice_str(s, token_start, i - 1);
-				else if (operator_start > token_start)
-				{
-					free(operator);
-					*pos = operator_start;
-					token-> val = slice_str(s, token_start, operator_start - 1);
-				}
-				return (token);
+				*pos = sdbtosi[6] + 1;
+				token->val = slice_str(s, sdbtosi[4], sdbtosi[6]);
 			}
-			*pos = i + 1;
-			if (token->val)
-				return (token);
-			token_start = -1;
-			state = SPACE_;
+			return (token);
+		}
+		else if (str_contains(s[sdbtosi[6]], " \t") && !sdbtosi[0] && !sdbtosi[1] && !sdbtosi[2])
+		{
+			*pos = sdbtosi[6] + 1;
+			token->val = slice_str(s, sdbtosi[3], sdbtosi[6] - 1);
+			return (token);
 		}
 		else
 		{
-			state = TOKEN_;
-			if (token_start == -1)
-				token_start = i;
+			sdbtosi[5] = 0;
+			if (sdbtosi[3] == -1)
+				sdbtosi[3] = sdbtosi[6];
 		}
-		i++;
+		sdbtosi[6]++;
 	}
-	*pos = i + 1;
-	if (state == TOKEN_)
+	*pos = sdbtosi[6] + 1;
+	if (sdbtosi[5] == 0)
 	{
-		token -> val = slice_str(s, token_start, i);
+		token -> val = slice_str(s, sdbtosi[3], sdbtosi[6]);
 		return (token);
 	}
 	free(token);
