@@ -3,10 +3,10 @@
 ### Project status
 
 - [x] History
-- [ ] Parsing
+- [X] Parsing
 - [ ] Path
 - [ ] Redirections < > << >> 
-- [ ] Pipes
+- [X] Pipes
 - [ ] Enviroment variables
 - [ ] $?
 - [ ] Signals
