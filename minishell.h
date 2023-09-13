@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/13 09:48:29 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/13 13:12:41 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void			handle_signals(void);
 int				ft_new_putchar(int c);
 void			init_settings(void);
 void			ft_perror(char *msg);
-void			ft_env(char **envp);
+int				ft_env(char **envp);
 int				env_cpy(t_env *data, char **envp);
 int				ft_export(t_env *data, char **args);
 char			**realloc_env(t_env *data, int size);
@@ -101,6 +101,7 @@ char			*path_to_exec(char *exec, char **env);
 int				str_contains(char c, char *s);
 bool			check_identifier(char **arg, char *str);
 void			redirections(t_rdr_l *redirections);
+int				exec_builtin(char *cmd, char **args, t_env *env);
 // String utils
 char			*slice_str(char *s, int start, int end);
 int				str_contains(char c, char *s);
@@ -117,6 +118,7 @@ t_tree			*paste_token(t_tree *ast, t_tocken *token);
 void			paste_redir_word(t_rdr_l *redirs, char *word);
 t_rdr_l			*new_redir(t_tocken *token);
 void			paste_redir(t_rdr_l **redirs, t_tocken *token);
+t_tree			*build_ast(char *s, size_t *i);
 // Tokenizer utils
 t_tocken		*new_tocken(void);
 int				is_backslash(char *s, int pos);
