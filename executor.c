@@ -37,8 +37,8 @@ int	exec_cmd(char *cmd, char **args, int fd_in, int fd_out, t_env *env)
 			ft_pwd();
 		else if (!ft_strncmp(cmd, "env", ft_strlen("env")))
 			ft_env(env->env);
-		//else if (!ft_strncmp(cmd, "cd", ft_strlen("cd")))
-		//	ft_cd(args[1], env);
+		else if (!ft_strncmp(cmd, "cd", ft_strlen("cd")))
+			ft_cd(env, args[1]);
 		else
 		{
 			full_cmd = path_to_exec(cmd, env->env);
