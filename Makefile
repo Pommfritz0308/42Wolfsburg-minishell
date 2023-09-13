@@ -6,7 +6,7 @@
 #    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/09/13 09:23:00 by psimonen         ###   ########.fr        #
+#    Updated: 2023/09/13 12:59:44 by psimonen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,26 +17,26 @@ BUILTINS_DIR = builtins
 
 _SRC = 			main resolve_env parser signals init errors path debug \
 				tokenizer tokenizer_utils executor redirections \
-				str_utils tree_utils env_utils
+				str_utils tree_utils env_utils exec_builtin
 _BUILTINS_SRC =	export export_2 pwd env #cd
 
-SRCS =	$(addsuffix .c, $(_SRC))
-SRCS +=	$(addprefix $(BUILTINS_DIR)/, $(addsuffix .c, $(_BUILTINS_SRC)))
-OBJS =	$(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(_SRC)))
-OBJS +=	$(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(_BUILTINS_SRC)))
+SRCS =									$(addsuffix .c, $(_SRC))
+SRCS +=	$(addprefix $(BUILTINS_DIR)/,	$(addsuffix .c, $(_BUILTINS_SRC)))
+OBJS =	$(addprefix $(OBJ_DIR)/, 		$(addsuffix .o, $(_SRC)))
+OBJS +=	$(addprefix $(OBJ_DIR)/, 		$(addsuffix .o, $(_BUILTINS_SRC)))
 
-CC = cc
-RM = rm -f
+CC = 		cc
+RM = 		rm -f
 CFLAGS =	-Wall -Werror -Wextra \
 			-I/Users/$(USER)/.brew/Cellar/readline/8.2.1/include
-LIBFT_DIR = libft
-LIBFT = $(LIBFT_DIR)/libft.a
-LIBS = \
-	-L$(LIBFT_DIR) \
-	-lft \
-	-ltermcap \
-	-lreadline \
-	-L/Users/$(USER)/.brew/Cellar/readline/8.2.1/lib
+LIBFT_DIR	= libft
+LIBFT 		= $(LIBFT_DIR)/libft.a
+LIBS 		= \
+			-L$(LIBFT_DIR) \
+			-lft \
+			-ltermcap \
+			-lreadline \
+			-L/Users/$(USER)/.brew/Cellar/readline/8.2.1/lib
 
 all: $(NAME)
 
