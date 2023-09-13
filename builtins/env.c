@@ -1,7 +1,7 @@
 #include "../minishell.h"
 #include "../errnu.h"
 
-void	ft_env(char **envp)
+int	ft_env(char **envp)
 {
 	int	i;
 
@@ -11,4 +11,5 @@ void	ft_env(char **envp)
 		if (ft_strchr(envp[i], '='))
 			printf("%s\n", envp[i]);
 	}
+	return (EXIT_SUCCESS);
 }
