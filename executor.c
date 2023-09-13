@@ -31,7 +31,15 @@ int	exec_cmd(char *cmd, char **args, int fd_in, int fd_out, t_env *env)
 	{
 		if (dup2(fd_in, 0) < 0 || dup2(fd_out, 1) < 0)
 			return (0);
-		if (!exec_builtin(cmd, args, env))
+		if (!ft_strncmp(cmd, "export", ft_strlen("export")))
+			ft_export(env, args);
+		else if (!ft_strncmp(cmd, "pwd", ft_strlen("pwd")))
+			ft_pwd();
+		else if (!ft_strncmp(cmd, "env", ft_strlen("env")))
+			ft_env(env->env);
+		else if (!ft_strncmp(cmd, "cd", ft_strlen("cd")))
+			ft_cd(env, args[1]);
+		else
 		{
 			full_cmd = path_to_exec(cmd, env->env);
 			if (execve(full_cmd, args, env->env) < 0)

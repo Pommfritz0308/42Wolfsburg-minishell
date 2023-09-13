@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/13 14:07:21 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/13 16:51:07 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,16 @@ int				exec_builtin(char *cmd, char **args, t_env *env);
 int				ft_export(t_env *data, char **args);
 int				env_cpy(t_env *data, char **envp);
 int				execute(t_tree *tree, t_env *env);
+char			*path_to_exec(char *exec, char **env);
+int				str_contains(char c, char *s);
+bool			check_identifier(char **arg, char *str);
+void			redirections(t_rdr_l *redirections);
+char			*retr_oldpwd(t_env *env);
+int				go_back(t_env *env, char *arg, char *cwd);
+char			*retr_env_value(t_env *env, char *var);
+int				chdir_(char *arg);
+int				update_env(t_env *env, char *arg);
+int				ft_export_cd(t_env *env, char *str, char *update);
 int				ft_cd(t_env *env, char *arg);
 int				ft_new_putchar(int c);
 int				ft_env(char **envp);
