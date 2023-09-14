@@ -75,7 +75,6 @@ int	go_back(t_env *env, char *arg, char *cwd)
 
 int	chdir_(char *arg)
 {
-	printf("")
 	if (chdir(arg))
 	{
 		ft_perror("cd");

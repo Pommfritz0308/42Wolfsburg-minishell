@@ -6,123 +6,110 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 12:49:08 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/12 10:30:15 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/14 20:01:11 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_env(char *s, int *i)
+char	*str_replace(char *s, size_t start, size_t end, char *in_s, int *hop)
 {
-	int		env_len;
-	char	*env;
-	char	*val;
+	int		in_len;
+	int		after_len;
+	char	*res;
 
-	env_len = 0;
-	while (ft_isalnum(s[*i + ++env_len]))
-		;
-	env = (char *)malloc(sizeof(char) * env_len);
-	if (!env)
+	if (!in_s)
+		in_len = 0;
+	else
+		in_len = ft_strlen(in_s);
+	after_len = ft_strlen(s + end);
+	res = (char *)malloc(sizeof(char) * (start + in_len + after_len));
+	if (!res)
 		return (0);
-	ft_strlcpy(env, s + *i + 1, env_len);
-	env[env_len - 1] = 0;
-	val = getenv(env);
-	free(env);
-	*i += env_len - 1;
-	return (val);
+	ft_strlcpy(res, s, start);
+	if (in_s)
+		ft_strlcpy(res + start - 1, in_s, in_len + 1);
+	ft_strlcpy(res + start + in_len - 1, s + end, after_len + 1);
+	if (hop)
+		*hop = *hop + in_len - end + start - 2;
+	return (res);	
 }
 
-int	hop_over_env(char *s, int *i)
+char	*str_cut(char *s, size_t start, size_t end)
 {
-	char	*val;
-	int		res;
+	char	*res;
 
-	val = get_env(s, i);
-	res = 0;
-	if (val)
-		res = ft_strlen(val);
+	res = (char *)malloc(sizeof(char) * (end - start + 1));
+	if (!res)
+		return (0);
+	ft_strlcpy(res, s + start, end - start + 1);
 	return (res);
 }
 
-int	calc_len(char *s)
+char	*replace_env(char *s, size_t start, size_t end, int *hop)
 {
-	int	len;
-	int	i;
+	char	*env;
+	char	*res;
 
-	len = 0;
-	i = -1;
-	while (s[++i])
+	env = str_cut(s, start, end);
+	if (!env)
+		return (0);
+	res = str_replace(s, start, end, getenv(env), hop);
+	if (!res)
 	{
-		if (s[i] == '$' && ft_isalnum(s[i + 1]))
-			len += hop_over_env(s, &i);
-		else
-			len++;
+		free (env);
+		return (0);
 	}
-	return (len);
+	free (env);
+	return (res);
 }
 
-int		not_backslash(char *s, int pos)
+int	not_backslash(char *s, int i)
 {
 	int	backslashes;
 
-	if (!pos)
-		return (1);
 	backslashes = 0;
-	while (--pos && s[pos] == '\\')
+	while (--i >= 0 && s[i] == '\\')
 		backslashes++;
-	if (backslashes % 2 == 0)
-		return (1);
-	return (0);
+	return (backslashes % 2);
 }
 
-void	resolve_env_helper(char *s, char **res, char *val, int (*ijqd)[4])
+char	*resolve_env(const char *s)
 {
-	while (s && s[++(*ijqd)[0]])
-	{
-		if (s[(*ijqd)[0]] == '\'' && !(*ijqd)[3])
-		{
-			if ((*ijqd)[2])
-				(*ijqd)[2] = 0;
-			else
-				(*ijqd)[2] = 1;
-		}
-		else if (s[(*ijqd)[0]] == '\"' && !(*ijqd)[2])
-		{
-			if ((*ijqd)[3])
-				(*ijqd)[3] = 0;
-			else
-				(*ijqd)[3] = 1;
-		}
-		else if (!(*ijqd)[2] && s[(*ijqd)[0]] == '$' && ft_isalnum(s[(*ijqd)[0] + 1])
-			&& not_backslash(s, (*ijqd)[0]))
-		{
-			val = get_env(s, &(*ijqd)[0]);
-			if (val)
-			{
-				ft_strlcpy(*res + (*ijqd)[1], val, ft_strlen(val) + 1);
-				(*ijqd)[1] += ft_strlen(val);
-			}
-		}
-		else
-			(*res)[(*ijqd)[1]++] = s[(*ijqd)[0]];
-	}
-	(*res)[(*ijqd)[1]] = 0;
-}
-
-char	*resolve_env(char *s)
-{
-	int		ijqd[4];
+	int		i;
+	int		ebqd[4];
 	char	*res;
-	char	*val;
+	char	*buf;
 
-	res = (char *)malloc(sizeof(char) * (calc_len(s) + 1));
+	i = -1;
+	ebqd[1] = 0;
+	ebqd[2] = 0;
+	ebqd[3] = 0;
+	res = ft_strdup(s);
 	if (!res)
 		return (0);
-	ijqd[0] = -1;
-	ijqd[1] = 0;
-	ijqd[2] = 0;
-	ijqd[3] = 0;
-	val = 0;
-	resolve_env_helper(s, &res, val, &ijqd);
+	while (res && res[++i])
+	{
+		if (res[i] == '\'' && !ebqd[2] && !ebqd[3])
+			ebqd[2] = 1;
+		else if (res[i] == '\'' && ebqd[2] && !ebqd[3])
+			ebqd[2] = 0;
+		if (res[i] == '"' && !ebqd[3] && !ebqd[2])
+			ebqd[3] = 1;
+		else if (res[i] == '"' && ebqd[3] && !ebqd[2])
+			ebqd[3] = 0;
+		ebqd[1] = not_backslash(res, i);
+		if (res[i] == '$' && res[i + 1] != '?' && !ebqd[1] && !ebqd[2])
+		{
+			ebqd[0] = i + 1;
+			while (ft_isalnum(res[++i]) || res[i] == '_')
+				;
+			buf = replace_env(res, ebqd[0], i, &i);
+			free(res);
+			if (!buf)
+				return (0);
+			res = buf;
+		}
+	}
 	return (res);
 }

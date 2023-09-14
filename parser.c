@@ -8,7 +8,8 @@ void	handle_word(t_tree **buf, int (*f)[2], t_tocken *token, t_tree *ast)
 	{
 		if (!(*f)[1])
 			paste_redir_word((*buf)->redirections, token->val);
-		ft_lstadd_back(&(*buf)->args, ft_lstnew(token->val));
+		else
+			ft_lstadd_back(&(*buf)->args, ft_lstnew(token->val));
 		(*f)[1] = 1;
 		if (!(*buf)->tocken)
 			(*buf)->tocken = token;
@@ -47,10 +48,12 @@ t_tree	*build_ast(char *s, size_t *i)
 	t_tocken	*token;
 	t_tree		*ast;
 	t_tree		*buf;
+	char		*s_;
 	int			f[2];
 
 	ast = new_tree_node();
-	token = next_token(s, i);
+	s_ = resolve_env(s);
+	token = next_token(s_, i);
 	f[0] = 0;
 	f[1] = 1;
 	buf = 0;
@@ -59,12 +62,12 @@ t_tree	*build_ast(char *s, size_t *i)
 		if (token->type == AND || token->type == OR || token->type == PIPE)
 			handle_op(&ast, token, &f);
 		else if (token->type == PARANTH_OPEN)
-			handle_paranth(&ast, &f, i, s);
+			handle_paranth(&ast, &f, i, s_);
 		else if (token->type == PARANTH_CLOSE)
 			return (ast);
 		else
 			handle_word(&buf, &f, token, ast);
-		token = next_token(s, i);
+		token = next_token(s_, i);
 	}
 	return (ast);
 }

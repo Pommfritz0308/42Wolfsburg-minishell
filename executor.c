@@ -79,6 +79,8 @@ int	exec_recursive(t_tree *tree, t_env *env, int fd_in, int fd_out, int wait_fla
 		if (tree->redirections)
 			redirections(tree->redirections);
 		waitpid(exec_cmd(tree->args->content, lst_to_tab(tree->args), fd_in, fd_out, env), &exit_code, wait_flag);
+		dup2(1, fd_in);
+		dup2(0, fd_out);
 	}
 	if (tree->right)
 		return (exec_recursive(tree->right, env, fd_in, fd_out, wait_flag));
