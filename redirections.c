@@ -4,9 +4,7 @@ void	redirections(t_rdr_l *redirections)
 {
 	int	fd1;
 	int	fd2;
-	int	stder;
 
-	stder = 0;
 	while (redirections)
 	{
 		printf("redir: %s", redirections->token->val);
