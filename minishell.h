@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/13 16:51:07 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/14 20:04:36 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ bool			check_identifier(char **arg, char *str);
 char			*path_to_exec(char *exec, char **env);
 char			**realloc_env(t_env *data, int size);
 char			**identifier_value_pair(char *arg);
-char			*resolve_env(char *s);
+char			*resolve_env(const char *s);
 int				exec_builtin(char *cmd, char **args, t_env *env);
 int				ft_export(t_env *data, char **args);
 int				env_cpy(t_env *data, char **envp);

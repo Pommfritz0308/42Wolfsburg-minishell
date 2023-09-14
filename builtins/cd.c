@@ -1,6 +1,8 @@
 #include "../minishell.h"
 #include "../errnu.h"
 
+char	*retr_oldpwd(t_env *env);
+
 int	ft_cd(t_env *env, char *arg)
 {
 	char	*pwd;
