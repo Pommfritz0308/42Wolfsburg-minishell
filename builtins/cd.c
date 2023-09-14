@@ -1,8 +1,6 @@
 #include "../minishell.h"
 #include "../errnu.h"
 
-char	*retr_oldpwd(t_env *env);
-
 int	ft_cd(t_env *env, char *arg)
 {
 	char	*pwd;
@@ -77,7 +75,6 @@ int	go_back(t_env *env, char *arg, char *cwd)
 
 int	chdir_(char *arg)
 {
-	printf("")
 	if (chdir(arg))
 	{
 		ft_perror("cd");
