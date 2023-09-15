@@ -1,10 +1,7 @@
 #include "minishell.h"
 
-int	exec_builtin(t_tree *node, t_env *env)
+int	exec_builtin(char **args, t_env *env)
 {
-	char	**args;
-
-	args = lst_to_tab(node->args);
 	if (!ft_strncmp(args[0], "export", ft_strlen("export")))
 		return(ft_export(env, args));
 	else if (!ft_strncmp(args[0], "pwd", ft_strlen("pwd")))

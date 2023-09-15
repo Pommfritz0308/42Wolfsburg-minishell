@@ -21,16 +21,14 @@ char	**lst_to_tab(t_list *lst)
 	return (res);
 }
 
-int	exec_cmd(t_tree *tree, int fd_in, int fd_out, t_env *env)
+int	exec_cmd(t_tree *tree, char **args, int fd_in, int fd_out, t_env *env)
 {
 	int		pid;
 	char	*full_cmd;
-	char	**args;
 
 	pid = fork();
 	if (!pid)
 	{
-		args = lst_to_tab(tree->args);
 		if (dup2(fd_in, 0) < 0 || dup2(fd_out, 1) < 0)
 			return (0);
 		{
@@ -46,8 +44,9 @@ int	exec_cmd(t_tree *tree, int fd_in, int fd_out, t_env *env)
 
 int	exec_recursive(t_tree *tree, t_env *env, int fd_in, int fd_out, int wait_flag)
 {
-	int	fd[2];
-	int	exit_code;
+	int		fd[2];
+	int		exit_code;
+	char	**args;
 
 	exit_code = 0;
 	if (tree->tocken && tree->tocken->type == PIPE)
@@ -73,9 +72,10 @@ int	exec_recursive(t_tree *tree, t_env *env, int fd_in, int fd_out, int wait_fla
 		exit_code = exec_recursive(tree->left, env, fd_in, fd_out, wait_flag);
 	if (tree->tocken && tree->tocken->type == WORD && tree->args)
 	{
-		exit_code = exec_builtin(tree, env);
+		args = lst_to_tab(tree->args);
+		exit_code = exec_builtin(args, env);
 		if (exit_code == -1)
-			waitpid(exec_cmd(tree, fd_in, fd_out, env), &exit_code, wait_flag);
+			waitpid(exec_cmd(tree, args, fd_in, fd_out, env), &exit_code, wait_flag);
 	}
 	if (tree->right)
 		return (exec_recursive(tree->right, env, fd_in, fd_out, wait_flag));
