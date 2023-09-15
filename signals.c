@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 13:17:04 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/13 13:32:41 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/15 09:11:33 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	handler(int signum)
 		//tputs(tgetstr("ce", NULL), 1, ft_new_putchar);
 		printf("\n");
 		rl_on_new_line();
-		//rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_redisplay();
 		return ;
 	}

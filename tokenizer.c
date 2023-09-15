@@ -92,6 +92,9 @@ t_tocken	*next_token(char *s, size_t *pos)
 		f[6]++;
 	token = next_token_helper(s, pos, &f, &token);
 	if (token->val)
+	{
+		token->val = str_unquote(token->val);
 		return (token);
+	}
 	return (last_token(s, &f, pos, &token));
 }

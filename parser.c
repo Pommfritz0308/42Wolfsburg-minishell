@@ -43,17 +43,29 @@ void	handle_paranth(t_tree **ast, int (*f)[2], size_t *i, char *s)
 	(*f)[1] = 1;
 }
 
+int	is_empty(char *s)
+{
+	int	i;
+	if (!s)
+		return (1);
+	i = -1;
+	while(s[++i])
+	{
+		if (!str_contains(s[i], " \t"))
+			return (0);
+	}
+	return (1);
+}
+
 t_tree	*build_ast(char *s, size_t *i)
 {
 	t_tocken	*token;
 	t_tree		*ast;
 	t_tree		*buf;
-	char		*s_;
 	int			f[2];
 
 	ast = new_tree_node();
-	s_ = resolve_env(s);
-	token = next_token(s_, i);
+	token = next_token(s, i);
 	f[0] = 0;
 	f[1] = 1;
 	buf = 0;
@@ -62,12 +74,14 @@ t_tree	*build_ast(char *s, size_t *i)
 		if (token->type == AND || token->type == OR || token->type == PIPE)
 			handle_op(&ast, token, &f);
 		else if (token->type == PARANTH_OPEN)
-			handle_paranth(&ast, &f, i, s_);
+			handle_paranth(&ast, &f, i, s);
 		else if (token->type == PARANTH_CLOSE)
 			return (ast);
 		else
 			handle_word(&buf, &f, token, ast);
-		token = next_token(s_, i);
+		token = next_token(s, i);
+		while (token && token->type == WORD && is_empty(token->val))
+			token = next_token(s, i);
 	}
 	return (ast);
 }
@@ -75,9 +89,14 @@ t_tree	*build_ast(char *s, size_t *i)
 t_tree	*ast(char *s)
 {
 	size_t	i;
+	t_tree	*ast;
+	char	*buf;
 
 	i = 0;
-	return (build_ast(s, &i));
+	buf = resolve_env(s);
+	ast = build_ast(buf, &i);
+	free(buf);
+	return (ast);
 }
 
 void	print_ast(char *s)
