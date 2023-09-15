@@ -28,7 +28,9 @@ t_tocken_type	define_token_type(char *s, size_t i)
 		return (PARANTH_OPEN);
 	if (s[i] == ')')
 		return (PARANTH_CLOSE);
-	if (s[i] == '>')
+	if (s[i] == '>' && s[i + 1] == '>')
+		return (REDIR_APPEND);
+	else if (s[i] == '>')
 		return (REDIR_OUT);
 	if (s[i] == '<' && s[i + 1] == '<')
 		return (REDIR_HEREDOC);
