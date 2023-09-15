@@ -11,11 +11,11 @@ int	ft_cd(t_env *env, char *arg)
 		ft_perror("minishell: cd");
 		return (EXIT_FAILURE);
 	}
-	// if (!arg)
-	// {
-	// 	to_home(env);
-	// 	return (EXIT_SUCCESS);
-	// }
+	if (!arg)
+	{
+		to_home(env);
+		return (EXIT_SUCCESS);
+	}
 	else if (!ft_strncmp(arg, "-", ft_strlen("-")))
 	{
 		if (ft_cd_helper(env, arg, pwd))

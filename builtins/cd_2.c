@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 14:58:03 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/15 15:06:53 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/15 17:47:18 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,4 @@ int ft_export_cd(t_env *env, char *str, char *update)
 	return (EXIT_SUCCESS);
 }
 
-
+int to_home(env)
