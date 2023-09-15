@@ -80,8 +80,6 @@ t_tree	*build_ast(char *s, size_t *i)
 		else
 			handle_word(&buf, &f, token, ast);
 		token = next_token(s, i);
-		while (token && token->type == WORD && is_empty(token->val))
-			token = next_token(s, i);
 	}
 	return (ast);
 }
@@ -91,11 +89,14 @@ t_tree	*ast(char *s)
 	size_t	i;
 	t_tree	*ast;
 	char	*buf;
+	//char	*buf2;
 
 	i = 0;
 	buf = resolve_env(s);
+	//buf2 = resolve_wildcards(s);
 	ast = build_ast(buf, &i);
 	free(buf);
+	//free(buf2);
 	return (ast);
 }
 

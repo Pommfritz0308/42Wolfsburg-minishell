@@ -1,5 +1,16 @@
 #include "minishell.h"
 
+int	is_digit(char *s)
+{
+	while (*s)
+	{
+		if (!ft_isalnum(*s))
+			return (0);
+		s++;
+	}
+	return(1);
+}
+
 void	handle_out(t_rdr_l *r, int fd1)
 {
 	int	fd2;
@@ -8,7 +19,15 @@ void	handle_out(t_rdr_l *r, int fd1)
 		fd1 = 1;
 	if (r->token->type == REDIR_OUT)
 	{
-		fd2 = open(r->word, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		printf("red: %s %s\n", r->token->val, r->word);
+		if (last_char(r->token->val) == '&' && is_digit(r->word))
+			fd2 = ft_atoi(r->word);
+		else
+		{
+			if (last_char(r->token->val) == '&' || r->token->val[0] == '&')
+				dup2(2, fd1);
+			fd2 = open(r->word, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		}
 		dup2(fd2, fd1);
 	}
 	if (r->token->type == REDIR_APPEND)

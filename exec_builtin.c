@@ -1,18 +1,21 @@
 #include "minishell.h"
 
-int	exec_builtin(char *cmd, char **args, t_env *env)
+int	exec_builtin(t_tree *node, t_env *env)
 {
-	if (!ft_strncmp(cmd, "export", ft_strlen("export")))
-		exit(ft_export(env, args));
-	else if (!ft_strncmp(cmd, "pwd", ft_strlen("pwd")))
-		exit(ft_pwd());
-	else if (!ft_strncmp(cmd, "env", ft_strlen("env")))
-		exit(ft_env(env->env));
+	char	**args;
+
+	args = lst_to_tab(node->args);
+	if (!ft_strncmp(args[0], "export", ft_strlen("export")))
+		return(ft_export(env, args));
+	else if (!ft_strncmp(args[0], "pwd", ft_strlen("pwd")))
+		return(ft_pwd());
+	else if (!ft_strncmp(args[0], "env", ft_strlen("env")))
+		return(ft_env(env->env));
 	//else if (!ft_strncmp(cmd, "cd", ft_strlen("cd")))
 	//	ft_cd(env, args[1]);
-	else if (!ft_strncmp(cmd, "$?", 2))
+	else if (!ft_strncmp(args[0], "$?", 2))
 		printf("minishell: %d: %s\n", WEXITSTATUS(env->prev_exit_code), ft_strerror());
-	else if (!ft_strncmp(cmd, "exit", 5))
+	else if (!ft_strncmp(args[0], "exit", 5))
 		kill(0, SIGUSR1);
-	return (0);
+	return (-1);
 }
