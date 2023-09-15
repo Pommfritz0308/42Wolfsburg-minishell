@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/15 09:53:37 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/15 12:03:07 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef enum e_token_type
 {
 	WORD,
 	REDIR_OUT,
+	REDIR_APPEND,
 	REDIR_IN,
 	REDIR_CLOSE,
 	REDIR_HEREDOC,
