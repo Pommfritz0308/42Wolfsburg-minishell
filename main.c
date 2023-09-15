@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/15 09:08:13 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/15 12:46:18 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,11 @@ int	main(int ac, char **av, char **env)
 			add_history(user_input);
 			//print_ast(user_input);
 			exit_code = execute(ast(user_input), &data);
+			data.prev_exit_code = exit_code;
 		}
 		else if (!user_input)
 			execute(ast("exit"), &data);
 		free(user_input);
-		if (exit_code == -1)
-		{
-			exit_code = EXIT_SUCCESS;
-			break ;
-		}
 	}
 	return (exit_code);
 }

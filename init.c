@@ -13,6 +13,7 @@ t_env	init_env(char **env)
 	t_env	new;
 
 	env_cpy(&new, env);
+	new.prev_exit_code = EXIT_SUCCESS;
 	return (new);
 }
 
