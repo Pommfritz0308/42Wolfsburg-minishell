@@ -6,7 +6,7 @@
 #    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/09/15 17:29:18 by psimonen         ###   ########.fr        #
+#    Updated: 2023/09/15 19:02:58 by psimonen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ BUILTINS_DIR = builtins
 
 _SRC = 			main resolve_env parser signals init errors path debug \
 				tokenizer tokenizer_utils executor redirections \
-				str_utils tree_utils env_utils exec_builtin wildcards
+				str_utils tree_utils env_utils exec_builtin
 _BUILTINS_SRC =	export export_2 pwd env cd cd_2
 
 SRCS =									$(addsuffix .c, $(_SRC))
