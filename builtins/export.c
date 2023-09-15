@@ -85,6 +85,7 @@ int	ft_export(t_env *data, char **args)
 	int		i;
 
 	i = 1;
+	printf("HELLO\n");
 	if (!args[i])
 	{
 		print_export(data);
