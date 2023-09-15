@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/15 17:29:27 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/15 17:40:02 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char			**lst_to_tab(t_list *lst);
 char			*retr_oldpwd(t_env *env);
 char			*ft_strerror(void);
 int				ft_export_cd(t_env *env, char *str, char *update);
-int				exec_builtin(t_tree *node, t_env *env);
+int				exec_builtin(char **args, t_env *env);
 int				go_back(t_env *env, char *arg, char *cwd);
 int				ft_export(t_env *data, char **args);
 int				env_cpy(t_env *data, char **envp);
