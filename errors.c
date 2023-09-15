@@ -4,6 +4,8 @@ char	*ft_strerror(void)
 {
 	if (errno == SYNTAX)
 		return (SYNTAX_T);
+	else if (errno < 107)
+		return (strerror(errno));
 	else
 		return ("undefined error");
 }

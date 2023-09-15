@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/15 12:03:07 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/15 12:51:55 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_env
 	char			*temp;
 	char			**temp_arr;
 	int				n;
+	int				prev_exit_code;
 }					t_env;
 
 void			ft_export_helper(t_env *data, char **temp, int i, char *arg);
@@ -82,21 +83,19 @@ void			ft_perror(char *msg);
 void			handle_signals(void);
 void			init_settings(void);
 bool			check_identifier(char **arg, char *str);
+char			*retr_env_value(t_env *env, char *var);
 char			*path_to_exec(char *exec, char **env);
 char			**realloc_env(t_env *data, int size);
 char			**identifier_value_pair(char *arg);
 char			*resolve_env(const char *s);
+char			*retr_oldpwd(t_env *env);
+char			*ft_strerror(void);
 int				exec_builtin(char *cmd, char **args, t_env *env);
 int				ft_export(t_env *data, char **args);
 int				env_cpy(t_env *data, char **envp);
 int				execute(t_tree *tree, t_env *env);
-char			*path_to_exec(char *exec, char **env);
 int				str_contains(char c, char *s);
-bool			check_identifier(char **arg, char *str);
-void			redirections(t_rdr_l *redirections);
-char			*retr_oldpwd(t_env *env);
 int				go_back(t_env *env, char *arg, char *cwd);
-char			*retr_env_value(t_env *env, char *var);
 int				chdir_(char *arg);
 int				update_env(t_env *env, char *arg);
 int				ft_export_cd(t_env *env, char *str, char *update);
