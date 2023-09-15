@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/15 15:11:37 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/15 17:29:27 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <signal.h>
+# include <dirent.h>
 # include <stdbool.h>
 # include <sys/wait.h>
 # include <readline/history.h>
@@ -76,6 +77,7 @@ typedef struct s_env
 }					t_env;
 
 void			ft_export_helper(t_env *data, char **temp, int i, char *arg);
+void			check_quotes(char *s, int i, int (*ebqd)[4]);
 void			ch_env(t_env *data, int i, char *arg);
 void			redirections(t_rdr_l *redirections);
 void			print_export(t_env *data);
@@ -87,21 +89,23 @@ char			*retr_env_value(t_env *env, char *var);
 char			*path_to_exec(char *exec, char **env);
 char			**realloc_env(t_env *data, int size);
 char			**identifier_value_pair(char *arg);
+char			*resolve_wildcards(char *s);
 char			*resolve_env(const char *s);
+char			**lst_to_tab(t_list *lst);
 char			*retr_oldpwd(t_env *env);
 char			*ft_strerror(void);
-int				exec_builtin(char *cmd, char **args, t_env *env);
+int				ft_export_cd(t_env *env, char *str, char *update);
+int				exec_builtin(t_tree *node, t_env *env);
+int				go_back(t_env *env, char *arg, char *cwd);
 int				ft_export(t_env *data, char **args);
 int				env_cpy(t_env *data, char **envp);
 int				execute(t_tree *tree, t_env *env);
-int				str_contains(char c, char *s);
-int				go_back(t_env *env, char *arg, char *cwd);
-int				chdir_(char *arg);
 int				update_env(t_env *env, char *arg);
-int				ft_export_cd(t_env *env, char *str, char *update);
+int				str_contains(char c, char *s);
 int				ft_cd(t_env *env, char *arg);
 int				ft_new_putchar(int c);
 int				ft_env(char **envp);
+int				chdir_(char *arg);
 int				ft_pwd(void);
 int				ft_cd_helper(t_env *env, char *arg, char *pwd);
 // String utils
