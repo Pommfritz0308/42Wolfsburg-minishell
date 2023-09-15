@@ -15,6 +15,7 @@ void	ch_env(t_env *data, int i, char *arg)
 		data->env_size++;
 		data->env = realloc_env(data, data->env_size);
 		data->env[data->env_size - 1] = ft_strdup(arg);
+
 	}
 }
 

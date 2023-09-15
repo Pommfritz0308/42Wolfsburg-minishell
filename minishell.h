@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/15 12:51:55 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/15 15:11:37 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ int				ft_cd(t_env *env, char *arg);
 int				ft_new_putchar(int c);
 int				ft_env(char **envp);
 int				ft_pwd(void);
+int				ft_cd_helper(t_env *env, char *arg, char *pwd);
 // String utils
 char			*str_join(char const *s1, char const *s2, char *sep);
 char			*str_cut(char *s, size_t start, size_t end);
