@@ -17,6 +17,8 @@ void	handle_out(t_rdr_l *r, int fd1)
 
 	if (fd1 < 0)
 		fd1 = 1;
+	if (ft_isalnum(r->token->val[0]))
+		fd1 = ft_atoi(r->token->val);
 	if (r->token->type == REDIR_OUT)
 	{
 		printf("red: %s %s\n", r->token->val, r->word);
@@ -24,9 +26,9 @@ void	handle_out(t_rdr_l *r, int fd1)
 			fd2 = ft_atoi(r->word);
 		else
 		{
-			if (last_char(r->token->val) == '&' || r->token->val[0] == '&')
-				dup2(2, fd1);
 			fd2 = open(r->word, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (last_char(r->token->val) == '&' || r->token->val[0] == '&')
+				dup2(fd2, 2);
 		}
 		dup2(fd2, fd1);
 	}
