@@ -21,19 +21,23 @@ char	**lst_to_tab(t_list *lst)
 	return (res);
 }
 
-int	exec_cmd(char *cmd, char **args, int fd_in, int fd_out, t_env *env)
+int	exec_cmd(t_tree *tree, int fd_in, int fd_out, t_env *env)
 {
 	int		pid;
 	char	*full_cmd;
+	char	**args;
 
 	pid = fork();
 	if (!pid)
 	{
+		args = lst_to_tab(tree->args);
 		if (dup2(fd_in, 0) < 0 || dup2(fd_out, 1) < 0)
 			return (0);
-		if (!exec_builtin(cmd, args, env))
+		if (!exec_builtin(args[0], args, env))
 		{
-			full_cmd = path_to_exec(cmd, env->env);
+			full_cmd = path_to_exec(args[0], env->env);
+			if (tree->redirections)
+				redirections(tree->redirections);
 			if (execve(full_cmd, args, env->env) < 0)
 				return (0);
 		}
@@ -67,13 +71,7 @@ int	exec_recursive(t_tree *tree, t_env *env, int fd_in, int fd_out, int wait_fla
 	if (tree->left)
 		exit_code = exec_recursive(tree->left, env, fd_in, fd_out, wait_flag);
 	if (tree->tocken && tree->tocken->type == WORD && tree->args)
-	{
-		if (tree->redirections)
-			redirections(tree->redirections);
-		waitpid(exec_cmd(tree->args->content, lst_to_tab(tree->args), fd_in, fd_out, env), &exit_code, wait_flag);
-		dup2(1, fd_in);
-		dup2(0, fd_out);
-	}
+		waitpid(exec_cmd(tree, fd_in, fd_out, env), &exit_code, wait_flag);
 	if (tree->right)
 		return (exec_recursive(tree->right, env, fd_in, fd_out, wait_flag));
 	return (exit_code);
