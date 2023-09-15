@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
+#    By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/09/14 20:05:13 by psimonen         ###   ########.fr        #
+#    Updated: 2023/09/15 15:11:30 by fbohling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ BUILTINS_DIR = builtins
 _SRC = 			main resolve_env parser signals init errors path debug \
 				tokenizer tokenizer_utils executor redirections \
 				str_utils tree_utils env_utils exec_builtin
-_BUILTINS_SRC =	export export_2 pwd env cd
+_BUILTINS_SRC =	export export_2 pwd env cd cd_2
 
 SRCS =									$(addsuffix .c, $(_SRC))
 SRCS +=	$(addprefix $(BUILTINS_DIR)/,	$(addsuffix .c, $(_BUILTINS_SRC)))
