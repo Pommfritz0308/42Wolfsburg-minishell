@@ -11,7 +11,7 @@ int	exec_builtin(char *cmd, char **args, t_env *env)
 	//else if (!ft_strncmp(cmd, "cd", ft_strlen("cd")))
 	//	ft_cd(env, args[1]);
 	else if (!ft_strncmp(cmd, "$?", 2))
-		printf("minishell: %d: %s\n", WEXITSTATUS(env->prev_exit_code), ft_stre(errno));
+		printf("minishell: %d: %s\n", WEXITSTATUS(env->prev_exit_code), ft_strerror());
 	else if (!ft_strncmp(cmd, "exit", 5))
 		kill(0, SIGUSR1);
 	return (0);
