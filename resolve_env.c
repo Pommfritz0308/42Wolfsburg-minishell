@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 12:49:08 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/14 20:01:11 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/15 09:30:49 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,6 @@ char	*str_replace(char *s, size_t start, size_t end, char *in_s, int *hop)
 	return (res);	
 }
 
-char	*str_cut(char *s, size_t start, size_t end)
-{
-	char	*res;
-
-	res = (char *)malloc(sizeof(char) * (end - start + 1));
-	if (!res)
-		return (0);
-	ft_strlcpy(res, s + start, end - start + 1);
-	return (res);
-}
-
 char	*replace_env(char *s, size_t start, size_t end, int *hop)
 {
 	char	*env;
@@ -64,14 +53,31 @@ char	*replace_env(char *s, size_t start, size_t end, int *hop)
 	return (res);
 }
 
-int	not_backslash(char *s, int i)
+void	check_quotes(char *s, int i, int (*ebqd)[4])
 {
-	int	backslashes;
+	if (s[i] == '\'' && !(*ebqd)[2] && !(*ebqd)[3])
+		(*ebqd)[2] = 1;
+	else if (s[i] == '\'' && (*ebqd)[2] && !(*ebqd)[3])
+		(*ebqd)[2] = 0;
+	if (s[i] == '"' && !(*ebqd)[3] && !(*ebqd)[2])
+		(*ebqd)[3] = 1;
+	else if (s[i] == '"' && (*ebqd)[3] && !(*ebqd)[2])
+		(*ebqd)[3] = 0;
+	(*ebqd)[1] = is_backslash(s, i);
+}
 
-	backslashes = 0;
-	while (--i >= 0 && s[i] == '\\')
-		backslashes++;
-	return (backslashes % 2);
+char	*handle_env(int (*ebqd)[4], char **s, int *i)
+{
+	char	*buf;
+
+	(*ebqd)[0] = *i + 1;
+	while (ft_isalnum((*s)[++*i]) || (*s)[*i] == '_')
+		;
+	buf = replace_env((*s), (*ebqd)[0], *i, i);
+	free(*s);
+	if (!buf)
+		return (0);
+	return (buf);
 }
 
 char	*resolve_env(const char *s)
@@ -79,7 +85,6 @@ char	*resolve_env(const char *s)
 	int		i;
 	int		ebqd[4];
 	char	*res;
-	char	*buf;
 
 	i = -1;
 	ebqd[1] = 0;
@@ -90,25 +95,12 @@ char	*resolve_env(const char *s)
 		return (0);
 	while (res && res[++i])
 	{
-		if (res[i] == '\'' && !ebqd[2] && !ebqd[3])
-			ebqd[2] = 1;
-		else if (res[i] == '\'' && ebqd[2] && !ebqd[3])
-			ebqd[2] = 0;
-		if (res[i] == '"' && !ebqd[3] && !ebqd[2])
-			ebqd[3] = 1;
-		else if (res[i] == '"' && ebqd[3] && !ebqd[2])
-			ebqd[3] = 0;
-		ebqd[1] = not_backslash(res, i);
+		check_quotes(res, i, &ebqd);
 		if (res[i] == '$' && res[i + 1] != '?' && !ebqd[1] && !ebqd[2])
 		{
-			ebqd[0] = i + 1;
-			while (ft_isalnum(res[++i]) || res[i] == '_')
-				;
-			buf = replace_env(res, ebqd[0], i, &i);
-			free(res);
-			if (!buf)
+			res = handle_env(&ebqd, &res, &i);
+			if (!res)
 				return (0);
-			res = buf;
 		}
 	}
 	return (res);

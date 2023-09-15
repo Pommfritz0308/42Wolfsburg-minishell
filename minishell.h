@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/14 20:04:36 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/15 09:53:37 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,11 @@ int				ft_env(char **envp);
 int				ft_pwd(void);
 // String utils
 char			*str_join(char const *s1, char const *s2, char *sep);
+char			*str_cut(char *s, size_t start, size_t end);
 char			*slice_str(char *s, int start, int end);
 char			**str_split(char const *s, char c);
 char			*str_unescape(char *s);
+char			*str_unquote(char *s);
 char			last_char(char *s);
 int				str_contains(char c, char *s);
 // Parser utils

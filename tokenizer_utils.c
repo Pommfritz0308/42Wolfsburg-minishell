@@ -16,14 +16,10 @@ int	is_backslash(char *s, int pos)
 {
 	int	backslashes;
 
-	if (!pos)
-		return (0);
 	backslashes = 0;
-	while (--pos && s[pos] == '\\')
+	while (--pos >= 0 && s[pos] == '\\')
 		backslashes++;
-	if (backslashes % 2 == 1)
-		return (1);
-	return (0);
+	return (backslashes % 2);
 }
 
 t_tocken_type	define_token_type(char *s, size_t i)
@@ -66,7 +62,7 @@ t_tocken	*last_token(char *s, int (*f)[7], size_t *pos, t_tocken **t)
 	*pos = (*f)[6] + 1;
 	if ((*f)[5])
 	{
-		(*t)->val = slice_str(s, (*f)[3], (*f)[6]);
+		(*t)->val = str_unquote(slice_str(s, (*f)[3], (*f)[6]));
 		return (*t);
 	}
 	free(*t);
