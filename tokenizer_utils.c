@@ -35,7 +35,7 @@ t_tocken_type	define_token_type(char *s, size_t i)
 	if (s[i] == '<' && s[i + 1] == '<')
 		return (REDIR_HEREDOC);
 	else if (s[i] == '<' && s[i + 1] == '>')
-		return (REDIR_CLOSE);
+		return (REDIR_OPEN);
 	else if (s[i] == '<')
 		return (REDIR_IN);
 	if (s[i] == '&' && s[i + 1] == '&')

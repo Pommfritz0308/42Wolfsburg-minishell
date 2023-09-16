@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/15 17:40:02 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/16 12:03:50 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef enum e_token_type
 	REDIR_OUT,
 	REDIR_APPEND,
 	REDIR_IN,
-	REDIR_CLOSE,
+	REDIR_OPEN,
 	REDIR_HEREDOC,
 	PARANTH_OPEN,
 	PARANTH_CLOSE,
