@@ -43,20 +43,6 @@ void	handle_paranth(t_tree **ast, int (*f)[2], size_t *i, char *s)
 	(*f)[1] = 1;
 }
 
-int	is_empty(char *s)
-{
-	int	i;
-	if (!s)
-		return (1);
-	i = -1;
-	while(s[++i])
-	{
-		if (!str_contains(s[i], " \t"))
-			return (0);
-	}
-	return (1);
-}
-
 t_tree	*build_ast(char *s, size_t *i)
 {
 	t_tocken	*token;
@@ -89,14 +75,11 @@ t_tree	*ast(char *s)
 	size_t	i;
 	t_tree	*ast;
 	char	*buf;
-	//char	*buf2;
 
 	i = 0;
 	buf = resolve_env(s);
-	//buf2 = resolve_wildcards(s);
 	ast = build_ast(buf, &i);
 	free(buf);
-	//free(buf2);
 	return (ast);
 }
 

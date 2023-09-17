@@ -8,7 +8,7 @@ int	is_digit(char *s)
 			return (0);
 		s++;
 	}
-	return(1);
+	return (1);
 }
 
 void	handle_out(t_rdr_l *r, int fd1)
@@ -33,7 +33,7 @@ void	handle_out(t_rdr_l *r, int fd1)
 	{
 		fd2 = open(r->word, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (last_char(r->token->val) == '&' || r->token->val[0] == '&')
-				dup2(fd2, 2);
+			dup2(fd2, 2);
 		dup2(fd2, fd1);
 	}
 }
@@ -53,10 +53,32 @@ void	handle_in(t_rdr_l *r, int fd1)
 
 void	handle_heredoc(t_rdr_l *r, int fd1)
 {
-	int	fd;
+	char	*line;
+	char	*full_input;
+	char	*buf;
+	int		fd[2];
 
-	fd = open(r->word, O_RDONLY);
-	dup2(fd, fd1);
+	if (fd1 < 0)
+		fd1 = 0;
+	line = readline("> ");
+	full_input = (char *)malloc(sizeof(char) * 1);
+	*full_input = 0;
+	while (ft_strncmp(line, r->word, ft_strlen(r->word)))
+	{
+		buf = str_join(full_input, line, "");
+		free(line);
+		free(full_input);
+		full_input = buf;
+		buf = str_join(full_input, "\n", "");
+		free(full_input);
+		full_input = buf;
+		line = readline("> ");
+	}
+	pipe(fd);
+	write(fd[1], full_input, ft_strlen(full_input));
+	close(fd[1]);
+	dup2(fd[0], fd1);
+	free(full_input);
 }
 
 void	handle_open(t_rdr_l *r, int fd1)

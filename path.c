@@ -60,7 +60,6 @@ char	*path_to_exec(char *exec, char **env)
 		}
 		free_tab(paths);
 	}
-	exec = str_unescape(exec);
 	if (exec && access(exec, 0) == 0 && str_contains('/', exec))
 		return (exec);
 	free(exec);
