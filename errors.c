@@ -4,6 +4,10 @@ char	*ft_strerror(void)
 {
 	if (errno == SYNTAX)
 		return (SYNTAX_T);
+	else if (errno == PIPE_ERR)
+		return (PIPE_ERR_T);
+	else if (errno == COND_ERR)
+		return (COND_ERR_T);
 	else if (errno < 107)
 		return (strerror(errno));
 	else
@@ -14,7 +18,7 @@ void	ft_perror(char *msg)
 {
 	char	*str;
 
-	if (errno > 107)
+	if (errno >= 107)
 	{
 		str = ft_strerror();
 		if (msg && *msg)
