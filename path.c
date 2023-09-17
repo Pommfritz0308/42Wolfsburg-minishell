@@ -22,7 +22,7 @@ char	**find_path(char **env)
 		env++;
 	}
 	if (!path)
-		path = "/usr/bin";
+		path = getcwd(0, 0);
 	return (str_split(path, ':'));
 }
 

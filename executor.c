@@ -51,7 +51,17 @@ int	exec_recursive(t_tree *tree, t_env *env, int fd_in, int fd_out, int wait_fla
 	exit_code = 0;
 	if (tree->tocken && tree->tocken->type == PIPE)
 	{
-		pipe(fd);
+		if (!tree->left || !tree->right)
+		{
+			errno = PIPE_ERR;
+			ft_perror("minishell");
+			return (0);
+		}
+		if (pipe(fd) < 0)
+		{
+			ft_perror("minishell");
+			return (0);
+		}
 		exec_recursive(tree->left, env, fd_in, fd[1], WNOHANG);
 		close(fd[1]);
 		exit_code = exec_recursive(tree->right, env, fd[0], fd_out, wait_flag);
@@ -59,11 +69,17 @@ int	exec_recursive(t_tree *tree, t_env *env, int fd_in, int fd_out, int wait_fla
 	}
 	if (tree->left && tree->tocken && (tree->tocken->type == OR || tree->tocken->type == AND))
 	{
+		if (!tree->right)
+		{
+			errno = COND_ERR;
+			ft_perror("minishell");
+			return (0);
+		}
 		exit_code = exec_recursive(tree->left, env, fd_in, fd_out, 0);
 		waitpid(-1, 0, 0);
-		if (tree->right && tree->tocken->type == AND && !exit_code)
+		if (tree->tocken->type == AND && !exit_code)
 			exit_code = exec_recursive(tree->right, env, fd_in, fd_out, wait_flag);
-		else if (tree->right && tree->tocken->type == OR && exit_code)
+		else if (tree->tocken->type == OR && exit_code)
 			exit_code = exec_recursive(tree->right, env, fd_in, fd_out, wait_flag);
 		waitpid(-1, 0, 0);
 		return (exit_code);
