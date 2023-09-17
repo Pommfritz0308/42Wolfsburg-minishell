@@ -6,13 +6,13 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 12:49:08 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/15 13:18:03 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/17 10:59:27 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*str_replace(char *s, size_t start, size_t end, char *in_s, int *hop)
+char	*str_replace(char *s, size_t start, size_t end, char *in_s)
 {
 	int		in_len;
 	int		after_len;
@@ -30,26 +30,33 @@ char	*str_replace(char *s, size_t start, size_t end, char *in_s, int *hop)
 	if (in_s)
 		ft_strlcpy(res + start - 1, in_s, in_len + 1);
 	ft_strlcpy(res + start + in_len - 1, s + end, after_len + 1);
-	if (hop)
-		*hop = *hop + in_len - end + start - 2;
-	return (res);	
+	return (res);
 }
 
 char	*replace_env(char *s, size_t start, size_t end, int *hop)
 {
 	char	*env;
 	char	*res;
+	char	*val;
+	int		val_len;
 
 	env = str_cut(s, start, end);
 	if (!env)
 		return (0);
-	res = str_replace(s, start, end, getenv(env), hop);
+	val = getenv(env);
+	res = str_replace(s, start, end, val);
 	if (!res)
 	{
 		free (env);
 		return (0);
 	}
 	free (env);
+	if (!val)
+		val_len = 0;
+	else
+		val_len = ft_strlen(val);
+	if (hop)
+		*hop = *hop + val_len - end + start - 2;
 	return (res);
 }
 
