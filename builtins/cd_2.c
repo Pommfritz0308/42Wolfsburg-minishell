@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: frederik <frederik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 14:58:03 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/15 18:01:26 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/18 14:31:40 by frederik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ft_cd_helper(t_env *env, char *arg, char *pwd)
 	return (EXIT_SUCCESS);
 }
 
-int ft_export_cd(t_env *env, char *str, char *update)
+int	ft_export_cd(t_env *env, char *str, char *update)
 {
 	int		i;
 
@@ -50,4 +50,20 @@ int ft_export_cd(t_env *env, char *str, char *update)
 	return (EXIT_SUCCESS);
 }
 
-//int to_home(env)
+int	to_home(t_env *env)
+{
+	char	*home;
+	char	*update;
+	char	*cwd;
+
+	home = retr_env_value;
+	if (!home)
+	{
+		ft_putendl_fd("minishell: cd: HOME not set", 2);
+		return (EXIT_FAILURE);
+	}
+	if (chdir_(home))
+		return (EXIT_FAILURE);
+	update_env(env, );
+		
+}
