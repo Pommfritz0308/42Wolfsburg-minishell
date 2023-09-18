@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/18 10:25:54 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/18 12:22:59 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void			init_settings(void);
 // Signals
 void			handle_signals(void);
 // Redirections
-void			redirections(t_rdr_l *redirections);
+int				redirections(t_rdr_l *redirections);
 // Errors
 void			ft_perror(char *msg, int code);
 char			*ft_strerror(void);

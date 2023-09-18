@@ -24,7 +24,7 @@ void	init_settings(void)
 	char	*path;
 	char	*inputrc;
 
-	print_asciiart();
+	//print_asciiart();
 	home = getenv("HOME");
 	if (!home || !*home)
 		return ;
