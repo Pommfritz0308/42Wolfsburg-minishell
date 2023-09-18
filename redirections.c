@@ -88,16 +88,17 @@ void	handle_open(t_rdr_l *r, int fd1)
 	if (fd1 < 0)
 		fd1 = 0;
 	fd = open(r->word, O_RDWR | O_CREAT, 0644);
-	dup2(fd, fd1);
+	if (fd != fd1)
+		dup2(fd, fd1);
 }
 
 void	redirections(t_rdr_l *rdrs)
 {
 	int	fd1;
 
-	fd1 = -1;
 	while (rdrs)
 	{
+		fd1 = -1;
 		if (ft_isdigit(rdrs->token->val[0]))
 			fd1 = ft_atoi(rdrs->token->val);
 		if (!rdrs->word)
