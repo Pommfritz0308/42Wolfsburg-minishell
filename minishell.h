@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: frederik <frederik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/18 12:22:59 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/18 15:28:33 by frederik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void			print_export(t_env *data);
 char			*retr_env_value(t_env *env, char *var);
 char			**realloc_env(t_env *data, int size);
 char			**identifier_value_pair(char *arg);
+bool			check_identifier(char **arg, char *str);
 int				ft_export_cd(t_env *env, char *str, char *update);
 int				exec_builtin(char **args, t_env *env);
 int				go_back(t_env *env, char *arg, char *cwd);
