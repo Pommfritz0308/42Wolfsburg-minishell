@@ -25,6 +25,7 @@ int	exec_cmd(t_tree *tree, char **args, int fd_in, int fd_out, t_env *env)
 {
 	int		pid;
 	char	*full_cmd;
+	int		exit_code;
 
 	pid = fork();
 	if (!pid)
@@ -33,8 +34,14 @@ int	exec_cmd(t_tree *tree, char **args, int fd_in, int fd_out, t_env *env)
 			return (0);
 		{
 			full_cmd = path_to_exec(args[0], env->env);
+			if (!full_cmd)
+				exit(127);
 			if (tree->redirections)
-				redirections(tree->redirections);
+			{
+				exit_code = redirections(tree->redirections);
+				if (exit_code)
+					exit(exit_code);
+			}
 			if (execve(full_cmd, args, env->env) < 0)
 				return (0);
 		}
@@ -48,18 +55,18 @@ int	exec_recursive(t_tree *tree, t_env *env, int fd_in, int fd_out, int wait_fla
 	int		exit_code;
 	char	**args;
 
-	exit_code = 0;
+	exit_code = 2;
 	if (tree->tocken && tree->tocken->type == PIPE)
 	{
 		if (!tree->left || !tree->right)
 		{
-			ft_perror(0, PIPE_ERR);
-			return (0);
+			ft_perror(0, SY_PIPE);
+			return (2);
 		}
 		if (pipe(fd) < 0)
 		{
 			ft_perror(0, 0);
-			return (0);
+			return (EXIT_FAILURE);
 		}
 		exec_recursive(tree->left, env, fd_in, fd[1], WNOHANG);
 		close(fd[1]);
@@ -71,7 +78,7 @@ int	exec_recursive(t_tree *tree, t_env *env, int fd_in, int fd_out, int wait_fla
 		if (!tree->right)
 		{
 			ft_perror(0, COND_ERR);
-			return (0);
+			return (2);
 		}
 		exit_code = exec_recursive(tree->left, env, fd_in, fd_out, 0);
 		waitpid(-1, 0, 0);
@@ -90,6 +97,7 @@ int	exec_recursive(t_tree *tree, t_env *env, int fd_in, int fd_out, int wait_fla
 		exit_code = exec_builtin(args, env);
 		if (exit_code == -1)
 			waitpid(exec_cmd(tree, args, fd_in, fd_out, env), &exit_code, wait_flag);
+		exit_code = WEXITSTATUS(exit_code);
 	}
 	if (tree->right)
 		return (exec_recursive(tree->right, env, fd_in, fd_out, wait_flag));
