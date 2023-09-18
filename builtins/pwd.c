@@ -8,7 +8,7 @@ int	ft_pwd(void)
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{
-		ft_perror("pwd");
+		ft_perror("pwd", 0);
 		return (EXIT_FAILURE);
 	}
 	else

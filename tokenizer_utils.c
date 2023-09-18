@@ -64,7 +64,7 @@ t_tocken	*last_token(char *s, int (*f)[7], size_t *pos, t_tocken **t)
 	*pos = (*f)[6] + 1;
 	if ((*f)[5])
 	{
-		(*t)->val = str_unquote(slice_str(s, (*f)[3], (*f)[6]));
+		(*t)->val = str_unquote(str_slice(s, (*f)[3], (*f)[6]));
 		return (*t);
 	}
 	free(*t);

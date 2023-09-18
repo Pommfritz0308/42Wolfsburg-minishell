@@ -6,32 +6,11 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 12:49:08 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/17 10:59:27 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/18 09:57:18 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*str_replace(char *s, size_t start, size_t end, char *in_s)
-{
-	int		in_len;
-	int		after_len;
-	char	*res;
-
-	if (!in_s)
-		in_len = 0;
-	else
-		in_len = ft_strlen(in_s);
-	after_len = ft_strlen(s + end);
-	res = (char *)malloc(sizeof(char) * (start + in_len + after_len));
-	if (!res)
-		return (0);
-	ft_strlcpy(res, s, start);
-	if (in_s)
-		ft_strlcpy(res + start - 1, in_s, in_len + 1);
-	ft_strlcpy(res + start + in_len - 1, s + end, after_len + 1);
-	return (res);
-}
 
 char	*replace_env(char *s, size_t start, size_t end, int *hop)
 {
