@@ -15,7 +15,6 @@ void	ch_env(t_env *data, int i, char *arg)
 		data->env_size++;
 		data->env = realloc_env(data, data->env_size);
 		data->env[data->env_size - 1] = ft_strdup(arg);
-
 	}
 }
 
@@ -94,9 +93,7 @@ int	ft_export(t_env *data, char **args)
 	{
 		data->flag = 0;
 		temp = identifier_value_pair(args[i]);
-		if (!check_identifier(temp, args[i]))
-			return (EXIT_FAILURE);
-		else
+		if (check_identifier(temp, args[i]))
 			ft_export_helper(data, temp, i, args[i]);
 		i++;
 	}
