@@ -53,13 +53,12 @@ int	exec_recursive(t_tree *tree, t_env *env, int fd_in, int fd_out, int wait_fla
 	{
 		if (!tree->left || !tree->right)
 		{
-			errno = PIPE_ERR;
-			ft_perror("minishell");
+			ft_perror(0, PIPE_ERR);
 			return (0);
 		}
 		if (pipe(fd) < 0)
 		{
-			ft_perror("minishell");
+			ft_perror(0, 0);
 			return (0);
 		}
 		exec_recursive(tree->left, env, fd_in, fd[1], WNOHANG);
@@ -71,8 +70,7 @@ int	exec_recursive(t_tree *tree, t_env *env, int fd_in, int fd_out, int wait_fla
 	{
 		if (!tree->right)
 		{
-			errno = COND_ERR;
-			ft_perror("minishell");
+			ft_perror(0, COND_ERR);
 			return (0);
 		}
 		exit_code = exec_recursive(tree->left, env, fd_in, fd_out, 0);

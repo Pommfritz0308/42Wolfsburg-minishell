@@ -14,10 +14,14 @@ char	*ft_strerror(void)
 		return ("undefined error");
 }
 
-void	ft_perror(char *msg)
+void	ft_perror(char *msg, int code)
 {
 	char	*str;
 
+	if (!msg)
+		msg = "minishell";
+	if (code)
+		errno = code;
 	if (errno >= 107)
 	{
 		str = ft_strerror();

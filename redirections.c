@@ -1,16 +1,5 @@
 #include "minishell.h"
 
-int	is_digit(char *s)
-{
-	while (*s)
-	{
-		if (!ft_isdigit(*s))
-			return (0);
-		s++;
-	}
-	return (1);
-}
-
 void	handle_out(t_rdr_l *r, int fd1)
 {
 	int	fd2;
@@ -102,10 +91,7 @@ void	redirections(t_rdr_l *rdrs)
 		if (ft_isdigit(rdrs->token->val[0]))
 			fd1 = ft_atoi(rdrs->token->val);
 		if (!rdrs->word)
-		{
-			errno = SYNTAX;
-			ft_perror("minishell");
-		}
+			ft_perror(0, SYNTAX);
 		if (rdrs->token->type == REDIR_OUT || rdrs->token->type == REDIR_APPEND)
 			handle_out(rdrs, fd1);
 		else if (rdrs->token->type == REDIR_IN)

@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/17 11:03:26 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/18 10:06:35 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void			check_quotes(char *s, int i, int (*ebqd)[4]);
 void			ch_env(t_env *data, int i, char *arg);
 void			redirections(t_rdr_l *redirections);
 void			print_export(t_env *data);
-void			ft_perror(char *msg);
+void			ft_perror(char *msg, int code);
 void			handle_signals(void);
 void			init_settings(void);
 bool			check_identifier(char **arg, char *str);
@@ -109,13 +109,15 @@ int				chdir_(char *arg);
 int				ft_pwd(void);
 int				ft_cd_helper(t_env *env, char *arg, char *pwd);
 // String utils
+char			*str_replace(char *s, size_t start, size_t end, char *in_s);
 char			*str_join(char const *s1, char const *s2, char *sep);
 char			*str_cut(char *s, size_t start, size_t end);
-char			*slice_str(char *s, int start, int end);
+char			*str_slice(char *s, int start, int end);
 char			**str_split(char const *s, char c);
 char			*str_unquote(char *s);
 char			last_char(char *s);
 int				str_contains(char c, char *s);
+int				is_digit(char *s);
 // Parser utils
 void			paste_redir(t_rdr_l **redirs, t_tocken *token);
 void			paste_redir_word(t_rdr_l *redirs, char *word);
