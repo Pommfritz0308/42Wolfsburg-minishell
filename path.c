@@ -63,5 +63,6 @@ char	*path_to_exec(char *exec, char **env)
 	if (exec && access(exec, 0) == 0 && str_contains('/', exec))
 		return (exec);
 	free(exec);
+	ft_perror(exec, N_FOUND);
 	return (0);
 }

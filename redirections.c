@@ -81,7 +81,7 @@ void	handle_open(t_rdr_l *r, int fd1)
 		dup2(fd, fd1);
 }
 
-void	redirections(t_rdr_l *rdrs)
+int	redirections(t_rdr_l *rdrs)
 {
 	int	fd1;
 
@@ -91,7 +91,10 @@ void	redirections(t_rdr_l *rdrs)
 		if (ft_isdigit(rdrs->token->val[0]))
 			fd1 = ft_atoi(rdrs->token->val);
 		if (!rdrs->word)
+		{
 			ft_perror(0, SYNTAX);
+			return (127);
+		}
 		if (rdrs->token->type == REDIR_OUT || rdrs->token->type == REDIR_APPEND)
 			handle_out(rdrs, fd1);
 		else if (rdrs->token->type == REDIR_IN)
@@ -102,4 +105,5 @@ void	redirections(t_rdr_l *rdrs)
 			handle_open(rdrs, fd1);
 		rdrs = rdrs->next;
 	}
+	return (0);
 }
