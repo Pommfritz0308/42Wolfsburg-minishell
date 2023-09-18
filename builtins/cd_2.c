@@ -6,7 +6,7 @@
 /*   By: frederik <frederik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 14:58:03 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/18 14:31:40 by frederik         ###   ########.fr       */
+/*   Updated: 2023/09/18 15:00:05 by frederik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,10 @@ int	ft_export_cd(t_env *env, char *str, char *update)
 	return (EXIT_SUCCESS);
 }
 
-int	to_home(t_env *env)
+int	to_home(t_env *env, char *arg)
 {
 	char	*home;
 	char	*update;
-	char	*cwd;
 
 	home = retr_env_value;
 	if (!home)
@@ -63,7 +62,16 @@ int	to_home(t_env *env)
 		return (EXIT_FAILURE);
 	}
 	if (chdir_(home))
+	{
+		free(home);
 		return (EXIT_FAILURE);
-	update_env(env, );
-		
+	}
+	update = ft_strjoin("OLDPWD=", arg);
+	ft_export_cd(env, "OLDPWD", update);
+	free(update);
+	update = ft_strjoin("PWD=", home);
+	ft_export_cd(env, "PWD", update);
+	free(home);
+	free(update);
+	return (EXIT_SUCCESS);
 }

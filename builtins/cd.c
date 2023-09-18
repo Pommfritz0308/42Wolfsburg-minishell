@@ -13,7 +13,7 @@ int	ft_cd(t_env *env, char *arg)
 	}
 	if (!arg)
 	{
-		to_home(env);
+		to_home(env, pwd);
 		return (EXIT_SUCCESS);
 	}
 	else if (!ft_strncmp(arg, "-", ft_strlen("-")))
@@ -93,4 +93,3 @@ char	*retr_env_value(t_env *env, char *var)
 	}
 	return (NULL);
 }
-
