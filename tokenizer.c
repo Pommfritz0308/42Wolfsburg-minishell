@@ -6,12 +6,12 @@ void	operator_helper(char *s, int (*f)[7], size_t *pos, t_tocken *token)
 	{
 		*pos = (*f)[4];
 		token->type = WORD;
-		token->val = slice_str(s, (*f)[3], (*f)[4] - 1);
+		token->val = str_slice(s, (*f)[3], (*f)[4] - 1);
 	}
 	else
 	{
 		*pos = (*f)[6] + 1;
-		token->val = slice_str(s, (*f)[4], (*f)[6]);
+		token->val = str_slice(s, (*f)[4], (*f)[6]);
 	}
 }
 
@@ -52,7 +52,7 @@ t_tocken	*next_token_helper(char *s, size_t *pos, int (*f)[7], t_tocken **t)
 		if (str_contains(s[(*f)[6]], " \t") && !(*f)[0] && !(*f)[1] && !(*f)[2])
 		{
 			*pos = (*f)[6] + 1;
-			(*t)->val = slice_str(s, (*f)[3], (*f)[6] - 1);
+			(*t)->val = str_slice(s, (*f)[3], (*f)[6] - 1);
 			return (*t);
 		}
 		(*f)[5] = 1;

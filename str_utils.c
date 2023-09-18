@@ -23,15 +23,15 @@ int	str_contains(char c, char *s)
 	return (0);
 }
 
-char	*str_cut(char *s, size_t start, size_t end)
+int	is_digit(char *s)
 {
-	char	*res;
-
-	res = (char *)malloc(sizeof(char) * (end - start + 1));
-	if (!res)
-		return (0);
-	ft_strlcpy(res, s + start, end - start + 1);
-	return (res);
+	while (*s)
+	{
+		if (!ft_isdigit(*s))
+			return (0);
+		s++;
+	}
+	return (1);
 }
 
 void	switch_remove(int *var, char *s, int *i)

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	*slice_str(char *s, int start, int end)
+char	*str_slice(char *s, int start, int end)
 {
 	char	*res;
 	int		i;
