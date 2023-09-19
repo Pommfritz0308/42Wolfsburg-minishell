@@ -6,7 +6,7 @@
 #    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/09/18 09:55:10 by psimonen         ###   ########.fr        #
+#    Updated: 2023/09/19 16:50:51 by psimonen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,10 +15,10 @@ NAME = minishell
 OBJ_DIR = build
 BUILTINS_DIR = builtins
 
-_SRC = 			main resolve_env parser signals init errors path debug \
-				tokenizer tokenizer_utils executor redirections exec_builtin \
+_SRC = 			main resolve_env parser init errors path debug exec_builtin \
+				tokenizer tokenizer_utils executor redirections clean \
 				str_utils str_utils_2 str_utils_3 tree_utils tree_utils_2 \
-				env_utils
+				env_utils signals
 _BUILTINS_SRC =	export export_2 pwd env cd cd_2
 
 SRCS =									$(addsuffix .c, $(_SRC))

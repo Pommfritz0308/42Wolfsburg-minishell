@@ -12,3 +12,5 @@ test*
 *.dSYM
 .antlr
 *.g4
+mpanic
+minishell_tester

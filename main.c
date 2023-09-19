@@ -6,24 +6,26 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/15 12:46:18 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/19 16:51:47 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int ac, char **av, char **env)
+int	tputs_putchar(int c)
 {
-	char		*prompt;
-	char		*user_input;
-	int			exit_code;
-	t_env		data;
+	return (write(1, &c, 1));
+}
 
-	init_settings();
-	data = init_env(env);
-	handle_signals();
-	av[0][0] = ac;
+int	interactive(t_env	*data)
+{
+	int		exit_code;
+	char	*prompt;
+	char	*user_input;
+	t_tree	*tree;
+
 	exit_code = EXIT_SUCCESS;
+	user_input = "";
 	while (1)
 	{
 		if (exit_code)
@@ -34,13 +36,40 @@ int	main(int ac, char **av, char **env)
 		if (user_input && *user_input)
 		{
 			add_history(user_input);
-			//print_ast(user_input);
-			exit_code = execute(ast(user_input), &data);
-			data.prev_exit_code = exit_code;
+			tree = ast(user_input);
+			exit_code = execute(tree, data);
+			data->prev_exit_code = exit_code;
+			clean_tree(tree);
 		}
 		else if (!user_input)
-			execute(ast("exit"), &data);
-		free(user_input);
+		{
+			tputs(tgetstr("cr", NULL), 1, tputs_putchar);
+			tputs(tgetstr("el", NULL), 1, tputs_putchar);
+			exit (exit_code);
+		}
+		if (user_input)
+			free(user_input);
 	}
+}
+
+int	main(int ac, char **av, char **env)
+{
+	int			exit_code;
+	t_env		data;
+	t_tree		*tree;
+
+	data = init_env(env);
+	init_settings();
+	handle_signals();
+	exit_code = EXIT_SUCCESS;
+	if (ac >= 3 && !ft_strncmp(av[1], "-c", 3))
+	{
+		tree = ast(av[2]);
+    	exit_code = execute(tree, &data);
+		clean_tree(tree);
+    	exit(exit_code);
+	}
+	else
+		exit_code = interactive(&data);
 	return (exit_code);
 }
