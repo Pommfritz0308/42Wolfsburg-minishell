@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/19 17:30:59 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/19 17:33:40 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int				go_back(t_env *env, char *arg, char *cwd);
 int				ft_export(t_env *data, char **args);
 int				env_cpy(t_env *data, char **envp);
 int				update_env(t_env *env, char *arg);
+int				to_home(t_env *env, char *arg);
 int				ft_cd(t_env *env, char *arg);
 int				ft_env(char **envp);
 int				chdir_(char *arg);
