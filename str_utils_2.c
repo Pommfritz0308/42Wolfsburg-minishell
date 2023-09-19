@@ -5,7 +5,7 @@ char	*str_slice(char *s, int start, int end)
 	char	*res;
 	int		i;
 
-	res = (char *)malloc(sizeof(char) * (end - start + 1));
+	res = (char *)malloc(sizeof(char) * (end - start + 2));
 	if (!res)
 		return (0);
 	i = -1;

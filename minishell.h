@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frederik <frederik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/18 15:28:33 by frederik         ###   ########.fr       */
+/*   Updated: 2023/09/19 17:30:59 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <dirent.h>
 # include <stdbool.h>
 # include <sys/wait.h>
+# include <sys/ioctl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include "libft/libft.h"
@@ -78,6 +79,7 @@ typedef struct s_env
 
 // Builtins
 void			ch_env(t_env *data, int i, char *arg);
+void			print_args(char **arr, int i);
 void			print_export(t_env *data);
 char			*retr_env_value(t_env *env, char *var);
 char			**realloc_env(t_env *data, int size);
@@ -137,6 +139,9 @@ t_tocken_type	define_token_type(char *s, size_t i);
 t_tocken		*last_token(char *s, int (*f)[7], size_t *pos, t_tocken **t);
 t_tocken		*next_token(char *s, size_t *pos);
 t_tocken		*new_tocken(void);
+// Clean
+void			clean_tree(t_tree *tree);
+void			clean_tab(char **t);
 // Debug
 void			print_tree(t_tree *tree);
 void			print_ast(char *s);
