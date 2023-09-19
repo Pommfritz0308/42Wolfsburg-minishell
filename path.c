@@ -1,15 +1,5 @@
 #include "minishell.h"
 
-void	free_tab(char **t)
-{
-	int	i;
-
-	i = -1;
-	while (t[++i])
-		free(t[i]);
-	free(t);
-}
-
 char	**find_path(char **env)
 {
 	char	*path;
@@ -53,12 +43,12 @@ char	*path_to_exec(char *exec, char **env)
 			exec_path = join_path(*buf, exec);
 			if (access(exec_path, 0) == 0)
 			{
-				free_tab(paths);
+				clean_tab(paths);
 				return (exec_path);
 			}
 			free(exec_path);
 		}
-		free_tab(paths);
+		clean_tab(paths);
 	}
 	if (exec && access(exec, 0) == 0 && str_contains('/', exec))
 		return (exec);

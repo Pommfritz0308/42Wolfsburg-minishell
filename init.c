@@ -30,7 +30,10 @@ void	init_settings(void)
 		return ;
 	path = ft_strjoin(home, MINISHELLRC);
 	if (access(path, 0) == 0)
+	{
+		free(path);
 		return ;
+	}
 	fd = open(path, O_WRONLY | O_CREAT, 0000644);
 	write(fd, "set colored-stats on\n", 22);
 	write(fd, "set enable-bracketed-paste off\n", 32);

@@ -1,21 +1,22 @@
 #include "minishell.h"
 
-char	**lst_to_tab(t_list *lst)
+char	**lst_to_tab(t_list **lst)
 {
 	char	**res;
 	int		i;
 	t_list	*buf;
 
-	res = (char **)ft_calloc(ft_lstsize(lst) + 1, sizeof(char *));
+	res = (char **)ft_calloc(ft_lstsize(*lst) + 1, sizeof(char *));
 	if (!res)
 		return (0);
 	i = 0;
-	while (lst)
+	while (*lst)
 	{
-		res[i] = lst->content;
-		buf = lst->next;
-		free(lst);
-		lst = buf;
+		res[i] = ft_strdup((*lst)->content);
+		//free((*lst)->content);
+		buf = (*lst)->next;
+		free(*lst);
+		*lst = buf;
 		i++;
 	}
 	return (res);
@@ -93,11 +94,13 @@ int	exec_recursive(t_tree *tree, t_env *env, int fd_in, int fd_out, int wait_fla
 		exit_code = exec_recursive(tree->left, env, fd_in, fd_out, wait_flag);
 	if (tree->tocken && tree->tocken->type == WORD && tree->args)
 	{
-		args = lst_to_tab(tree->args);
+		args = lst_to_tab(&(tree->args));
 		exit_code = exec_builtin(args, env);
 		if (exit_code == -1)
 			waitpid(exec_cmd(tree, args, fd_in, fd_out, env), &exit_code, wait_flag);
+		clean_tab(args);
 		exit_code = WEXITSTATUS(exit_code);
+		
 	}
 	if (tree->right)
 		return (exec_recursive(tree->right, env, fd_in, fd_out, wait_flag));

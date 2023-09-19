@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frederik <frederik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 14:58:03 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/18 15:00:35 by frederik         ###   ########.fr       */
+/*   Updated: 2023/09/19 17:34:38 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	to_home(t_env *env, char *arg)
 	char	*home;
 	char	*update;
 
-	home = retr_env_value;
+	home = retr_env_value(env, "$HOME");
 	if (!home)
 	{
 		ft_putendl_fd("minishell: cd: HOME not set", 2);
