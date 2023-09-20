@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/19 16:51:47 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/20 12:24:40 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	interactive(t_env	*data)
 		if (user_input && *user_input)
 		{
 			add_history(user_input);
-			tree = ast(user_input);
+			tree = ast(user_input, data->prev_exit_code);
 			exit_code = execute(tree, data);
 			data->prev_exit_code = exit_code;
 			clean_tree(tree);
@@ -64,7 +64,7 @@ int	main(int ac, char **av, char **env)
 	exit_code = EXIT_SUCCESS;
 	if (ac >= 3 && !ft_strncmp(av[1], "-c", 3))
 	{
-		tree = ast(av[2]);
+		tree = ast(av[2], data.prev_exit_code);
     	exit_code = execute(tree, &data);
 		clean_tree(tree);
     	exit(exit_code);

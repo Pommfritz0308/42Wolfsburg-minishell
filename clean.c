@@ -50,8 +50,8 @@ void	clean_tree(t_tree *tree)
 		clean_tree(tree->right);
 	if (tree->redirections)
 		clean_redirections(tree->redirections);
-	if (tree->tocken)
-		clean_token(tree->tocken);
+	if (tree->token)
+		clean_token(tree->token);
 	if (tree->args)
 		ft_lstclear(&tree->args, clean_str);
 	free(tree);

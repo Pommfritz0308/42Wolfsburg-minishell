@@ -7,12 +7,12 @@ void	print_tree_helper(t_tree *tree, int pos)
 	i = -1;
 	while (++i < pos)
 		printf("\t");
-	if (tree && tree->tocken)
+	if (tree && tree->token)
 		printf(
 			"<%lx %d: %s (%lx %lx)>",
 			((unsigned long)tree) % 0x1000,
-			tree->tocken->type,
-			tree->tocken->val,
+			tree->token->type,
+			tree->token->val,
 			((unsigned long)tree->left) % 0x1000,
 			((unsigned long)tree->right) % 0x1000
 		);

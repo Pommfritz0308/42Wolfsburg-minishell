@@ -22,7 +22,7 @@ t_tree	*new_tree_node(void)
 		return (0);
 	node->left = 0;
 	node->right = 0;
-	node->tocken = 0;
+	node->token = 0;
 	node->args = 0;
 	node->redirections = 0;
 	return (node);
@@ -33,7 +33,7 @@ void	add_new_head(t_tree **ast, t_tocken *token)
 	t_tree	*node;
 
 	node = new_tree_node();
-	node->tocken = token;
+	node->token = token;
 	node->left = *ast;
 	*ast = node;
 }

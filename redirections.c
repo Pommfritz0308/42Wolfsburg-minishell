@@ -93,7 +93,7 @@ int	redirections(t_rdr_l *rdrs)
 		if (!rdrs->word)
 		{
 			ft_perror(0, SYNTAX);
-			return (127);
+			return (2);
 		}
 		if (rdrs->token->type == REDIR_OUT || rdrs->token->type == REDIR_APPEND)
 			handle_out(rdrs, fd1);

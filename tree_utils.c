@@ -17,7 +17,7 @@ void	paste_tree(t_tree *ast, t_tree *subtree)
 
 void	paste_node(t_tree *ast, t_tree *node)
 {
-	if (!ast->tocken)
+	if (!ast->token)
 	{
 		node->left = ast->left;
 		ast->left = node;
@@ -34,7 +34,7 @@ t_tree	*paste_token(t_tree *ast, t_tocken *token)
 	t_tree	*node;
 
 	node = new_tree_node();
-	node->tocken = token;
+	node->token = token;
 	paste_node(ast, node);
 	return (node);
 }

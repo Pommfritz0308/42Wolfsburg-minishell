@@ -7,14 +7,14 @@ void	handle_word(t_tree **buf, int (*f)[2], t_tocken *token, t_tree *ast)
 	if (token->type == WORD)
 	{
 		if (!(*f)[1])
-			paste_redir_word((*buf)->redirections, token->val);
+			paste_redir_word((*buf)->redirections, ft_strdup(token->val));
 		else
-			ft_lstadd_back(&(*buf)->args, ft_lstnew(token->val));
+			ft_lstadd_back(&(*buf)->args, ft_lstnew(ft_strdup(token->val)));
 		(*f)[1] = 1;
-		if (!(*buf)->tocken)
-			(*buf)->tocken = token;
+		if (!(*buf)->token)
+			(*buf)->token = token;
 		else
-			free(token);
+			clean_token(token);
 	}
 	else
 	{
@@ -28,8 +28,8 @@ void	handle_word(t_tree **buf, int (*f)[2], t_tocken *token, t_tree *ast)
 
 void	handle_op(t_tree **ast, t_tocken *token, int (*f)[2])
 {
-	if (!(*ast)->tocken)
-		(*ast)->tocken = token;
+	if (!(*ast)->token)
+		(*ast)->token = token;
 	else
 		add_new_head(ast, token);
 	(*f)[0] = 0;
@@ -70,14 +70,14 @@ t_tree	*build_ast(char *s, size_t *i)
 	return (ast);
 }
 
-t_tree	*ast(char *s)
+t_tree	*ast(char *s, int prev_exit_code)
 {
 	size_t	i;
 	t_tree	*ast;
 	char	*buf;
 
 	i = 0;
-	buf = resolve_env(s);
+	buf = resolve_env(s, prev_exit_code);
 	ast = build_ast(buf, &i);
 	free(buf);
 	return (ast);
