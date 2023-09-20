@@ -11,7 +11,7 @@ int	ft_unset(t_env *env, char **args)
 		return (EXIT_SUCCESS);
 	while (args[i])
 	{
-		if (check_identifier(&args[i], args[i]))
+		if (check_identifier(&args[i], "unset", args[i]))
 		{
 			j = 0;
 			while (env->env[j])

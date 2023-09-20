@@ -34,27 +34,30 @@ char	**identifier_value_pair(char *arg)
 	return (pair);
 }
 
-bool	check_identifier(char **arg, char *str)
+bool	check_identifier(char **a, char *cmd, char *str)
 {
-	int	i;
+	int		i;
+	char	*err_msg;
+	char	*tmp;
 
 	i = -1;
-	if (!arg[0][0] || !arg[0])
+	tmp = ft_strjoin("minishell: ", cmd);
+	err_msg = ft_strjoin(tmp, ": `");
+	free(tmp);
+	tmp = ft_strjoin(str, "\': not a valid identifier");
+	err_msg = ft_strjoin(err_msg, tmp);
+	free(tmp);
+	if (!a[0][0] || !a[0])
 	{
-		ft_putstr_fd("minishell: export: `", 2);
-		ft_putstr_fd(str, 2);
-		ft_putendl_fd("\': not a valid identifier", 2);
-		return (false);
+		ft_putendl_fd(err_msg, 2);
+		return (free(err_msg), false);
 	}
-	while (arg[0][++i])
+	while (a[0][++i])
 	{
-		if ((!ft_isalpha(arg[0][i])
-			&& arg[0][i] != '_') || !ft_isascii(arg[0][i]))
+		if ((!ft_isalpha(a[0][i]) && a[0][i] != '_') || !ft_isascii(a[0][i]))
 		{
-			ft_putstr_fd("minishell: export: `", 2);
-			ft_putstr_fd(str, 2);
-			ft_putendl_fd("\': not a valid identifier", 2);
-			return (false);
+			ft_putendl_fd(err_msg, 2);
+			return (free(err_msg), false);
 		}
 	}
 	return (true);
@@ -91,7 +94,7 @@ int	ft_export(t_env *data, char **args)
 	{
 		data->flag = 0;
 		temp = identifier_value_pair(args[i]);
-		if (check_identifier(temp, args[i]))
+		if (check_identifier(temp, "export", args[i]))
 			ft_export_helper(data, temp, i, args[i]);
 		else
 			ft_free_array(temp);
