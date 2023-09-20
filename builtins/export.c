@@ -44,7 +44,6 @@ bool	check_identifier(char **arg, char *str)
 		ft_putstr_fd("minishell: export: `", 2);
 		ft_putstr_fd(str, 2);
 		ft_putendl_fd("\': not a valid identifier", 2);
-		ft_free_array(arg);
 		return (false);
 	}
 	while (arg[0][++i])
@@ -55,7 +54,6 @@ bool	check_identifier(char **arg, char *str)
 			ft_putstr_fd("minishell: export: `", 2);
 			ft_putstr_fd(str, 2);
 			ft_putendl_fd("\': not a valid identifier", 2);
-			ft_free_array(arg);
 			return (false);
 		}
 	}
@@ -95,6 +93,8 @@ int	ft_export(t_env *data, char **args)
 		temp = identifier_value_pair(args[i]);
 		if (check_identifier(temp, args[i]))
 			ft_export_helper(data, temp, i, args[i]);
+		else
+			ft_free_array(temp);
 		i++;
 	}
 	return (EXIT_SUCCESS);

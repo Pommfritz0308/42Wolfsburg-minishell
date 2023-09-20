@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/19 17:33:40 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/20 11:08:20 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ int				ft_env(char **envp);
 int				chdir_(char *arg);
 int				ft_pwd(void);
 int				ft_cd_helper(t_env *env, char *arg, char *pwd);
+char			**delete_var(t_env *env, int pos);
+int				ft_unset(t_env *env, char **args);
 // Path
 char			*path_to_exec(char *exec, char **env);
 // Init
