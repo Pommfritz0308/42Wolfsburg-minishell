@@ -12,6 +12,8 @@ int	exec_builtin(char **args, t_env *env)
 		return (ft_cd(env, args[1]));
 	else if (!ft_strncmp(args[0], "unset", 6))
 		return (ft_unset(env, args));
+	else if (!ft_strncmp(args[0], "echo", 5))
+		return (ft_echo(args));
 	else if (!ft_strncmp(args[0], "$?", 3))
 	{
 		printf("minishell: %d: %s\n",
