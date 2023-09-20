@@ -10,6 +10,8 @@ char	*ft_strerror(void)
 		return (COND_ERR_T);
 	else if (errno == N_FOUND)
 		return (N_FOUND_T);
+	else if (errno == IS_DIR)
+		return (IS_DIR_T);
 	else if (errno < 107)
 		return (strerror(errno));
 	else

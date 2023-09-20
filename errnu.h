@@ -8,4 +8,6 @@
 # define COND_ERR_T	"wrong condition usage"
 # define N_FOUND	110
 # define N_FOUND_T	"command not found"
+# define IS_DIR		111
+# define IS_DIR_T	"is a directory"
 #endif
