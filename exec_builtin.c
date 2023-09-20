@@ -14,12 +14,6 @@ int	exec_builtin(char **args, t_env *env)
 		return (ft_unset(env, args));
 	else if (!ft_strncmp(args[0], "echo", 5))
 		return (ft_echo(args));
-	else if (!ft_strncmp(args[0], "$?", 3))
-	{
-		printf("minishell: %d: %s\n",
-			WEXITSTATUS(env->prev_exit_code), ft_strerror());
-		return (EXIT_SUCCESS);
-	}
 	else if (!ft_strncmp(args[0], "exit", 5))
 	{
 		kill(0, SIGUSR1);
