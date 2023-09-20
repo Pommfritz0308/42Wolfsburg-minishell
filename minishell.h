@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/20 16:09:13 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/20 16:59:11 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef struct s_tree
 {
 	struct s_tree	*left;
 	struct s_tree	*right;
-	t_tocken		*tocken;
+	t_tocken		*token;
 	t_list			*args;
 	t_rdr_l			*redirections;
 }					t_tree;
@@ -85,6 +85,7 @@ char			*retr_env_value(t_env *env, char *var);
 char			**realloc_env(t_env *data, int size);
 char			**identifier_value_pair(char *arg);
 bool			check_identifier(char **arg, char *str);
+char			**delete_var(t_env *env, char *del, int pos);
 int				ft_export_cd(t_env *env, char *str, char *update);
 int				exec_builtin(char **args, t_env *env);
 int				go_back(t_env *env, char *arg, char *cwd);
@@ -131,12 +132,12 @@ void			paste_redir_word(t_rdr_l *redirs, char *word);
 void			check_quotes(char *s, int i, int (*ebqd)[4]);
 void			add_new_head(t_tree **ast, t_tocken *token);
 void			paste_tree(t_tree *ast, t_tree *subtree);
-char			*resolve_env(const char *s);
+char			*resolve_env(const char *s, int prev_exit_code);
 t_rdr_l			*new_redir(t_tocken *token);
 t_tree			*paste_token(t_tree *ast, t_tocken *token);
 t_tree			*build_ast(char *s, size_t *i);
 t_tree			*new_tree_node(void);
-t_tree			*ast(char *s);
+t_tree			*ast(char *s, int prev_exit_code);
 // Tokenizer utils
 void			check_quotes_backslash(char *s, int (*f)[7]);
 int				is_backslash(char *s, int pos);
@@ -146,6 +147,7 @@ t_tocken		*next_token(char *s, size_t *pos);
 t_tocken		*new_tocken(void);
 // Clean
 void			clean_tree(t_tree *tree);
+void			clean_token(t_tocken *t);
 void			clean_tab(char **t);
 // Debug
 void			print_tree(t_tree *tree);

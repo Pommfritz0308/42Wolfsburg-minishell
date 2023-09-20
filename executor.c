@@ -13,7 +13,7 @@ char	**lst_to_tab(t_list **lst)
 	while (*lst)
 	{
 		res[i] = ft_strdup((*lst)->content);
-		//free((*lst)->content);
+		free((*lst)->content);
 		buf = (*lst)->next;
 		free(*lst);
 		*lst = buf;
@@ -57,7 +57,7 @@ int	exec_recursive(t_tree *tree, t_env *env, int fd_in, int fd_out, int wait_fla
 	char	**args;
 
 	exit_code = 2;
-	if (tree->tocken && tree->tocken->type == PIPE)
+	if (tree->token && tree->token->type == PIPE)
 	{
 		if (!tree->left || !tree->right)
 		{
@@ -74,7 +74,7 @@ int	exec_recursive(t_tree *tree, t_env *env, int fd_in, int fd_out, int wait_fla
 		exit_code = exec_recursive(tree->right, env, fd[0], fd_out, wait_flag);
 		return (exit_code);
 	}
-	if (tree->left && tree->tocken && (tree->tocken->type == OR || tree->tocken->type == AND))
+	if (tree->left && tree->token && (tree->token->type == OR || tree->token->type == AND))
 	{
 		if (!tree->right)
 		{
@@ -83,16 +83,16 @@ int	exec_recursive(t_tree *tree, t_env *env, int fd_in, int fd_out, int wait_fla
 		}
 		exit_code = exec_recursive(tree->left, env, fd_in, fd_out, 0);
 		waitpid(-1, 0, 0);
-		if (tree->tocken->type == AND && !exit_code)
+		if (tree->token->type == AND && !exit_code)
 			exit_code = exec_recursive(tree->right, env, fd_in, fd_out, wait_flag);
-		else if (tree->tocken->type == OR && exit_code)
+		else if (tree->token->type == OR && exit_code)
 			exit_code = exec_recursive(tree->right, env, fd_in, fd_out, wait_flag);
 		waitpid(-1, 0, 0);
 		return (exit_code);
 	}
 	if (tree->left)
 		exit_code = exec_recursive(tree->left, env, fd_in, fd_out, wait_flag);
-	if (tree->tocken && tree->tocken->type == WORD && tree->args)
+	if (tree->token && tree->token->type == WORD && tree->args)
 	{
 		args = lst_to_tab(&(tree->args));
 		exit_code = exec_builtin(args, env);

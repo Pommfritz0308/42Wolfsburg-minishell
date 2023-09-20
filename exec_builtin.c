@@ -22,6 +22,7 @@ int	exec_builtin(char **args, t_env *env)
 	}
 	else if (!ft_strncmp(args[0], "exit", 5))
 	{
+		exit(EXIT_SUCCESS);
 		kill(0, SIGUSR1);
 		return (EXIT_SUCCESS);
 	}
