@@ -68,7 +68,8 @@ int	chdir_(char *arg)
 {
 	if (chdir(arg))
 	{
-		ft_perror("cd", 0);
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_perror(arg, 0);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

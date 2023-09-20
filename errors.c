@@ -12,6 +12,8 @@ char	*ft_strerror(void)
 		return (N_FOUND_T);
 	else if (errno == IS_DIR)
 		return (IS_DIR_T);
+	else if (errno == IDENT)
+		return (IDENT_T);
 	else if (errno < 107)
 		return (strerror(errno));
 	else

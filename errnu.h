@@ -10,4 +10,6 @@
 # define N_FOUND_T	"command not found"
 # define IS_DIR		111
 # define IS_DIR_T	"is a directory"
+# define IDENT		112
+# define IDENT_T	"\': not a valid identifier"
 #endif
