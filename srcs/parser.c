@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 void	handle_word(t_tree **buf, int (*f)[2], t_tocken *token, t_tree *ast)
 {

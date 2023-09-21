@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 void	paste_tree(t_tree *ast, t_tree *subtree)
 {

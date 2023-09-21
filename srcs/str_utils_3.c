@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 char	*str_replace(char *s, size_t start, size_t end, char *in_s)
 {

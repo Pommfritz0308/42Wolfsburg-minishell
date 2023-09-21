@@ -6,11 +6,11 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/21 14:52:20 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:21:48 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 int	tputs_putchar(int c)
 {
@@ -52,7 +52,6 @@ int	interactive(t_env	*data)
 
 int	main(int ac, char **av, char **env)
 {
-	int			exit_code;
 	t_env		data;
 	t_tree		*tree;
 	char		*line;
@@ -60,16 +59,15 @@ int	main(int ac, char **av, char **env)
 	data = init_env(ac, av, env);
 	init_settings();
 	handle_signals();
-	exit_code = EXIT_SUCCESS;
 	if (ac >= 3 && !ft_strncmp(av[1], "-c", 3))
 	{
 		line = av[2];
 		data.ac = 1;
 		data.av[1] = 0;
 		tree = ast(line, &data);
-    	data.curr_exit_code = execute(tree, &data);
+		data.curr_exit_code = execute(tree, &data);
 		clean_tree(tree);
-    	exit(data.curr_exit_code);
+		exit(data.curr_exit_code);
 	}
 	else
 		data.curr_exit_code = interactive(&data);

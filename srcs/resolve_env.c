@@ -6,11 +6,11 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 12:49:08 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/21 12:32:52 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:13:48 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 char	*replace_env(char *s, size_t start, size_t end, int *hop)
 {

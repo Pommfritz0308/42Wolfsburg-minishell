@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 t_rdr_l	*new_redir(t_tocken *token)
 {

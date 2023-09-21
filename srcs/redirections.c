@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 void	handle_out(t_rdr_l *r, int fd1)
 {
@@ -27,7 +27,7 @@ void	handle_out(t_rdr_l *r, int fd1)
 	}
 }
 
-void	handle_in(t_rdr_l *r, int fd1)
+int	handle_in(t_rdr_l *r, int fd1)
 {
 	int	fd;
 
@@ -36,8 +36,17 @@ void	handle_in(t_rdr_l *r, int fd1)
 	if (last_char(r->token->val) == '&' && is_digit(r->word))
 		fd = ft_atoi(r->word);
 	else
-		fd = open(r->word, O_RDONLY);
+	{
+		if (!access(r->word, 0))
+			fd = open(r->word, O_RDONLY);
+		else
+		{
+			ft_perror(r->word, ENOENT);
+			return (127);
+		}
+	}
 	dup2(fd, fd1);
+	return (0);
 }
 
 void	handle_heredoc(t_rdr_l *r, int fd1)
@@ -84,7 +93,9 @@ void	handle_open(t_rdr_l *r, int fd1)
 int	redirections(t_rdr_l *rdrs)
 {
 	int	fd1;
+	int	exit_code;
 
+	exit_code = 0;
 	while (rdrs)
 	{
 		fd1 = -1;
@@ -98,12 +109,14 @@ int	redirections(t_rdr_l *rdrs)
 		if (rdrs->token->type == REDIR_OUT || rdrs->token->type == REDIR_APPEND)
 			handle_out(rdrs, fd1);
 		else if (rdrs->token->type == REDIR_IN)
-			handle_in(rdrs, fd1);
+			exit_code = handle_in(rdrs, fd1);
 		else if (rdrs->token->type == REDIR_HEREDOC)
 			handle_heredoc(rdrs, fd1);
 		else if (rdrs->token->type == REDIR_OPEN)
 			handle_open(rdrs, fd1);
 		rdrs = rdrs->next;
+		if (exit_code)
+			return (exit_code);
 	}
-	return (0);
+	return (exit_code);
 }

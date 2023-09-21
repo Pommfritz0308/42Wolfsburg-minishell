@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 void	operator_helper(char *s, int (*f)[7], size_t *pos, t_tocken *token)
 {

@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 14:16:48 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/12 14:17:37 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:15:10 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-#include "../errnu.h"
+#include "../includes/minishell.h"
 
 void	print_export_helper(t_env *data)
 {

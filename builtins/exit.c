@@ -1,5 +1,4 @@
-#include "../minishell.h"
-#include "../errnu.h"
+#include "../includes/minishell.h"
 
 int	ft_exit(t_env *env, char **args)
 {
