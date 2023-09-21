@@ -38,19 +38,24 @@ int	exec_builtin(char **args, t_env *env, int fd_in, int fd_out, t_tree *tree)
 	dup2(fd_in, 0);
 	dup2(fd_out, 1);
 	if (tree && tree->redirections)
-		redirections(tree->redirections);
-	if (!ft_strncmp(args[0], "export", 7))
-		exit_code = ft_export(env, args);
-	else if (!ft_strncmp(args[0], "pwd", 4))
-		exit_code = ft_pwd();
-	else if (!ft_strncmp(args[0], "env", 4))
-		exit_code = ft_env(env->env);
-	else if (!ft_strncmp(args[0], "cd", 3))
-		exit_code = ft_cd(env, args[1]);
-	else if (!ft_strncmp(args[0], "unset", 6))
-		exit_code = ft_unset(env, args);
-	else if (!ft_strncmp(args[0], "echo", 5))
-		exit_code = ft_echo(args);
+		exit_code = redirections(tree->redirections);
+	if (exit_code <= 0)
+	{
+		if (!ft_strncmp(args[0], "export", 7))
+			exit_code = ft_export(env, args);
+		else if (!ft_strncmp(args[0], "pwd", 4))
+			exit_code = ft_pwd();
+		else if (!ft_strncmp(args[0], "env", 4))
+			exit_code = ft_env(env->env);
+		else if (!ft_strncmp(args[0], "cd", 3))
+			exit_code = ft_cd(env, args[1]);
+		else if (!ft_strncmp(args[0], "unset", 6))
+			exit_code = ft_unset(env, args);
+		else if (!ft_strncmp(args[0], "echo", 5))
+			exit_code = ft_echo(args);
+	}
+	if (exit_code > 0)
+		exit_code = 258;
 	dup2(in_tmp, 0);
 	dup2(out_tmp, 1);
 	close(out_tmp);
