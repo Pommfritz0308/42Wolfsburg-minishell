@@ -4,27 +4,36 @@
 int	ft_unset(t_env *env, char **args)
 {
 	int	i;
-	int	j;
 
-	i = 0;
-	if (!args || !args[i])
+	i = -1;
+	if (!args || !args[0])
 		return (EXIT_SUCCESS);
-	while (args[i])
+	while (args[i++])
 	{
-		if (check_identifier(&args[i], "unset", args[i]))
-		{
-			j = 0;
-			while (env->env[j])
-			{
-				if (!ft_strncmp(env->env[j],
-						args[i], ft_find_pos(env->env[j], '=')))
-					env->env = delete_var(env, j);
-				j++;
-			}
-		}
-		i++;
+		handle_options(env, args[i]);
+		ft_unset_helper(env, args, i);
 	}
 	return (EXIT_SUCCESS);
+}
+
+void	ft_unset_helper(t_env *env, char **args, int i)
+{
+	int	j;
+
+	if (check_identifier(&args[i], "unset", args[i]))
+	{
+		j = 0;
+		while (env->env[j])
+		{
+			if (!ft_strncmp(env->env[j],
+					args[i], ft_find_pos(env->env[j], '=')))
+			{
+				env->env_size--;
+				env->env = delete_var(env, j);
+			}
+			j++;
+		}
+	}
 }
 
 char	**delete_var(t_env *env, int pos)
@@ -35,7 +44,6 @@ char	**delete_var(t_env *env, int pos)
 
 	j = 0;
 	i = -1;
-	env->env_size--;
 	new_env = ft_calloc(env->env_size + 1, sizeof(char *));
 	while (env->env[++i] != NULL)
 	{
@@ -44,13 +52,9 @@ char	**delete_var(t_env *env, int pos)
 			new_env[j] = ft_strdup(env->env[i]);
 			if (!new_env[j])
 			{
-				while (j > 0)
-				{
+				while (j-- > 0)
 					free(new_env[j - 1]);
-					j--;
-				}
-				free(new_env);
-				return (NULL);
+				return (free(new_env), NULL);
 			}
 			j++;
 		}
@@ -59,6 +63,13 @@ char	**delete_var(t_env *env, int pos)
 	i = -1;
 	while (env->env[++i] != NULL)
 		free(env->env[i]);
-	free(env->env);
-	return (new_env);
+	return (free(env->env), new_env);
+}
+
+int	handle_options(t_env *env, char **args)
+{
+	int	opt_flag;
+
+	opt_flag = 0;
+	if (opt )
 }
