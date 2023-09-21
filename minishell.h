@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/21 13:54:58 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/21 14:52:10 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void			ft_unset_helper(t_env *env, char **args, int i);
 // Path
 char			*path_to_exec(char *exec, char **env);
 // Init
-t_env			init_env(char **env);
+t_env			init_env(int ac, char **av, char **env);
 void			init_settings(void);
 // Signals
 void			handle_signals(void);
