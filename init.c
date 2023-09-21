@@ -8,12 +8,15 @@ void	print_asciiart(void)
 	printf("\e[0m");
 }
 
-t_env	init_env(char **env)
+t_env	init_env(int ac, char **av, char **env)
 {
 	t_env	new;
 
 	env_cpy(&new, env);
 	new.prev_exit_code = EXIT_SUCCESS;
+	new.curr_exit_code = EXIT_SUCCESS;
+	new.ac = ac;
+	new.av = av;
 	return (new);
 }
 
