@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 12:49:08 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/20 16:57:07 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/21 12:32:52 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,26 @@ void	check_quotes(char *s, int i, int (*ebqd)[4])
 	(*ebqd)[1] = is_backslash(s, i);
 }
 
-char	*handle_env(int (*ebqd)[4], char **s, int *i)
+char	*handle_env(int (*ebqd)[4], char **s, int *i, t_env *env)
 {
 	char	*buf;
+	char	*in_s;
 
 	(*ebqd)[0] = *i + 1;
-	while (ft_isalnum((*s)[++*i]) || (*s)[*i] == '_')
-		;
-	buf = replace_env((*s), (*ebqd)[0], *i, i);
+	if (ft_isdigit((*s)[++*i]))
+	{
+		if ((*s)[*i] - '0' < env->ac)
+			in_s = env->av[(*s)[*i] - '0'];
+		else
+			in_s = "";
+		buf = str_replace(*s, (*ebqd)[0], *i + 1, in_s);
+	}
+	else
+	{
+		while (ft_isalnum((*s)[++*i]) || (*s)[*i] == '_')
+			;
+		buf = replace_env(*s, (*ebqd)[0], *i, i);
+	}
 	free(*s);
 	if (!buf)
 		return (0);
@@ -95,7 +107,7 @@ char	*handle_home(char **s, int *i)
 }
 
 
-char	*resolve_env(const char *s, int prev_exit_code)
+char	*resolve_env(const char *s, t_env *env)
 {
 	int		i;
 	int		ebqd[4];
@@ -115,17 +127,19 @@ char	*resolve_env(const char *s, int prev_exit_code)
 			&& (ft_isalnum(res[i + 1]) || res[i + 1] == '_')
 		)
 		{
-			res = handle_env(&ebqd, &res, &i);
+			res = handle_env(&ebqd, &res, &i, env);
 			if (!res)
 				return (0);
 		}
 		else if (res[i] == '$' && res[i + 1] == '?' && !ebqd[1] && !ebqd[2])
 		{
-			res = handle_exit_code(&res, &i, prev_exit_code);
+			res = handle_exit_code(&res, &i, env->prev_exit_code);
 			if (!res)
 				return (0);
 		}
-		else if (res[i] == '~' && !ebqd[1] && !ebqd[2] && !ebqd[3])
+		else if (res[i] == '~' && !ebqd[1] && !ebqd[2] && !ebqd[3]
+			&& (i == 0 || str_contains(res[i - 1], " \t"))
+			&& (!res[i + 1] || str_contains(res[i + 1], " \t/")))
 		{
 			res = handle_home(&res, &i);
 			if (!res)
