@@ -54,7 +54,7 @@ bool	check_identifier(char **a, char *cmd, char *str)
 	}
 	while (a[0][++i])
 	{
-		if ((!ft_isalpha(a[0][i]) && a[0][i] != '_') || !ft_isascii(a[0][i]))
+		if ((!ft_isalnum(a[0][i]) && a[0][i] != '_') || !ft_isascii(a[0][i]))
 		{
 			ft_putendl_fd(err_msg, 2);
 			return (free(err_msg), false);

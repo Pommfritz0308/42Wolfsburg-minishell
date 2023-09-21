@@ -30,8 +30,9 @@ int	exec_builtin(char **args, t_env *env, int fd_in, int fd_out, t_tree *tree)
 		return (exit_code);
 	if (!ft_strncmp(args[0], "exit", 5))
 	{
+		env->curr_exit_code = ft_exit();
 		kill(0, SIGUSR1);
-		return (EXIT_SUCCESS);
+		return (env->curr_exit_code);
 	}
 	in_tmp = dup(0);
 	out_tmp = dup(1);

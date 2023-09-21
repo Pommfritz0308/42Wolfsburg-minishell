@@ -5,14 +5,11 @@ int	ft_unset(t_env *env, char **args)
 {
 	int	i;
 
-	i = -1;
-	if (!args || !args[0])
+	i = 0;
+	if (!args || !args[i])
 		return (EXIT_SUCCESS);
-	while (args[i++])
-	{
-		handle_options(env, args[i]);
+	while (args[++i])
 		ft_unset_helper(env, args, i);
-	}
 	return (EXIT_SUCCESS);
 }
 
@@ -39,12 +36,22 @@ void	ft_unset_helper(t_env *env, char **args, int i)
 char	**delete_var(t_env *env, int pos)
 {
 	int		i;
-	int		j;
 	char	**new_env;
 
-	j = 0;
 	i = -1;
 	new_env = ft_calloc(env->env_size + 1, sizeof(char *));
+	delete_var_helper(env, i, pos, new_env);
+	i = -1;
+	while (env->env[++i] != NULL)
+		free(env->env[i]);
+	return (free(env->env), new_env);
+}
+
+void	delete_var_helper(t_env *env, int i, int pos, char **new_env)
+{
+	int	j;
+
+	j = 0;
 	while (env->env[++i] != NULL)
 	{
 		if (i != pos)
@@ -52,24 +59,15 @@ char	**delete_var(t_env *env, int pos)
 			new_env[j] = ft_strdup(env->env[i]);
 			if (!new_env[j])
 			{
-				while (j-- > 0)
+				while (j > 0)
+				{
 					free(new_env[j - 1]);
-				return (free(new_env), NULL);
+					j--;
+				}
+				return (free(new_env));
 			}
 			j++;
 		}
 	}
 	new_env[j] = NULL;
-	i = -1;
-	while (env->env[++i] != NULL)
-		free(env->env[i]);
-	return (free(env->env), new_env);
-}
-
-int	handle_options(t_env *env, char **args)
-{
-	int	opt_flag;
-
-	opt_flag = 0;
-	if (opt )
 }

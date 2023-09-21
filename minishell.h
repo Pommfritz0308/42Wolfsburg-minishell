@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/21 12:22:43 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/21 13:54:58 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_env
 	char			**temp_arr;
 	int				n;
 	int				prev_exit_code;
+	int				curr_exit_code;
 	int				ac;
 	char			**av;
 }					t_env;
@@ -104,6 +105,8 @@ char			**delete_var(t_env *env, int pos);
 int				ft_unset(t_env *env, char **args);
 int				check_nl_flag(char *arg);
 int				ft_echo(char **arg);
+void			delete_var_helper(t_env *env, int i, int pos, char **new_env);
+void			ft_unset_helper(t_env *env, char **args, int i);
 // Path
 char			*path_to_exec(char *exec, char **env);
 // Init
