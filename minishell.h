@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/21 14:52:10 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:59:51 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@
 # include "errnu.h"
 
 // Settings
-# define SUCCESS_PROMPT	"\e[0;32mminishell\e[0m$ "
-# define FAILED_PROMPT	"\e[0;31mminishell\e[0m$ "
+//# define SUCCESS_PROMPT	"\e[0;32mminishell\e[0m$ "
+# define SUCCESS_PROMPT	"mini$ "
+//# define FAILED_PROMPT	"\e[0;31mminishell\e[0m$ "
+# define FAILED_PROMPT	"mini$ "
 # define MINISHELLRC	"/.minishellrc"
 
 typedef enum e_token_type
@@ -90,7 +92,7 @@ char			**realloc_env(t_env *data, int size);
 char			**identifier_value_pair(char *arg);
 bool			check_identifier(char **a, char *cmd, char *str);
 int				ft_export_cd(t_env *env, char *str, char *update);
-int				exec_builtin(char **args, t_env *env, int fd_in, int fd_out, t_tree *tree);
+int				exec_builtin(t_env *env, int fd_in, int fd_out, t_tree *tree);
 int				go_back(t_env *env, char *arg, char *cwd);
 int				ft_export(t_env *data, char **args);
 int				env_cpy(t_env *data, char **envp);
@@ -121,6 +123,7 @@ void			ft_perror(char *msg, int code);
 char			*ft_strerror(void);
 // Executor
 int				execute(t_tree *tree, t_env *env);
+char			**lst_to_tab(t_list **lst);
 // String utils
 char			*str_replace(char *s, size_t start, size_t end, char *in_s);
 char			*str_join(char const *s1, char const *s2, char *sep);
