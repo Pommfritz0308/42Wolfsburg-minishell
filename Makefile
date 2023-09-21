@@ -6,7 +6,7 @@
 #    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/09/21 18:17:10 by psimonen         ###   ########.fr        #
+#    Updated: 2023/09/21 18:32:32 by psimonen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,8 +60,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 clean:
-	$(RM) $(OBJS)
-	$(RM) $(BONUS_OBJS)
+	$(RM) -r $(OBJ_DIR)
 	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
