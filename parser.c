@@ -70,14 +70,14 @@ t_tree	*build_ast(char *s, size_t *i)
 	return (ast);
 }
 
-t_tree	*ast(char *s, int prev_exit_code)
+t_tree	*ast(char *s, t_env *env)
 {
 	size_t	i;
 	t_tree	*ast;
 	char	*buf;
 
 	i = 0;
-	buf = resolve_env(s, prev_exit_code);
+	buf = resolve_env(s, env);
 	ast = build_ast(buf, &i);
 	free(buf);
 	return (ast);

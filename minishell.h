@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/21 10:55:14 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/21 12:22:43 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ typedef struct s_env
 	char			**temp_arr;
 	int				n;
 	int				prev_exit_code;
+	int				ac;
+	char			**av;
 }					t_env;
 
 // Builtins
@@ -132,12 +134,12 @@ void			paste_redir_word(t_rdr_l *redirs, char *word);
 void			check_quotes(char *s, int i, int (*ebqd)[4]);
 void			add_new_head(t_tree **ast, t_tocken *token);
 void			paste_tree(t_tree *ast, t_tree *subtree);
-char			*resolve_env(const char *s, int prev_exit_code);
+char			*resolve_env(const char *s, t_env *env);
 t_rdr_l			*new_redir(t_tocken *token);
 t_tree			*paste_token(t_tree *ast, t_tocken *token);
 t_tree			*build_ast(char *s, size_t *i);
 t_tree			*new_tree_node(void);
-t_tree			*ast(char *s, int prev_exit_code);
+t_tree			*ast(char *s, t_env *env);
 // Tokenizer utils
 void			check_quotes_backslash(char *s, int (*f)[7]);
 int				is_backslash(char *s, int pos);
