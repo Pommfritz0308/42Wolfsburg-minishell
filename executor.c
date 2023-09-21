@@ -95,7 +95,7 @@ int	exec_recursive(t_tree *tree, t_env *env, int fd_in, int fd_out, int wait_fla
 	if (tree->token && tree->token->type == WORD && tree->args)
 	{
 		args = lst_to_tab(&(tree->args));
-		exit_code = exec_builtin(args, env);
+		exit_code = exec_builtin(args, env, fd_in, fd_out, tree);
 		if (exit_code == -1)
 			waitpid(exec_cmd(tree, args, fd_in, fd_out, env), &exit_code, wait_flag);
 		clean_tab(args);
