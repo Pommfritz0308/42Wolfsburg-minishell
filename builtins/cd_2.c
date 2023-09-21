@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cd_2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 14:58:03 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/20 14:30:46 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:14:36 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-#include "../errnu.h"
+#include "../includes/minishell.h"
 
 int	ft_cd_helper(t_env *env, char *arg, char *pwd)
 {

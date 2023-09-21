@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 void	print_tree_helper(t_tree *tree, int pos)
 {

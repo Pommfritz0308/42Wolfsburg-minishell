@@ -1,5 +1,4 @@
-#include "minishell.h"
-#include "errnu.h"
+#include "../includes/minishell.h"
 
 int	env_cpy(t_env *data, char **envp)
 {

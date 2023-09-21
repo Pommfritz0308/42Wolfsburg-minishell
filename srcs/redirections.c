@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 void	handle_out(t_rdr_l *r, int fd1)
 {

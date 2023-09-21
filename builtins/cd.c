@@ -1,5 +1,4 @@
-#include "../minishell.h"
-#include "../errnu.h"
+#include "../includes/minishell.h"
 
 int	ft_cd(t_env *env, char *arg)
 {

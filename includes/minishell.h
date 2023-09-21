@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/21 16:59:51 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:17:30 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <sys/ioctl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include "libft/libft.h"
+# include "../libft/libft.h"
 # include "errnu.h"
 
 // Settings
@@ -122,6 +122,7 @@ int				redirections(t_rdr_l *redirections);
 void			ft_perror(char *msg, int code);
 char			*ft_strerror(void);
 // Executor
+int				exec_recursive(t_tree *tree, t_env *env, int iow[3]);
 int				execute(t_tree *tree, t_env *env);
 char			**lst_to_tab(t_list **lst);
 // String utils

@@ -1,5 +1,4 @@
-#include "../minishell.h"
-#include "../errnu.h"
+#include "../includes/minishell.h"
 
 void	ch_env(t_env *data, int i, char *arg)
 {
