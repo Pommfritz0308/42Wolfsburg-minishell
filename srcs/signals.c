@@ -8,7 +8,6 @@ void	signal_handler(int signum)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-
 	}
 	else
 		close(0);

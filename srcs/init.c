@@ -25,7 +25,6 @@ void	init_settings(void)
 	int		fd;
 	char	*home;
 	char	*path;
-	char	*inputrc;
 
 	//print_asciiart();
 	home = getenv("HOME");
@@ -40,12 +39,6 @@ void	init_settings(void)
 	fd = open(path, O_WRONLY | O_CREAT, 0000644);
 	write(fd, "set colored-stats on\n", 22);
 	write(fd, "set enable-bracketed-paste off\n", 32);
-	inputrc = getenv("INPUTRC");
-	if (!inputrc || !*inputrc)
-	{
-		// We need to change it to our env builtin: setenv is forbidden function
-		setenv("INPUTRC", path, 1);
-	}
 	close(fd);
 	free(path);
 }

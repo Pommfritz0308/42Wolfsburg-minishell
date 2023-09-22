@@ -6,7 +6,7 @@
 #    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/09/21 18:32:32 by psimonen         ###   ########.fr        #
+#    Updated: 2023/09/22 09:01:11 by psimonen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,10 +17,10 @@ SRC_DIR =		srcs
 BUILTINS_DIR=	builtins
 INCL_DIR =		includes
 
-_SRC = 			main resolve_env parser init errors path debug exec_builtin \
+_SRC = 			main resolve_env resolve_env_utils parser init exec_builtin \
 				tokenizer tokenizer_utils redirections executor executor_utils \
 				str_utils str_utils_2 str_utils_3 tree_utils tree_utils_2 \
-				env_utils signals clean
+				env_utils signals clean errors path debug
 _BUILTINS_SRC =	export export_2 pwd env cd cd_2 unset echo
 
 SRCS =	$(addprefix $(BUILTINS_DIR)/,	$(addsuffix .c, $(_SRC)))

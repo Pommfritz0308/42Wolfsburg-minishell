@@ -82,11 +82,3 @@ t_tree	*ast(char *s, t_env *env)
 	free(buf);
 	return (ast);
 }
-
-void	print_ast(char *s)
-{
-	size_t	i;
-
-	i = 0;
-	print_tree(build_ast(s, &i));
-}

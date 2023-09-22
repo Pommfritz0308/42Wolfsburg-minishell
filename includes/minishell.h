@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/21 18:24:30 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/22 09:00:14 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@
 # include "errnu.h"
 
 // Settings
-//# define SUCCESS_PROMPT	"\e[0;32mminishell\e[0m$ "
-# define SUCCESS_PROMPT	"mini$ "
-//# define FAILED_PROMPT	"\e[0;31mminishell\e[0m$ "
-# define FAILED_PROMPT	"mini$ "
+# define SUCCESS_PROMPT	"\e[0;32mminishell\e[0m$ "
+//# define SUCCESS_PROMPT	"mini$ "
+# define FAILED_PROMPT	"\e[0;31mminishell\e[0m$ "
+//# define FAILED_PROMPT	"mini$ "
 # define MINISHELLRC	"/.minishellrc"
 
 typedef enum e_token_type
@@ -138,7 +138,6 @@ int				is_digit(char *s);
 // Parser utils
 void			paste_redir(t_rdr_l **redirs, t_tocken *token);
 void			paste_redir_word(t_rdr_l *redirs, char *word);
-void			check_quotes(char *s, int i, int (*ebqd)[4]);
 void			add_new_head(t_tree **ast, t_tocken *token);
 void			paste_tree(t_tree *ast, t_tree *subtree);
 char			*resolve_env(const char *s, t_env *env);
@@ -154,11 +153,13 @@ t_tocken_type	define_token_type(char *s, size_t i);
 t_tocken		*last_token(char *s, int (*f)[7], size_t *pos, t_tocken **t);
 t_tocken		*next_token(char *s, size_t *pos);
 t_tocken		*new_tocken(void);
+// Resolve env
+char			*replace_env(char *s, size_t start, size_t end, int *hop);
+void			check_quotes(char *s, int i, int (*ebqd)[4]);
 // Clean
 void			clean_tree(t_tree *tree);
 void			clean_token(t_tocken *t);
 void			clean_tab(char **t);
 // Debug
 void			print_tree(t_tree *tree);
-void			print_ast(char *s);
 #endif
