@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/22 17:57:38 by fbohling          #+#    #+#             */
+/*   Updated: 2023/09/22 17:57:40 by fbohling         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 int	ft_exit(t_env *env, char **args)
@@ -5,6 +17,7 @@ int	ft_exit(t_env *env, char **args)
 	int	i;
 
 	i = -1;
+	ft_putendl_fd("exit", 2);
 	if (!args || !args[1])
 	{
 		kill(0, SIGUSR1);
@@ -24,7 +37,7 @@ int	ft_exit(t_env *env, char **args)
 		clean_tab(args);
 		return (1);
 	}
-	else if (ft_atoi(args[1]) > 256)
+	else if (ft_atoi(args[1]) > 255 || ft_atoi(args[1]) < 0)
 	{
 		if (!calc_exit_code(env, args[1]))
 			return (kill_util(255, args));
