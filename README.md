@@ -4,12 +4,12 @@
 
 - [x] History
 - [X] Parsing
-- [ ] Path
-- [ ] Redirections < > << >> 
+- [X] Path
+- [X] Redirections < > << >> 
 - [X] Pipes
-- [ ] Enviroment variables
-- [ ] $?
-- [ ] Signals
+- [X] Enviroment variables
+- [X] $?
+- [X] Signals
 - [ ] Builtins:
 	- [ ] echo
 	- [ ] cd
