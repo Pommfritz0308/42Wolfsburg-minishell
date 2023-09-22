@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/22 10:45:35 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:51:24 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void			ft_unset_helper(t_env *env, char **args, int i);
 void			ch_env(t_env *data, int i, char *arg);
 void			print_args(char **arr, int i);
 void			print_export(t_env *data);
+void			numeric_error(char *str);
 bool			check_identifier(char **a, char *cmd, char *str);
 bool			check_range(long long int result, char *numb, int i);
 int				exec_builtin(t_env *env, int fd_in, int fd_out, t_tree *tree);
@@ -104,11 +105,12 @@ int				ft_export_cd(t_env *env, char *str, char *update);
 int				ft_cd_helper(t_env *env, char *arg, char *pwd);
 int				go_back(t_env *env, char *arg, char *cwd);
 int				env_cpy(t_env *data, char **envp);
-int				update_env(t_env *env, char *arg);
+int				update_cwd(t_env *env, char *arg);
 int				to_home(t_env *env, char *arg);
 int				check_nl_flag(char *arg);
 int				chdir_(char *arg);
 int				calc_exit_code(t_env *env, char *numb);
+int				kill_util(int exit_code, char **args);
 char			*retr_env_value(t_env *env, char *var);
 char			**realloc_env(t_env *data, int size);
 char			**identifier_value_pair(char *arg);
@@ -118,6 +120,7 @@ char			*path_to_exec(char *exec, char **env);
 // Init
 t_env			init_env(int ac, char **av, char **env);
 void			init_settings(void);
+int				update_shlvl(t_env *env);
 // Signals
 void			handle_signals(void);
 // Redirections
@@ -159,7 +162,7 @@ t_tocken		*last_token(char *s, int (*f)[7], size_t *pos, t_tocken **t);
 t_tocken		*next_token(char *s, size_t *pos);
 t_tocken		*new_tocken(void);
 // Resolve env
-char			*replace_env(char *s, size_t start, size_t end, int *hop);
+char			*replace_env(char *s, size_t start, size_t end, int *hop, t_env *data);
 void			check_quotes(char *s, int i, int (*ebqd)[4]);
 // Clean
 void			clean_tree(t_tree *tree);

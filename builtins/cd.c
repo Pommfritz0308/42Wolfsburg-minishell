@@ -24,11 +24,11 @@ int	ft_cd(t_env *env, char *arg)
 	}
 	else if (chdir_(arg))
 		return (EXIT_FAILURE);
-	update_env(env, pwd);
+	update_cwd(env, pwd);
 	return (EXIT_SUCCESS);
 }
 
-int	update_env(t_env *env, char *arg)
+int	update_cwd(t_env *env, char *arg)
 {
 	char	*update;
 	char	*cwd;

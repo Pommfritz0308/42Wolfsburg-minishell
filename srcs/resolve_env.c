@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   resolve_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 12:49:08 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/22 09:11:02 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:50:57 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*handle_env(int (*ebqd)[4], char **s, int *i, t_env *env)
 	{
 		while (ft_isalnum((*s)[++*i]) || (*s)[*i] == '_')
 			;
-		buf = replace_env(*s, (*ebqd)[0], *i, i);
+		buf = replace_env(*s, (*ebqd)[0], *i, i, env);
 	}
 	free(*s);
 	if (!buf)

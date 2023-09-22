@@ -17,6 +17,7 @@ t_env	init_env(int ac, char **av, char **env)
 	new.curr_exit_code = EXIT_SUCCESS;
 	new.ac = ac;
 	new.av = av;
+	update_shlvl(&new);
 	return (new);
 }
 

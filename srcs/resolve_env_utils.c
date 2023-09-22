@@ -1,16 +1,19 @@
 #include "../includes/minishell.h"
 
-char	*replace_env(char *s, size_t start, size_t end, int *hop)
+char	*replace_env(char *s, size_t start, size_t end, int *hop, t_env *data)
 {
 	char	*env;
 	char	*res;
 	char	*val;
+	char	*buf;
 	int		val_len;
 
 	env = str_cut(s, start, end);
 	if (!env)
 		return (0);
-	val = getenv(env);
+	buf = str_join(env, "=", "");
+	val = retr_env_value(data, buf);
+	free(buf);
 	res = str_replace(s, start, end, val);
 	if (!res)
 	{
@@ -22,6 +25,8 @@ char	*replace_env(char *s, size_t start, size_t end, int *hop)
 		val_len = 0;
 	else
 		val_len = ft_strlen(val);
+	if (val)
+		free(val);
 	if (hop)
 		*hop = *hop + val_len - end + start - 2;
 	return (res);

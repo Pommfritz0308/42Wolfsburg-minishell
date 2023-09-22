@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/22 10:57:34 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:28:09 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	interactive(t_env	*data)
 		{
 			tputs(tgetstr("cr", NULL), 1, tputs_putchar);
 			tputs(tgetstr("el", NULL), 1, tputs_putchar);
-			printf("main: %i\n", data->curr_exit_code);
 			exit (data->curr_exit_code);
 		}
 		if (user_input)
