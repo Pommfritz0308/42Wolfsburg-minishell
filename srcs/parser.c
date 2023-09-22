@@ -9,11 +9,13 @@ void	handle_word(t_tree **buf, int (*f)[2], t_tocken *token, t_tree *ast)
 		if (!(*f)[1])
 			paste_redir_word((*buf)->redirections, ft_strdup(token->val));
 		else
+		{
 			ft_lstadd_back(&(*buf)->args, ft_lstnew(ft_strdup(token->val)));
+			if (!(*buf)->token)
+				(*buf)->token = token;
+		}
 		(*f)[1] = 1;
-		if (!(*buf)->token)
-			(*buf)->token = token;
-		else
+		if ((*buf)->token != token)
 			clean_token(token);
 	}
 	else
@@ -43,18 +45,31 @@ void	handle_paranth(t_tree **ast, int (*f)[2], size_t *i, char *s)
 	(*f)[1] = 1;
 }
 
+int	handle_command(t_tocken **token, char *s, size_t *i, int (*f)[2], t_tree **ast)
+{
+	t_tree		*buf;
+
+	buf = 0;
+	while (*token && (*token)->type <= REDIR_HEREDOC)
+	{
+		handle_word(&buf, f, *token, *ast);
+		*token = next_token(s, i);
+	}
+	if (!(*f)[1])
+		return (ft_perror(0, SYNTAX, 0));
+	return (1);
+}
+
 t_tree	*build_ast(char *s, size_t *i)
 {
 	t_tocken	*token;
 	t_tree		*ast;
-	t_tree		*buf;
 	int			f[2];
 
 	ast = new_tree_node();
 	token = next_token(s, i);
 	f[0] = 0;
 	f[1] = 1;
-	buf = 0;
 	while (token)
 	{
 		if (token->type == AND || token->type == OR || token->type == PIPE)
@@ -64,7 +79,11 @@ t_tree	*build_ast(char *s, size_t *i)
 		else if (token->type == PARANTH_CLOSE)
 			return (ast);
 		else
-			handle_word(&buf, &f, token, ast);
+		{
+			if (!handle_command(&token, s, i, &f, &ast))
+				return (0);
+			continue ;
+		}
 		token = next_token(s, i);
 	}
 	return (ast);
@@ -79,6 +98,8 @@ t_tree	*ast(char *s, t_env *env)
 	i = 0;
 	buf = resolve_env(s, env);
 	ast = build_ast(buf, &i);
+	if (!ast)
+		env->curr_exit_code = 258;
 	free(buf);
 	return (ast);
 }

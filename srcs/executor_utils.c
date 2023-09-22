@@ -7,6 +7,22 @@ void	set_iow(int fd_in, int fd_out, int wait_flag, int (*iow)[3])
 	(*iow)[2] = wait_flag;
 }
 
+int	only_redirections(int fd_in, int fd_out, t_tree *tree)
+{
+	int	pid;
+	int	exit_code;
+
+	pid = fork();
+	if (!pid)
+	{
+		if (dup2(fd_in, 0) < 0 || dup2(fd_out, 1) < 0)
+			return (0);
+		exit_code = redirections(tree->redirections);
+		exit(exit_code);
+	}
+	return (pid);
+}
+
 int	exec_cmd(t_tree *tree, int fd_in, int fd_out, t_env *env)
 {
 	int		pid;
@@ -18,19 +34,17 @@ int	exec_cmd(t_tree *tree, int fd_in, int fd_out, t_env *env)
 	{
 		if (dup2(fd_in, 0) < 0 || dup2(fd_out, 1) < 0)
 			return (0);
+		full_cmd = path_to_exec(tree->args->content, env);
+		if (!full_cmd)
+			exit(env->curr_exit_code);
+		if (tree->redirections)
 		{
-			full_cmd = path_to_exec(tree->args->content, env->env);
-			if (!full_cmd)
-				exit(127);
-			if (tree->redirections)
-			{
-				exit_code = redirections(tree->redirections);
-				if (exit_code)
-					exit(exit_code);
-			}
-			if (execve(full_cmd, lst_to_tab(&(tree->args)), env->env) < 0)
-				exit (127);
+			exit_code = redirections(tree->redirections);
+			if (exit_code)
+				exit(exit_code);
 		}
+		if (execve(full_cmd, lst_to_tab(&(tree->args)), env->env) < 0)
+			exit (127);
 	}
 	return (pid);
 }
@@ -41,9 +55,9 @@ int	exec_pipe(t_tree *tree, t_env *env, int iow[3])
 	int		iow_c[3];
 	int		fd[2];
 
-	exit_code = 2;
+	exit_code = 258;
 	if (!tree->left || !tree->right)
-		return (ft_perror(0, SY_PIPE, 2));
+		return (ft_perror(0, SY_PIPE, exit_code));
 	if (pipe(fd) < 0)
 		return (ft_perror(0, 0, EXIT_FAILURE));
 	set_iow(iow[0], fd[1], WNOHANG, &iow_c);
@@ -59,9 +73,9 @@ int	exec_cond(t_tree *tree, t_env *env, int iow[3])
 	int	exit_code;
 	int	iow_c[3];
 
-	exit_code = 2;
-	if (!tree->right)
-		return (ft_perror(0, COND_ERR, 2));
+	exit_code = 258;
+	if (!tree->right || !tree->left)
+		return (ft_perror(0, COND_ERR, exit_code));
 	set_iow(iow[0], iow[1], 0, &iow_c);
 	exit_code = exec_recursive(tree->left, env, iow_c);
 	waitpid(-1, 0, 0);
@@ -77,7 +91,7 @@ int	exec_recursive(t_tree *tree, t_env *env, int iow[3])
 {
 	int		exit_code;
 
-	exit_code = 2;
+	exit_code = 0;
 	if (tree->token && tree->token->type == PIPE)
 		return (exec_pipe(tree, env, iow));
 	if (tree->left && tree->token
@@ -93,6 +107,11 @@ int	exec_recursive(t_tree *tree, t_env *env, int iow[3])
 			waitpid(exec_cmd(tree, iow[0], iow[1], env), &exit_code, iow[2]);
 			exit_code = WEXITSTATUS(exit_code);
 		}
+	}
+	else if (tree && tree->redirections)
+	{
+		waitpid(only_redirections(iow[0], iow[1], tree), &exit_code, iow[2]);
+		exit_code = WEXITSTATUS(exit_code);
 	}
 	if (tree->right)
 		return (exec_recursive(tree->right, env, iow));

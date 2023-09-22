@@ -1,5 +1,16 @@
 #include "../includes/minishell.h"
 
+void	print_tab(char **t)
+{
+	printf("Tab: ");
+	while (*t)
+	{
+		printf("%s ", *t);
+		t++;
+	}
+	printf("\n");
+}
+
 void	print_tree_helper(t_tree *tree, int pos)
 {
 	int i;

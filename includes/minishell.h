@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/22 16:51:24 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:55:57 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ char			**realloc_env(t_env *data, int size);
 char			**identifier_value_pair(char *arg);
 char			**delete_var(t_env *env, int pos);
 // Path
-char			*path_to_exec(char *exec, char **env);
+char			*path_to_exec(char *exec, t_env *env);
 // Init
 t_env			init_env(int ac, char **av, char **env);
 void			init_settings(void);
@@ -125,6 +125,7 @@ int				update_shlvl(t_env *env);
 void			handle_signals(void);
 // Redirections
 void			add_line(char **full_input, char **line);
+int				only_redirections(int fd_in, int fd_out, t_tree *tree);
 int				redirections(t_rdr_l *redirections);
 // Errors
 int				ft_perror(char *msg, int err_code, int exit_code);
@@ -134,6 +135,7 @@ int				exec_recursive(t_tree *tree, t_env *env, int iow[3]);
 int				execute(t_tree *tree, t_env *env);
 char			**lst_to_tab(t_list **lst);
 // String utils
+void			str_basename(char **s);
 char			*str_replace(char *s, size_t start, size_t end, char *in_s);
 char			*str_join(char const *s1, char const *s2, char *sep);
 char			*str_cut(char *s, size_t start, size_t end);
@@ -170,4 +172,5 @@ void			clean_token(t_tocken *t);
 void			clean_tab(char **t);
 // Debug
 void			print_tree(t_tree *tree);
+void			print_tab(char **t);
 #endif
