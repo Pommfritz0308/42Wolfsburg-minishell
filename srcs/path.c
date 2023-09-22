@@ -35,8 +35,8 @@ char	*check_type(char **exec_path)
 	lstat(*exec_path, &sb);
 	if ((sb.st_mode & S_IFMT) == S_IFDIR)
 	{
+		ft_perror(*exec_path, IS_DIR, 0);
 		free(*exec_path);
-		ft_perror(*exec_path, IS_DIR);
 		return (0);
 	}
 	return (*exec_path);
@@ -66,7 +66,7 @@ char	*path_to_exec(char *exec, char **env)
 	}
 	if (exec && access(exec, 0) == 0 && str_contains('/', exec))
 		return (check_type(&exec));
-	ft_perror(exec, N_FOUND);
+	ft_perror(exec, N_FOUND, 0);
 	free(exec);
 	return (0);
 }

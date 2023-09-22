@@ -20,12 +20,12 @@ char	*ft_strerror(void)
 		return ("undefined error");
 }
 
-void	ft_perror(char *msg, int code)
+int	ft_perror(char *msg, int err_code, int exit_code)
 {
 	char	*str;
 
-	if (code)
-		errno = code;
+	if (err_code)
+		errno = err_code;
 	if (errno >= 107)
 	{
 		str = ft_strerror();
@@ -40,4 +40,5 @@ void	ft_perror(char *msg, int code)
 	}
 	else
 		perror(msg);
+	return (exit_code);
 }

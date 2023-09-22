@@ -40,10 +40,7 @@ int	handle_in(t_rdr_l *r, int fd1)
 		if (!access(r->word, 0))
 			fd = open(r->word, O_RDONLY);
 		else
-		{
-			ft_perror(r->word, ENOENT);
-			return (127);
-		}
+			return (ft_perror(r->word, ENOENT, 127));
 	}
 	dup2(fd, fd1);
 	return (0);
@@ -53,7 +50,6 @@ void	handle_heredoc(t_rdr_l *r, int fd1)
 {
 	char	*line;
 	char	*full_input;
-	char	*buf;
 	int		fd[2];
 
 	if (fd1 < 0)
@@ -62,16 +58,7 @@ void	handle_heredoc(t_rdr_l *r, int fd1)
 	full_input = (char *)malloc(sizeof(char) * 1);
 	*full_input = 0;
 	while (ft_strncmp(line, r->word, ft_strlen(r->word)))
-	{
-		buf = str_join(full_input, line, "");
-		free(line);
-		free(full_input);
-		full_input = buf;
-		buf = str_join(full_input, "\n", "");
-		free(full_input);
-		full_input = buf;
-		line = readline("> ");
-	}
+		add_line(&full_input, &line);
 	pipe(fd);
 	write(fd[1], full_input, ft_strlen(full_input));
 	close(fd[1]);
@@ -102,10 +89,7 @@ int	redirections(t_rdr_l *rdrs)
 		if (ft_isdigit(rdrs->token->val[0]))
 			fd1 = ft_atoi(rdrs->token->val);
 		if (!rdrs->word)
-		{
-			ft_perror(0, SYNTAX);
-			return (2);
-		}
+			return (ft_perror(0, SYNTAX, 2));
 		if (rdrs->token->type == REDIR_OUT || rdrs->token->type == REDIR_APPEND)
 			handle_out(rdrs, fd1);
 		else if (rdrs->token->type == REDIR_IN)

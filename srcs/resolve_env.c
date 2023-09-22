@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 12:49:08 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/22 08:59:13 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/22 09:11:02 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,33 +77,19 @@ char	*resolve_env(const char *s, t_env *env)
 	ebqd[2] = 0;
 	ebqd[3] = 0;
 	res = ft_strdup(s);
-	if (!res)
-		return (0);
 	while (res && res[++i])
 	{
 		check_quotes(res, i, &ebqd);
 		if (res[i] == '$' && res[i + 1] != '?' && !ebqd[1] && !ebqd[2]
 			&& (ft_isalnum(res[i + 1]) || res[i + 1] == '_')
 		)
-		{
 			res = handle_env(&ebqd, &res, &i, env);
-			if (!res)
-				return (0);
-		}
 		else if (res[i] == '$' && res[i + 1] == '?' && !ebqd[1] && !ebqd[2])
-		{
 			res = handle_exit_code(&res, &i, env->prev_exit_code);
-			if (!res)
-				return (0);
-		}
 		else if (res[i] == '~' && !ebqd[1] && !ebqd[2] && !ebqd[3]
 			&& (i == 0 || str_contains(res[i - 1], " \t"))
 			&& (!res[i + 1] || str_contains(res[i + 1], " \t/")))
-		{
 			res = handle_home(&res, &i);
-			if (!res)
-				return (0);
-		}
 	}
 	return (res);
 }

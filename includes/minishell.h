@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/22 09:00:14 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/22 09:33:45 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,31 +84,32 @@ typedef struct s_env
 }					t_env;
 
 // Builtins
+int				ft_export(t_env *data, char **args);
+int				ft_unset(t_env *env, char **args);
+int				ft_cd(t_env *env, char *arg);
+int				ft_env(char **envp);
+int				ft_echo(char **arg);
+int				ft_pwd(void);
+// Builtins utils
+void			delete_var_helper(t_env *env, int i, int pos, char **new_env);
+void			ft_unset_helper(t_env *env, char **args, int i);
 void			ch_env(t_env *data, int i, char *arg);
 void			print_args(char **arr, int i);
 void			print_export(t_env *data);
-char			*retr_env_value(t_env *env, char *var);
-char			**realloc_env(t_env *data, int size);
-char			**identifier_value_pair(char *arg);
 bool			check_identifier(char **a, char *cmd, char *str);
-int				ft_export_cd(t_env *env, char *str, char *update);
 int				exec_builtin(t_env *env, int fd_in, int fd_out, t_tree *tree);
+int				ft_export_cd(t_env *env, char *str, char *update);
+int				ft_cd_helper(t_env *env, char *arg, char *pwd);
 int				go_back(t_env *env, char *arg, char *cwd);
-int				ft_export(t_env *data, char **args);
 int				env_cpy(t_env *data, char **envp);
 int				update_env(t_env *env, char *arg);
 int				to_home(t_env *env, char *arg);
-int				ft_cd(t_env *env, char *arg);
-int				ft_env(char **envp);
-int				chdir_(char *arg);
-int				ft_pwd(void);
-int				ft_cd_helper(t_env *env, char *arg, char *pwd);
-char			**delete_var(t_env *env, int pos);
-int				ft_unset(t_env *env, char **args);
 int				check_nl_flag(char *arg);
-int				ft_echo(char **arg);
-void			delete_var_helper(t_env *env, int i, int pos, char **new_env);
-void			ft_unset_helper(t_env *env, char **args, int i);
+int				chdir_(char *arg);
+char			*retr_env_value(t_env *env, char *var);
+char			**realloc_env(t_env *data, int size);
+char			**identifier_value_pair(char *arg);
+char			**delete_var(t_env *env, int pos);
 // Path
 char			*path_to_exec(char *exec, char **env);
 // Init
@@ -117,9 +118,10 @@ void			init_settings(void);
 // Signals
 void			handle_signals(void);
 // Redirections
+void			add_line(char **full_input, char **line);
 int				redirections(t_rdr_l *redirections);
 // Errors
-void			ft_perror(char *msg, int code);
+int				ft_perror(char *msg, int err_code, int exit_code);
 char			*ft_strerror(void);
 // Executor
 int				exec_recursive(t_tree *tree, t_env *env, int iow[3]);
@@ -144,8 +146,8 @@ char			*resolve_env(const char *s, t_env *env);
 t_rdr_l			*new_redir(t_tocken *token);
 t_tree			*paste_token(t_tree *ast, t_tocken *token);
 t_tree			*build_ast(char *s, size_t *i);
-t_tree			*new_tree_node(void);
 t_tree			*ast(char *s, t_env *env);
+t_tree			*new_tree_node(void);
 // Tokenizer utils
 void			check_quotes_backslash(char *s, int (*f)[7]);
 int				is_backslash(char *s, int pos);
