@@ -6,7 +6,7 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/21 18:21:48 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/22 09:01:34 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,22 @@ int	tputs_putchar(int c)
 	return (write(1, &c, 1));
 }
 
+void	exec_line(char *user_input, t_env *data)
+{
+	t_tree	*tree;
+
+	add_history(user_input);
+	tree = ast(user_input, data);
+	data->curr_exit_code = execute(tree, data);
+	data->prev_exit_code = data->curr_exit_code;
+	clean_tree(tree);
+}
+
 int	interactive(t_env	*data)
 {
 	char	*prompt;
 	char	*user_input;
-	t_tree	*tree;
 
-	user_input = "";
 	while (1)
 	{
 		if (data->curr_exit_code)
@@ -32,13 +41,7 @@ int	interactive(t_env	*data)
 			prompt = SUCCESS_PROMPT;
 		user_input = readline(prompt);
 		if (user_input && *user_input)
-		{
-			add_history(user_input);
-			tree = ast(user_input, data);
-			data->curr_exit_code = execute(tree, data);
-			data->prev_exit_code = data->curr_exit_code;
-			clean_tree(tree);
-		}
+			exec_line(user_input, data);
 		else if (!user_input)
 		{
 			tputs(tgetstr("cr", NULL), 1, tputs_putchar);

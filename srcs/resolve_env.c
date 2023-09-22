@@ -6,51 +6,11 @@
 /*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 12:49:08 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/21 18:13:48 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/22 08:59:13 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-char	*replace_env(char *s, size_t start, size_t end, int *hop)
-{
-	char	*env;
-	char	*res;
-	char	*val;
-	int		val_len;
-
-	env = str_cut(s, start, end);
-	if (!env)
-		return (0);
-	val = getenv(env);
-	res = str_replace(s, start, end, val);
-	if (!res)
-	{
-		free (env);
-		return (0);
-	}
-	free (env);
-	if (!val)
-		val_len = 0;
-	else
-		val_len = ft_strlen(val);
-	if (hop)
-		*hop = *hop + val_len - end + start - 2;
-	return (res);
-}
-
-void	check_quotes(char *s, int i, int (*ebqd)[4])
-{
-	if (s[i] == '\'' && !(*ebqd)[2] && !(*ebqd)[3])
-		(*ebqd)[2] = 1;
-	else if (s[i] == '\'' && (*ebqd)[2] && !(*ebqd)[3])
-		(*ebqd)[2] = 0;
-	if (s[i] == '"' && !(*ebqd)[3] && !(*ebqd)[2])
-		(*ebqd)[3] = 1;
-	else if (s[i] == '"' && (*ebqd)[3] && !(*ebqd)[2])
-		(*ebqd)[3] = 0;
-	(*ebqd)[1] = is_backslash(s, i);
-}
 
 char	*handle_env(int (*ebqd)[4], char **s, int *i, t_env *env)
 {
@@ -105,7 +65,6 @@ char	*handle_home(char **s, int *i)
 		return (0);
 	return (buf);
 }
-
 
 char	*resolve_env(const char *s, t_env *env)
 {
