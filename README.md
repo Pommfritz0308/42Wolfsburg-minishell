@@ -5,17 +5,17 @@
 - [x] History
 - [X] Parsing
 - [X] Path
-- [X] Redirections < > << >> 
+- [X] Redirections < > << >>
 - [X] Pipes
 - [X] Enviroment variables
 - [X] $?
 - [X] Signals
 - [ ] Builtins:
-	- [ ] echo
-	- [ ] cd
+	- [x] echo
+	- [x] cd
 	- [x] pwd
-	- [ ] export
-	- [ ] unset
+	- [x] export
+	- [x] unset
 	- [x] env
 	- [ ] exit
 - [ ] Testing, leaks
