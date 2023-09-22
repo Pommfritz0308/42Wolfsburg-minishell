@@ -36,14 +36,6 @@ int	exec_builtin_helper(int exit_code, char **args, t_env *env)
 	return (exit_code);
 }
 
-int	exit_helper(t_env *env, char **args)
-{
-	env->curr_exit_code = EXIT_SUCCESS;
-	clean_tab(args);
-	kill(0, SIGUSR1);
-	return (env->curr_exit_code);
-}
-
 int	exec_builtin(t_env *env, int fd_in, int fd_out, t_tree *tree)
 {
 	int		oie[3];
@@ -54,7 +46,7 @@ int	exec_builtin(t_env *env, int fd_in, int fd_out, t_tree *tree)
 		return (oie[2]);
 	args = lst_to_tab(&(tree->args));
 	if (!ft_strncmp(args[0], "exit", 5))
-		return (exit_helper(env, args));
+		return (ft_exit(env, args));
 	oie[1] = dup(0);
 	oie[0] = dup(1);
 	dup2(fd_in, 0);

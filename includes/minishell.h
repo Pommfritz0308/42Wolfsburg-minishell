@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/22 09:33:45 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/22 10:45:35 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int				ft_cd(t_env *env, char *arg);
 int				ft_env(char **envp);
 int				ft_echo(char **arg);
 int				ft_pwd(void);
+int				ft_exit(t_env *env, char **args);
 // Builtins utils
 void			delete_var_helper(t_env *env, int i, int pos, char **new_env);
 void			ft_unset_helper(t_env *env, char **args, int i);
@@ -97,6 +98,7 @@ void			ch_env(t_env *data, int i, char *arg);
 void			print_args(char **arr, int i);
 void			print_export(t_env *data);
 bool			check_identifier(char **a, char *cmd, char *str);
+bool			check_range(long long int result, char *numb, int i);
 int				exec_builtin(t_env *env, int fd_in, int fd_out, t_tree *tree);
 int				ft_export_cd(t_env *env, char *str, char *update);
 int				ft_cd_helper(t_env *env, char *arg, char *pwd);
@@ -106,6 +108,7 @@ int				update_env(t_env *env, char *arg);
 int				to_home(t_env *env, char *arg);
 int				check_nl_flag(char *arg);
 int				chdir_(char *arg);
+int				calc_exit_code(t_env *env, char *numb);
 char			*retr_env_value(t_env *env, char *var);
 char			**realloc_env(t_env *data, int size);
 char			**identifier_value_pair(char *arg);

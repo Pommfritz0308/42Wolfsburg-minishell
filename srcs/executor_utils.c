@@ -89,8 +89,10 @@ int	exec_recursive(t_tree *tree, t_env *env, int iow[3])
 	{
 		exit_code = exec_builtin(env, iow[0], iow[1], tree);
 		if (exit_code == -1)
+		{
 			waitpid(exec_cmd(tree, iow[0], iow[1], env), &exit_code, iow[2]);
-		exit_code = WEXITSTATUS(exit_code);
+			exit_code = WEXITSTATUS(exit_code);
+		}
 	}
 	if (tree->right)
 		return (exec_recursive(tree->right, env, iow));
