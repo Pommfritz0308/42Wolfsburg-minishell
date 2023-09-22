@@ -31,3 +31,17 @@ char	*str_cut(char *s, size_t start, size_t end)
 	ft_strlcpy(res, s + start, end - start + 1);
 	return (res);
 }
+
+void	add_line(char **full_input, char **line)
+{
+	char	*buf;
+
+	buf = str_join(*full_input, *line, "");
+	free(*line);
+	free(*full_input);
+	*full_input = buf;
+	buf = str_join(*full_input, "\n", "");
+	free(*full_input);
+	*full_input = buf;
+	*line = readline("> ");
+}
