@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/22 15:28:09 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/22 14:53:06 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@ void	exec_line(char *user_input, t_env *data)
 
 	add_history(user_input);
 	tree = ast(user_input, data);
-	data->curr_exit_code = execute(tree, data);
+	if (tree)
+		data->curr_exit_code = execute(tree, data);
 	data->prev_exit_code = data->curr_exit_code;
-	clean_tree(tree);
+	if (tree)
+		clean_tree(tree);
 }
 
 int	interactive(t_env	*data)
@@ -57,19 +59,31 @@ int	main(int ac, char **av, char **env)
 {
 	t_env		data;
 	t_tree		*tree;
-	char		*line;
+	char		*input;
+	char		**line_arr;
+	char		**line;
 
 	data = init_env(ac, av, env);
 	init_settings();
 	handle_signals();
 	if (ac >= 3 && !ft_strncmp(av[1], "-c", 3))
 	{
-		line = av[2];
+		input = av[2];
 		data.ac = 1;
 		data.av[1] = 0;
-		tree = ast(line, &data);
-		data.curr_exit_code = execute(tree, &data);
-		clean_tree(tree);
+		line_arr = ft_split(input, '\n');
+		line = line_arr;
+		while (*line)
+		{
+			tree = ast(*line, &data);
+			if (tree)
+			{
+				data.curr_exit_code = execute(tree, &data);
+				clean_tree(tree);
+			}
+			line++;
+		}
+		clean_tab(line_arr);
 		exit(data.curr_exit_code);
 	}
 	else
