@@ -31,3 +31,28 @@ char	**realloc_env(t_env *data, int size)
 	free(data->env);
 	return (new_env);
 }
+
+int	update_shlvl(t_env *env)
+{
+	char	*shlvl;
+	char	*temp;
+	int		i;
+
+	i = 1;
+	shlvl = NULL;
+	temp = NULL;
+	if (!retr_env_value(env, "SHLVL="))
+		ft_export_cd(env, "SHLVL", "SHLVL=1");
+	else
+	{
+		shlvl = retr_env_value(env, "SHLVL=");
+		i += ft_atoi(shlvl);
+		free(shlvl);
+		shlvl = ft_itoa(i);
+		temp = ft_strjoin("SHLVL=", shlvl);
+		ft_export_cd(env, "SHLVL", temp);
+		free(shlvl);
+		free(temp);
+	}
+	return (EXIT_SUCCESS);
+}
