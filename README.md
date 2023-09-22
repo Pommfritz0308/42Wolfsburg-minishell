@@ -17,7 +17,7 @@
 	- [x] export
 	- [x] unset
 	- [x] env
-	- [ ] exit
+	- [x] exit
 - [ ] Testing, leaks
 
 ### Parsing plan
