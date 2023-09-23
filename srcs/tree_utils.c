@@ -33,9 +33,17 @@ t_tree	*paste_token(t_tree *ast, t_tocken *token)
 {
 	t_tree	*node;
 
-	node = new_tree_node();
-	node->token = token;
-	paste_node(ast, node);
+	if (!ast->token)
+	{
+		node = ast;
+		node->token = token;
+	}
+	else
+	{
+		node = new_tree_node();
+		node->token = token;
+		paste_node(ast, node);
+	}
 	return (node);
 }
 

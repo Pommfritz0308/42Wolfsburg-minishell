@@ -45,3 +45,9 @@ void	add_line(char **full_input, char **line)
 	*full_input = buf;
 	*line = readline("> ");
 }
+
+
+int	tputs_putchar(int c)
+{
+	return (write(1, &c, 1));
+}
