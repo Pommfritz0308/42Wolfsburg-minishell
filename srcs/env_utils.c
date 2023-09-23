@@ -47,6 +47,13 @@ int	update_shlvl(t_env *env)
 	{
 		shlvl = retr_env_value(env, "SHLVL=");
 		i += ft_atoi(shlvl);
+		if (i < 0)
+			i = 0;
+		else if (i > 1000)
+		{
+			ft_perror(0, HIGH_SHLVL, 0);
+			i = 1;
+		}
 		free(shlvl);
 		shlvl = ft_itoa(i);
 		temp = ft_strjoin("SHLVL=", shlvl);

@@ -25,7 +25,13 @@ t_tocken	*operator(char *s, int (*f)[7], size_t *pos, t_tocken *token)
 			(*f)[4]--;
 		while (--(*f)[4] >= 0 && ft_isdigit(s[(*f)[4]]))
 			;
-		(*f)[4]++;
+		if ((*f)[4] > 0 && !str_contains(s[(*f)[4]], " \t()|<>&"))
+		{
+			while (s[++(*f)[4]] && ft_isdigit(s[(*f)[4]]))
+				;
+		}
+		else
+			(*f)[4]++;
 		if ((s[(*f)[6]] == '>' && s[(*f)[6] + 1] == '>')
 			|| (s[(*f)[6]] == '<' && s[(*f)[6] + 1] == '<')
 			|| (s[(*f)[6]] == '<' && s[(*f)[6] + 1] == '>')

@@ -52,11 +52,9 @@ int	exec_builtin(t_env *env, int fd_in, int fd_out, t_tree *tree)
 	dup2(fd_in, 0);
 	dup2(fd_out, 1);
 	if (tree && tree->redirections)
-		oie[2] = redirections(tree->redirections);
+		oie[2] = redirections(tree->redirections, 0);
 	if (oie[2] <= 0)
 		oie[2] = exec_builtin_helper(oie[2], args, env);
-	if (oie[2] > 0)
-		oie[2] = 258;
 	dup2(oie[1], 0);
 	dup2(oie[0], 1);
 	close(oie[0]);

@@ -126,16 +126,15 @@ void			handle_signals(void);
 // Redirections
 void			add_line(char **full_input, char **line);
 int				only_redirections(int fd_in, int fd_out, t_tree *tree);
-int				redirections(t_rdr_l *redirections);
+int				redirections(t_rdr_l *redirections, int *stdin_redirected);
 // Errors
 int				ft_perror(char *msg, int err_code, int exit_code);
 char			*ft_strerror(void);
 // Executor
-int				exec_recursive(t_tree *tree, t_env *env, int iow[3]);
+int				exec_recursive(t_tree *tree, t_env *env, int iow[3], int lvl);
 int				execute(t_tree *tree, t_env *env);
 char			**lst_to_tab(t_list **lst);
 // String utils
-void			str_basename(char **s);
 char			*str_replace(char *s, size_t start, size_t end, char *in_s);
 char			*str_join(char const *s1, char const *s2, char *sep);
 char			*str_cut(char *s, size_t start, size_t end);
@@ -144,6 +143,7 @@ char			**str_split(char const *s, char c);
 char			*str_unquote(char *s);
 char			last_char(char *s);
 int				str_contains(char c, char *s);
+int				tputs_putchar(int c);
 int				is_digit(char *s);
 // Parser utils
 void			paste_redir(t_rdr_l **redirs, t_tocken *token);

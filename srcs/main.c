@@ -12,11 +12,6 @@
 
 #include "../includes/minishell.h"
 
-int	tputs_putchar(int c)
-{
-	return (write(1, &c, 1));
-}
-
 void	exec_line(char *user_input, t_env *data)
 {
 	t_tree	*tree;

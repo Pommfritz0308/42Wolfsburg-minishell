@@ -14,6 +14,8 @@ char	*ft_strerror(void)
 		return (IS_DIR_T);
 	else if (errno == IDENT)
 		return (IDENT_T);
+	else if (errno == HIGH_SHLVL)
+		return (HIGH_SHLVL_T);
 	else if (errno < 107)
 		return (strerror(errno));
 	else
@@ -24,12 +26,12 @@ int	ft_perror(char *msg, int err_code, int exit_code)
 {
 	char	*str;
 
+	write(2, "minishell: ", 12);
 	if (err_code)
 		errno = err_code;
 	if (errno >= 107)
 	{
 		str = ft_strerror();
-		write(2, "minishell: ", 12);
 		if (msg && *msg)
 		{
 			write(2, msg, ft_strlen(msg));
