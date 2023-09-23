@@ -26,7 +26,6 @@ int	execute(t_tree *tree, t_env *env)
 {
 	int	exit_code;
 	int	iow[3];
-	int	ret;
 	int	status;
 
 	iow[0] = 0;
@@ -34,7 +33,7 @@ int	execute(t_tree *tree, t_env *env)
 	iow[2] = 0;
 	exit_code = exec_recursive(tree, env, iow, 0);
 	//printf("waiting line\n");
-	ret = waitpid(-1, &status, 0);
+	waitpid(-1, &status, 0);
 	//printf("exit line %d %d status: %d\n", ret, errno, status);
 	return (exit_code);
 }
