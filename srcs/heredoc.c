@@ -27,6 +27,8 @@ int	handle_heredoc_helper(t_rdr_l *r, int fd_left, int fd_in)
 	*full_input = 0;
 	while (line && ft_strncmp(line, r->word, ft_strlen(r->word)))
 		add_line(&full_input, &line);
+	if (line)
+		free(line);
 	if (is_closed(0))
 	{
 		free(full_input);
