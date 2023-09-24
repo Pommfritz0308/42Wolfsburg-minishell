@@ -20,6 +20,7 @@ int	ft_exit(t_env *env, char **args)
 	ft_putendl_fd("exit", 2);
 	if (!args || !args[1])
 	{
+		clean_tab(args);
 		kill(0, SIGUSR1);
 		return (env->curr_exit_code);
 	}
