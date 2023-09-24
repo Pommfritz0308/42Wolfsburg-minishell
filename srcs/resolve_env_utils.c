@@ -5,21 +5,13 @@ char	*replace_env(char *s, size_t start, size_t end, int *hop, t_env *data)
 	char	*env;
 	char	*res;
 	char	*val;
-	char	*buf;
 	int		val_len;
 
 	env = str_cut(s, start, end);
 	if (!env)
 		return (0);
-	buf = str_join(env, "=", "");
-	val = retr_env_value(data, buf);
-	free(buf);
+	val = str_getenv(env, data);
 	res = str_replace(s, start, end, val);
-	if (!res)
-	{
-		free (env);
-		return (0);
-	}
 	free (env);
 	if (!val)
 		val_len = 0;

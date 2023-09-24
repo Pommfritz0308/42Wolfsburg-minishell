@@ -46,8 +46,20 @@ void	add_line(char **full_input, char **line)
 	*line = readline("> ");
 }
 
-
 int	tputs_putchar(int c)
 {
 	return (write(1, &c, 1));
+}
+
+char	*str_getenv(char *key, t_env *env)
+{
+	char	*buf;
+	char	*val;
+
+	buf = str_join(key, "=", "");
+	if (!buf)
+		return (0);
+	val = retr_env_value(env, buf);
+	free(buf);
+	return (val);
 }

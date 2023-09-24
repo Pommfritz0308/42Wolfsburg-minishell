@@ -1,6 +1,16 @@
 #include "../includes/minishell.h"
 
-void	signal_handler(int signum)
+void	heredoc_handler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		tputs(tgetstr("cr", NULL), 1, tputs_putchar);
+		tputs(tgetstr("el", NULL), 1, tputs_putchar);
+		close(0);
+	}
+}
+
+void	main_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
@@ -13,10 +23,15 @@ void	signal_handler(int signum)
 		close(0);
 }
 
-void	handle_signals(void)
+void	main_sig_mode(void)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
-	signal(SIGINT, signal_handler);
-	signal(SIGUSR1, signal_handler);
+	signal(SIGINT, main_handler);
+	signal(SIGUSR1, main_handler);
+}
+
+void	heredoc_sig_mode(void)
+{
+	signal(SIGINT, heredoc_handler);
 }

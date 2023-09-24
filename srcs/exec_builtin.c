@@ -38,27 +38,24 @@ int	exec_builtin_helper(int exit_code, char **args, t_env *env)
 
 int	exec_builtin(t_env *env, int fd_in, int fd_out, t_tree *tree)
 {
-	int		oie[3];
+	int		ioe[3];
+	int		exit_code;
 	char	**args;
 
-	oie[2] = -1;
+	exit_code = -1;
 	if (!is_builtin(tree->args->content))
-		return (oie[2]);
+		return (exit_code);
 	args = lst_to_tab(&(tree->args));
 	if (!ft_strncmp(args[0], "exit", 5))
 		return (ft_exit(env, args));
-	oie[1] = dup(0);
-	oie[0] = dup(1);
+	wrap_ioe(&ioe);
+	if (tree && tree->redirections)
+		exit_code = redirections(tree->redirections, fd_in, fd_out);
 	dup2(fd_in, 0);
 	dup2(fd_out, 1);
-	if (tree && tree->redirections)
-		oie[2] = redirections(tree->redirections, 0);
-	if (oie[2] <= 0)
-		oie[2] = exec_builtin_helper(oie[2], args, env);
-	dup2(oie[1], 0);
-	dup2(oie[0], 1);
-	close(oie[0]);
-	close(oie[1]);
+	if (exit_code <= 0)
+		exit_code = exec_builtin_helper(exit_code, args, env);
+	restore_ioe(&ioe);
 	clean_tab(args);
-	return (oie[2]);
+	return (exit_code);
 }

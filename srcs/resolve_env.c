@@ -55,11 +55,18 @@ char	*handle_exit_code(char **s, int *i, int prev_exit_code)
 	return (buf);
 }
 
-char	*handle_home(char **s, int *i)
+char	*handle_home(char **s, int *i, t_env *env)
 {
 	char	*buf;
+	char	*home;
 
-	buf = str_replace(*s, *i + 1, *i + 1, getenv("HOME"));
+	home = str_getenv("HOME", env);
+	if (!home)
+		buf = str_replace(*s, *i + 1, *i + 1, getenv("HOME"));
+	else
+		buf = str_replace(*s, *i + 1, *i + 1, home);
+	if (home)
+		free(home);
 	free(*s);
 	if (!buf)
 		return (0);
@@ -89,7 +96,7 @@ char	*resolve_env(const char *s, t_env *env)
 		else if (res[i] == '~' && !ebqd[1] && !ebqd[2] && !ebqd[3]
 			&& (i == 0 || str_contains(res[i - 1], " \t"))
 			&& (!res[i + 1] || str_contains(res[i + 1], " \t/")))
-			res = handle_home(&res, &i);
+			res = handle_home(&res, &i, env);
 	}
 	return (res);
 }
