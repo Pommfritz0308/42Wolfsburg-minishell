@@ -60,7 +60,7 @@ int	main(int ac, char **av, char **env)
 
 	data = init_env(ac, av, env);
 	init_settings();
-	handle_signals();
+	main_sig_mode();
 	if (ac >= 3 && !ft_strncmp(av[1], "-c", 3))
 	{
 		input = av[2];

@@ -26,7 +26,7 @@ int	ft_perror(char *msg, int err_code, int exit_code)
 {
 	char	*str;
 
-	write(2, "minishell: ", 12);
+	write(2, "minishell: ", 11);
 	if (err_code)
 		errno = err_code;
 	if (errno >= 107)

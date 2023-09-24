@@ -1,18 +1,25 @@
 #include "../includes/minishell.h"
 
-void	paste_tree(t_tree *ast, t_tree *subtree)
+void	paste_paranth(t_tree **ast, t_tree *subtree)
 {
 	t_tree	*node;
 
-	if (ast->right)
-	{
+	if (!(*ast)->token)
+		node = *ast;
+	else
 		node = new_tree_node();
-		node->left = ast->right;
-		ast->right = node;
-		node->right = subtree;
+	node->token = new_tocken();
+	node->token->type = PARANTH_OPEN;
+	node->right = subtree;
+	if (node == *ast)
+		return ;
+	if ((*ast)->right)
+	{
+		node->left = *ast;
+		*ast = node;
 	}
 	else
-		ast->right = subtree;
+		(*ast)->right = node;
 }
 
 void	paste_node(t_tree *ast, t_tree *node)

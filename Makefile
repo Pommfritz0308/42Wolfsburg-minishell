@@ -18,9 +18,10 @@ BUILTINS_DIR=	builtins
 INCL_DIR =		includes
 
 SRC = 			main resolve_env resolve_env_utils parser init exec_builtin \
-				tokenizer tokenizer_utils redirections executor executor_utils \
+				tokenizer tokenizer_utils executor executor_utils env_utils \
 				str_utils str_utils_2 str_utils_3 tree_utils tree_utils_2 \
-				env_utils signals clean errors path debug
+				redirections redirections_utils heredoc path signals clean \
+				fd_utils errors debug
 BUILTINS =		export export_2 pwd env cd cd_2 unset echo exit
 
 OBJS =			$(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(SRC)))

@@ -31,13 +31,14 @@
 
 // Settings
 # define SUCCESS_PROMPT	"\e[0;32mminishell\e[0m$ "
-//# define SUCCESS_PROMPT	"mini$ "
+// # define SUCCESS_PROMPT	"mini$ "
 # define FAILED_PROMPT	"\e[0;31mminishell\e[0m$ "
-//# define FAILED_PROMPT	"mini$ "
+// # define FAILED_PROMPT	"mini$ "
 # define MINISHELLRC	"/.minishellrc"
 
 typedef enum e_token_type
 {
+	START,
 	WORD,
 	REDIR_OUT,
 	REDIR_APPEND,
@@ -122,11 +123,13 @@ t_env			init_env(int ac, char **av, char **env);
 void			init_settings(void);
 int				update_shlvl(t_env *env);
 // Signals
-void			handle_signals(void);
+void			heredoc_sig_mode(void);
+void			main_sig_mode(void);
 // Redirections
 void			add_line(char **full_input, char **line);
-int				only_redirections(int fd_in, int fd_out, t_tree *tree);
-int				redirections(t_rdr_l *redirections, int *stdin_redirected);
+int				redirections(t_rdr_l *redirections, int fd_in, int fd_out);
+int				check_perms(char *filename, int read, int write);
+int				handle_heredoc(t_rdr_l *r, int fd1, int fd_in);
 // Errors
 int				ft_perror(char *msg, int err_code, int exit_code);
 char			*ft_strerror(void);
@@ -140,6 +143,7 @@ char			*str_join(char const *s1, char const *s2, char *sep);
 char			*str_cut(char *s, size_t start, size_t end);
 char			*str_slice(char *s, int start, int end);
 char			**str_split(char const *s, char c);
+char			*str_getenv(char *key, t_env *env);
 char			*str_unquote(char *s);
 char			last_char(char *s);
 int				str_contains(char c, char *s);
@@ -149,7 +153,7 @@ int				is_digit(char *s);
 void			paste_redir(t_rdr_l **redirs, t_tocken *token);
 void			paste_redir_word(t_rdr_l *redirs, char *word);
 void			add_new_head(t_tree **ast, t_tocken *token);
-void			paste_tree(t_tree *ast, t_tree *subtree);
+void			paste_paranth(t_tree **ast, t_tree *subtree);
 char			*resolve_env(const char *s, t_env *env);
 t_rdr_l			*new_redir(t_tocken *token);
 t_tree			*paste_token(t_tree *ast, t_tocken *token);
@@ -166,6 +170,10 @@ t_tocken		*new_tocken(void);
 // Resolve env
 char			*replace_env(char *s, size_t start, size_t end, int *hop, t_env *data);
 void			check_quotes(char *s, int i, int (*ebqd)[4]);
+// Fd utils
+void			restore_ioe(int (*ioe)[3]);
+void			wrap_ioe(int (*ioe)[3]);
+int				is_closed(int fd);
 // Clean
 void			clean_tree(t_tree *tree);
 void			clean_token(t_tocken *t);
