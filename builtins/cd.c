@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:58:31 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/22 17:58:32 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/25 14:25:25 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,19 @@ int	ft_cd(t_env *env, char *arg)
 	if (!arg)
 	{
 		to_home(env, pwd);
-		return (EXIT_SUCCESS);
+		return (free(pwd), EXIT_SUCCESS);
 	}
 	else if (!ft_strncmp(arg, "-", ft_strlen("-")))
 	{
 		if (ft_cd_helper(env, arg, pwd))
-			return (EXIT_FAILURE);
+			return (free(pwd), EXIT_FAILURE);
 		else
-			return (EXIT_SUCCESS);
+			return (free(pwd), EXIT_SUCCESS);
 	}
 	else if (chdir_(arg))
-		return (EXIT_FAILURE);
+		return (free(pwd), EXIT_FAILURE);
 	update_cwd(env, pwd);
-	return (EXIT_SUCCESS);
+	return (free(pwd), EXIT_SUCCESS);
 }
 
 int	update_cwd(t_env *env, char *arg)
@@ -56,9 +56,7 @@ int	update_cwd(t_env *env, char *arg)
 	}
 	update = ft_strjoin("PWD=", cwd);
 	ft_export_cd(env, "PWD", update);
-	free(cwd);
-	free(update);
-	return (EXIT_SUCCESS);
+	return (free(cwd), free(update), EXIT_SUCCESS);
 }
 
 int	go_back(t_env *env, char *arg, char *cwd)
@@ -67,12 +65,10 @@ int	go_back(t_env *env, char *arg, char *cwd)
 
 	update = ft_strjoin("OLDPWD=", cwd);
 	ft_export_cd(env, "OLDPWD", update);
-	free(cwd);
 	free(update);
 	update = ft_strjoin("PWD=", arg);
 	ft_export_cd(env, "PWD", update);
-	free(update);
-	return (EXIT_SUCCESS);
+	return (free(update), EXIT_SUCCESS);
 }
 
 int	chdir_(char *arg)

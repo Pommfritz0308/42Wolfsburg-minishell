@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/22 15:55:57 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/25 15:48:56 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,14 @@ int				update_cwd(t_env *env, char *arg);
 int				to_home(t_env *env, char *arg);
 int				check_nl_flag(char *arg);
 int				chdir_(char *arg);
+int				ft_exit_helper(char **args, int i);
 int				calc_exit_code(t_env *env, char *numb);
 int				kill_util(int exit_code, char **args);
 char			*retr_env_value(t_env *env, char *var);
 char			**realloc_env(t_env *data, int size);
 char			**identifier_value_pair(char *arg);
 char			**delete_var(t_env *env, int pos);
+char			*check_identifier_err(char *cmd, char *str);
 // Path
 char			*path_to_exec(char *exec, t_env *env);
 // Init

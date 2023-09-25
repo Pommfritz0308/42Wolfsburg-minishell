@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 14:58:03 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/21 18:14:36 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/25 14:19:22 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	ft_cd_helper(t_env *env, char *arg, char *pwd)
 	arg = retr_env_value(env, "OLDPWD");
 	if (!arg)
 	{
-		free(pwd);
 		ft_putendl_fd("minishell: cd: OLDPWD not set", 2);
 		return (EXIT_FAILURE);
 	}
