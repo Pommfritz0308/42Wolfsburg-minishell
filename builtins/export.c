@@ -50,14 +50,16 @@ bool	check_identifier(char **a, char *cmd, char *str)
 	int		i;
 	char	*err_msg;
 	char	*tmp;
+	char	*tmp_2;
 
 	i = -1;
 	tmp = ft_strjoin("minishell: ", cmd);
-	err_msg = ft_strjoin(tmp, ": `");
+	tmp_2 = ft_strjoin(tmp, ": `");
 	free(tmp);
 	tmp = ft_strjoin(str, "\': not a valid identifier");
-	err_msg = ft_strjoin(err_msg, tmp);
+	err_msg = ft_strjoin(tmp_2, tmp);
 	free(tmp);
+	free(tmp_2);
 	if (!a[0][0] || !a[0])
 	{
 		ft_putendl_fd(err_msg, 2);
@@ -71,6 +73,7 @@ bool	check_identifier(char **a, char *cmd, char *str)
 			return (free(err_msg), false);
 		}
 	}
+	free(err_msg);
 	return (true);
 }
 
