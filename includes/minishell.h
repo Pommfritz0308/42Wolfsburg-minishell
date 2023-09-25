@@ -30,13 +30,14 @@
 # include "errnu.h"
 
 // Settings
-# define SUCCESS_PROMPT	"\e[0;32mminishell\e[0m$ "
-// # define SUCCESS_PROMPT	"mini$ "
-# define FAILED_PROMPT	"\e[0;31mminishell\e[0m$ "
-// # define FAILED_PROMPT	"mini$ "
+// # define SUCCESS_PROMPT	"\e[0;32mminishell\e[0m$ "
+# define SUCCESS_PROMPT	"mini$ "
+// # define FAILED_PROMPT	"\e[0;31mminishell\e[0m$ "
+# define FAILED_PROMPT	"mini$ "
 # define HEREDOC_PROMPT	"> "
 # define MINISHELLRC	"/.minishellrc"
 
+// Typedefs
 typedef enum e_token_type
 {
 	START,
@@ -88,11 +89,11 @@ typedef struct s_env
 // Builtins
 int				ft_export(t_env *data, char **args);
 int				ft_unset(t_env *env, char **args);
+int				ft_exit(t_env *env, char **args);
 int				ft_cd(t_env *env, char *arg);
 int				ft_env(char **envp);
 int				ft_echo(char **arg);
 int				ft_pwd(void);
-int				ft_exit(t_env *env, char **args);
 // Builtins utils
 void			delete_var_helper(t_env *env, int i, int pos, char **new_env);
 void			ft_unset_helper(t_env *env, char **args, int i);
@@ -100,20 +101,20 @@ void			ch_env(t_env *data, int i, char *arg);
 void			print_args(char **arr, int i);
 void			print_export(t_env *data);
 void			numeric_error(char *str);
-bool			check_identifier(char **a, char *cmd, char *str);
 bool			check_range(long long int result, char *numb, int i);
+bool			check_identifier(char **a, char *cmd, char *str);
 int				exec_builtin(t_env *env, int fd_in, int fd_out, t_tree *tree);
 int				ft_export_cd(t_env *env, char *str, char *update);
 int				ft_cd_helper(t_env *env, char *arg, char *pwd);
 int				go_back(t_env *env, char *arg, char *cwd);
+int				calc_exit_code(t_env *env, char *numb);
+int				kill_util(int exit_code, char **args);
 int				env_cpy(t_env *data, char **envp);
 int				update_cwd(t_env *env, char *arg);
 int				to_home(t_env *env, char *arg);
 int				check_nl_flag(char *arg);
 int				chdir_(char *arg);
 int				ft_exit_helper(char **args, int i);
-int				calc_exit_code(t_env *env, char *numb);
-int				kill_util(int exit_code, char **args);
 char			*retr_env_value(t_env *env, char *var);
 char			**realloc_env(t_env *data, int size);
 char			**identifier_value_pair(char *arg);
@@ -122,9 +123,9 @@ char			*check_identifier_err(char *cmd, char *str);
 // Path
 char			*path_to_exec(char *exec, t_env *env);
 // Init
-t_env			init_env(int ac, char **av, char **env);
 void			init_settings(void);
 int				update_shlvl(t_env *env);
+t_env			init_env(int ac, char **av, char **env);
 // Signals
 void			heredoc_sig_mode(void);
 void			main_sig_mode(void);
@@ -159,10 +160,14 @@ int				is_digit(char *s);
 // Resolve env, home etc
 char			*resolve_env(const char *s, t_env *env);
 // Parser utils
-int				handle_command(t_tocken **token, char *s, size_t *i, int (*f)[2], t_tree **ast, t_tocken_type prev);
-int				handle_paranth(t_tree **ast, int (*f)[2], size_t *i, char *s);
-void			handle_pipe(t_tree **ast, t_tocken *token, int (*f)[2]);
-t_tree			*build_ast(char *s, size_t *i);
+// int				handle_command(t_tocken **token, char *s, size_t *i, int (*f)[2], t_tree **ast, t_tocken_type prev);
+// int				handle_paranth(t_tree **ast, int (*f)[2], size_t *i, char *s);
+// void			handle_pipe(t_tree **ast, t_tocken *token, int (*f)[2]);
+// t_tree			*build_ast(char *s, size_t *i);
+void			handle_pipe(t_tree **ast, t_tocken *token, int (*fpci)[5]);
+int				handle_command(t_tocken **token, char *s, t_tree **ast, int (*fpci)[5]);
+int				handle_paranth(t_tree **ast, char *s, int (*fpci)[5]);
+t_tree			*build_ast(char *s, int (*fpci)[5]);
 t_tree			*ast(char *s, t_env *env);
 // Tree utils
 void			paste_redir(t_rdr_l **redirs, t_tocken *token);
@@ -176,11 +181,11 @@ t_tree			*new_tree_node(void);
 void			check_quotes_backslash(char *s, int (*f)[7]);
 int				is_backslash(char *s, int pos);
 t_tocken_type	define_token_type(char *s, size_t i);
-t_tocken		*last_token(char *s, int (*f)[7], size_t *pos, t_tocken **t);
-t_tocken		*next_token(char *s, size_t *pos);
+t_tocken		*last_token(char *s, int (*f)[7], int *pos, t_tocken **t);
+t_tocken		*next_token(char *s, int *pos);
 t_tocken		*new_tocken(void);
 // Resolve env
-char			*replace_env(char *s, size_t start, size_t end, int *hop, t_env *data);
+char			*replace_env(char *s, size_t start, int *end, t_env *data);
 void			check_quotes(char *s, int i, int (*ebqd)[4]);
 // Fd utils
 void			restore_ioe(int (*ioe)[3]);
@@ -190,6 +195,7 @@ int				is_closed(int fd);
 void			clean_tree(t_tree *tree);
 void			clean_token(t_tocken *t);
 void			clean_tab(char **t);
+t_tree			*clean_tree_tok(t_tree *tree, t_tocken *token);
 // Debug
 void			print_tree(t_tree *tree);
 void			print_tab(char **t);
