@@ -32,6 +32,18 @@ char	**realloc_env(t_env *data, int size)
 	return (new_env);
 }
 
+int	check_shlvl(int i)
+{
+	if (i < 0)
+		return (0);
+	else if (i > 1000)
+	{
+		ft_perror(0, HIGH_SHLVL, 0);
+		return (1);
+	}
+	return (i);
+}
+
 int	update_shlvl(t_env *env)
 {
 	char	*shlvl;
@@ -41,20 +53,14 @@ int	update_shlvl(t_env *env)
 	i = 1;
 	shlvl = NULL;
 	temp = NULL;
-	if (!retr_env_value(env, "SHLVL="))
+	shlvl = retr_env_value(env, "SHLVL=");
+	if (!shlvl)
 		ft_export_cd(env, "SHLVL", "SHLVL=1");
 	else
 	{
-		shlvl = retr_env_value(env, "SHLVL=");
 		i += ft_atoi(shlvl);
-		if (i < 0)
-			i = 0;
-		else if (i > 1000)
-		{
-			ft_perror(0, HIGH_SHLVL, 0);
-			i = 1;
-		}
 		free(shlvl);
+		i = check_shlvl(i);
 		shlvl = ft_itoa(i);
 		temp = ft_strjoin("SHLVL=", shlvl);
 		ft_export_cd(env, "SHLVL", temp);
