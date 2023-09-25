@@ -28,7 +28,7 @@ SRCS			=	ft_isalnum.c ft_isprint.c \
 
 OBJS			= $(SRCS:.c=.o)
 
-CC				= gcc
+CC				= cc
 RM				= rm -f
 CFLAGS			= -Wall -Wextra -Werror -g -I.
 

@@ -43,7 +43,7 @@ void	add_line(char **full_input, char **line)
 	buf = str_join(*full_input, "\n", "");
 	free(*full_input);
 	*full_input = buf;
-	*line = readline("> ");
+	*line = readline(HEREDOC_PROMPT);
 }
 
 int	tputs_putchar(int c)
