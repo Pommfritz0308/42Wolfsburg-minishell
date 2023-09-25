@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 12:49:08 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/22 16:50:57 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/25 16:30:24 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ char	*resolve_env(const char *s, t_env *env)
 			&& (i == 0 || str_contains(res[i - 1], " \t"))
 			&& (!res[i + 1] || str_contains(res[i + 1], " \t/")))
 			res = handle_home(&res, &i, env);
+		//else if (res[i] == '~' && !ebqd[1] && !ebqd[2] && !ebqd[3])
+		//	res = handle_wildcard(res, i);
 	}
 	return (res);
 }

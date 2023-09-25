@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/25 12:36:21 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/25 18:50:30 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	main(int ac, char **av, char **env)
 	char		**line_arr;
 	char		**line;
 
+	// resolve_wildcards("*.c");
 	data = init_env(ac, av, env);
 	init_settings();
 	main_sig_mode();

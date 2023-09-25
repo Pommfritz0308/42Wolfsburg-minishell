@@ -1,58 +1,65 @@
 #include "../includes/minishell.h"
 
-char	*curr_dir(char *start, char *end)
+char	*dir_iteri(struct dirent *dir, DIR *d, char *wildcard)
 {
-	DIR				*d;
-	struct dirent	*dir;
+	char	*res;
+	char	*tmp;
 
-	d = opendir(".");
-	start = end;
-	printf("Curr dir\n");
+	res = NULL;
+	tmp = NULL;
 	if (d)
 	{
 		dir = readdir(d);
 		while (dir)
 		{
-    		printf("%s\n", dir->d_name);
+			if (check_wildcard(dir->d_name, wildcard))
+			{
+				tmp = ft_strjoin(res, dir->d_name);
+				res = ft_strjoin(tmp, " ");
+				free(tmp);
+			}
 			dir = readdir(d);
-    	}
-	}
-    closedir(d);
-	return (0);
-}
-
-char	*handle_wildcard(int (*ebqd)[4], char **s, int *i)
-{
-	int	start;
-
-	start = *i;
-	curr_dir(0, 0);
-	(*ebqd)[0] = *i;
-	return (*s);
-}
-
-char	*resolve_wildcards(char *s)
-{
-	int		i;
-	int		ebqd[4];
-	char	*res;
-
-	i = -1;
-	ebqd[1] = 0;
-	ebqd[2] = 0;
-	ebqd[3] = 0;
-	res = ft_strdup(s);
-	if (!res)
-		return (0);
-	while (res && res[++i])
-	{
-		check_quotes(res, i, &ebqd);
-		if (res[i] == '*' && !ebqd[1] && !ebqd[2] && !ebqd[3])
-		{
-			res = handle_wildcard(&ebqd, &res, &i);
-			if (!res)
-				return (0);
 		}
 	}
+	return (res);
+}
+
+// bool	check_wildcard(char *dir, char *wildc)
+// {
+// 	int		i;
+// 	char	**arr;
+
+
+// 	i = 0;
+// 	if (wildc[0] == '*' && !wildc[1])
+// 		return (true);
+// 	arr = ft_split(wildc, '*');
+// 	if (wildc[i] == '*' && ft_find_substr(dir, arr[i]) == 0)
+// 	{
+// 		ft_free_array(arr);
+// 		return (false);
+// 	}
+// 	while (arr[++i])
+// 	{
+// 		if (ft_find_substr(dir, arr[i]) == -1)
+// 		{
+// 			ft_free_array(arr);
+// 			return (false);
+// 		}
+// 	}
+// 	ft_free_array(arr);
+// 	return (true);
+// }
+
+char	*resolve_wildcards(char *wildcard)
+{
+	char			*res;
+	DIR				*d;
+	struct dirent	dir;
+
+	res = NULL;
+	d = opendir(".");
+	res = dir_iteri(&dir, d, wildcard);
+	closedir(d);
 	return (res);
 }

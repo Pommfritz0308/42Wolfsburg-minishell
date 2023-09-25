@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 16:05:54 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/25 16:01:15 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/25 18:09:32 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,6 @@ int				ft_count_rows(char **arr);
 long long int	ft_atolli(const char *str);
 long long int	ft_atolli_helper(long long int result,
 					int sign, char *str, int i);
+int				ft_find_substr(char *s1, char *s2);
 
 #endif
