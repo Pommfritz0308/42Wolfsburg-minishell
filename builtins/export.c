@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:58:00 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/22 17:58:03 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/25 14:53:45 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,10 @@ bool	check_identifier(char **a, char *cmd, char *str)
 {
 	int		i;
 	char	*err_msg;
-	char	*tmp;
-	char	*tmp_2;
 
+	err_msg = NULL;
 	i = -1;
-	tmp = ft_strjoin("minishell: ", cmd);
-	tmp_2 = ft_strjoin(tmp, ": `");
-	free(tmp);
-	tmp = ft_strjoin(str, "\': not a valid identifier");
-	err_msg = ft_strjoin(tmp_2, tmp);
-	free(tmp);
-	free(tmp_2);
+	check_identifier_err(err_msg, cmd, str);
 	if (!a[0][0] || !a[0])
 	{
 		ft_putendl_fd(err_msg, 2);
@@ -73,8 +66,7 @@ bool	check_identifier(char **a, char *cmd, char *str)
 			return (free(err_msg), false);
 		}
 	}
-	free(err_msg);
-	return (true);
+	return (free(err_msg), true);
 }
 
 void	ft_export_helper(t_env *data, char **temp, int i, char *arg)

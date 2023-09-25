@@ -15,7 +15,7 @@
 	- [x] cd
 	- [x] pwd
 	- [x] export
-	- [x] unset
+	- [ ] unset
 	- [x] env
 	- [x] exit
 - [ ] Testing, leaks

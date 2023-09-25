@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 16:00:32 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/22 14:53:06 by psimonen         ###   ########.fr       */
+/*   Updated: 2023/09/25 12:36:21 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	interactive(t_env	*data)
 		{
 			tputs(tgetstr("cr", NULL), 1, tputs_putchar);
 			tputs(tgetstr("el", NULL), 1, tputs_putchar);
+			clean_tab(data->env);
 			exit (data->curr_exit_code);
 		}
 		if (user_input)

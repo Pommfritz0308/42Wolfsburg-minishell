@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:58:12 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/22 17:58:13 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/25 12:26:10 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	ft_unset_helper(t_env *env, char **args, int i)
 			{
 				env->env_size--;
 				env->env = delete_var(env, j);
+				break ;
 			}
 			j++;
 		}

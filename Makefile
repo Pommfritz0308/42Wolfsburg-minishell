@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
+#    By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/09/22 11:10:15 by psimonen         ###   ########.fr        #
+#    Updated: 2023/09/25 14:53:08 by fbohling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRC = 			main resolve_env resolve_env_utils init exec_builtin signals \
 				str_utils str_utils_2 str_utils_3 tree_utils tree_utils_2 \
 				redirections redirections_utils parser parser_utils heredoc \
 				path clean fd_utils errors debug
-BUILTINS =		export export_2 pwd env cd cd_2 unset echo exit
+BUILTINS =		export export_2 pwd env cd cd_2 unset echo exit exit2
 
 OBJS =			$(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(SRC)))
 OBJS +=			$(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(BUILTINS)))

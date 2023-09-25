@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:57:38 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/22 17:57:40 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/25 14:58:27 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,7 @@ int	ft_exit(t_env *env, char **args)
 		return (env->curr_exit_code);
 	}
 	if (ft_count_rows(args) > 2)
-	{
-		while (args[1][++i])
-		{
-			if (!ft_isdigit(args[1][++i]))
-			{
-				numeric_error(args[1]);
-				return (kill_util(255, args));
-			}
-		}
-		ft_putendl_fd("exit\nminishell: exit: too many arguments", 2);
-		clean_tab(args);
-		return (1);
-	}
+		return (ft_exit_helper(args, i));
 	else if (ft_atoi(args[1]) > 255 || ft_atoi(args[1]) < 0)
 	{
 		if (!calc_exit_code(env, args[1]))
@@ -79,7 +67,7 @@ int	calc_exit_code(t_env *env, char *numb)
 
 void	numeric_error(char *str)
 {
-	ft_putstr_fd("exit\nminishell: exit: ", 2);
+	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putendl_fd(": numeric argument required", 2);
 }
