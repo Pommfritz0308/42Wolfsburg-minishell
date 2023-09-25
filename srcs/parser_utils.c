@@ -123,7 +123,7 @@ void	handle_word(t_tree **buf, t_tocken *token, t_tree *ast, int (*fpci)[5])
 			ast->right = new_tree_node();
 		ast = ast->right;
 	}
-	if (!(*fpci)[0] && (*fpci)[2] != (int)PARANTH_OPEN)
+	if (!(*fpci)[0] && (*fpci)[2] != (int)PARANTH_CLOSE)
 		*buf = paste_token(ast, 0);
 	else if (!(*fpci)[0])
 		*buf = ast;
@@ -143,9 +143,10 @@ void	handle_pipe(t_tree **ast, t_tocken *token, int (*fpci)[5])
 {
 	t_tree	*node;
 
-	if (!(*ast)->token)
+	if (*ast && !(*ast)->token && !((*ast)->redirections))
 		(*ast)->token = token;
-	else if ((*ast)->token->type != AND && (*ast)->token->type != OR)
+	else if ((*ast)->redirections || ((*ast)->token
+		&& (*ast)->token->type != AND && (*ast)->token->type != OR))
 		add_new_head(ast, token);
 	else
 	{
@@ -196,7 +197,7 @@ int	handle_command(t_tocken **token, char *s, t_tree **ast, int (*fpci)[5])
 	}
 	if (!(*fpci)[1])
 		return (ft_perror(0, SYNTAX, 0));
-	if ((*fpci)[2] == (int)PARANTH_OPEN && buf && buf->args)
+	if ((*fpci)[2] == (int)PARANTH_CLOSE && buf && buf->args)
 		return (ft_perror(0, SYNTAX, 0));
 	return (1);
 }
