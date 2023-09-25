@@ -51,13 +51,33 @@ int	interactive(t_env	*data)
 	}
 }
 
+void	exec_lines(char	*input, t_env *data)
+{
+	char	**line_arr;
+	char	**line;
+	t_tree	*tree;
+
+	line_arr = ft_split(input, '\n');
+	line = line_arr;
+	while (*line)
+	{
+		tree = ast(*line, data);
+		if (tree)
+		{
+			data->curr_exit_code = execute(tree, data);
+			clean_tree(tree);
+		}
+		line++;
+	}
+	clean_tab(line_arr);
+	clean_tab(data->env);
+	exit(data->curr_exit_code);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_env		data;
-	t_tree		*tree;
 	char		*input;
-	char		**line_arr;
-	char		**line;
 
 	// resolve_wildcards("*.c");
 	data = init_env(ac, av, env);
@@ -68,20 +88,7 @@ int	main(int ac, char **av, char **env)
 		input = av[2];
 		data.ac = 1;
 		data.av[1] = 0;
-		line_arr = ft_split(input, '\n');
-		line = line_arr;
-		while (*line)
-		{
-			tree = ast(*line, &data);
-			if (tree)
-			{
-				data.curr_exit_code = execute(tree, &data);
-				clean_tree(tree);
-			}
-			line++;
-		}
-		clean_tab(line_arr);
-		exit(data.curr_exit_code);
+		exec_lines(input, &data);
 	}
 	else
 		data.curr_exit_code = interactive(&data);

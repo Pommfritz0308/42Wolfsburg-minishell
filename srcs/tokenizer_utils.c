@@ -59,7 +59,7 @@ void	check_quotes_backslash(char *s, int (*f)[7])
 		(*f)[1] = !(*f)[1];
 }
 
-t_tocken	*last_token(char *s, int (*f)[7], size_t *pos, t_tocken **t)
+t_tocken	*last_token(char *s, int (*f)[7], int *pos, t_tocken **t)
 {
 	*pos = (*f)[6] + 1;
 	if ((*f)[5])

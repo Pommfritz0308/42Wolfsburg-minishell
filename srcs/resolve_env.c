@@ -30,7 +30,7 @@ char	*handle_env(int (*ebqd)[4], char **s, int *i, t_env *env)
 	{
 		while (ft_isalnum((*s)[++*i]) || (*s)[*i] == '_')
 			;
-		buf = replace_env(*s, (*ebqd)[0], *i, i, env);
+		buf = replace_env(*s, (*ebqd)[0], i, env);
 	}
 	free(*s);
 	if (!buf)

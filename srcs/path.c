@@ -57,10 +57,7 @@ char	*path_to_exec(char *exec, t_env *env)
 		{
 			exec_path = join_path(*buf, exec);
 			if (access(exec_path, 0) == 0)
-			{
-				clean_tab(paths);
-				return (check_type(&exec_path, env));
-			}
+				return (clean_tab(paths), check_type(&exec_path, env));
 			free(exec_path);
 		}
 		clean_tab(paths);

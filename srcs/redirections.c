@@ -1,5 +1,21 @@
 #include "../includes/minishell.h"
 
+int	handle_append(t_rdr_l *r, int fd_left)
+{
+	int	fd_right;
+
+	if (r->token->type == REDIR_APPEND)
+	{
+		if (!check_perms(r->word, 0, 1))
+			return (1);
+		fd_right = open(r->word, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (last_char(r->token->val) == '&' || r->token->val[0] == '&')
+			dup2(fd_right, 2);
+		dup2(fd_right, fd_left);
+	}
+	return (0);
+}
+
 int	handle_out(t_rdr_l *r, int fd_left, int fd_out)
 {
 	int	fd_right;
@@ -20,16 +36,7 @@ int	handle_out(t_rdr_l *r, int fd_left, int fd_out)
 		}
 		dup2(fd_right, fd_left);
 	}
-	if (r->token->type == REDIR_APPEND)
-	{
-		if (!check_perms(r->word, 0, 1))
-			return (1);
-		fd_right = open(r->word, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (last_char(r->token->val) == '&' || r->token->val[0] == '&')
-			dup2(fd_right, 2);
-		dup2(fd_right, fd_left);
-	}
-	return (0);
+	return (handle_append(r, fd_left));
 }
 
 int	handle_in(t_rdr_l *r, int fd_left, int fd_in)
