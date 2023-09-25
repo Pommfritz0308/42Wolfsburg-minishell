@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	operator_helper(char *s, int (*f)[7], size_t *pos, t_tocken *token)
+void	operator_helper(char *s, int (*f)[7], int *pos, t_tocken *token)
 {
 	if ((*f)[3] != -1 && (*f)[4] > (*f)[3])
 	{
@@ -15,7 +15,17 @@ void	operator_helper(char *s, int (*f)[7], size_t *pos, t_tocken *token)
 	}
 }
 
-t_tocken	*operator(char *s, int (*f)[7], size_t *pos, t_tocken *token)
+int	next_belongs_to_operator(char curr, char next)
+{
+	return (
+		(curr == '>' && next == '>')
+		|| (curr == '<' && next == '<')
+		|| (curr == '<' && next == '>')
+		|| (curr == '>' && next == '|')
+	);
+}
+
+t_tocken	*operator(char *s, int (*f)[7], int *pos, t_tocken *token)
 {
 	(*f)[4] = (*f)[6];
 	token->type = define_token_type(s, (*f)[6]);
@@ -32,10 +42,7 @@ t_tocken	*operator(char *s, int (*f)[7], size_t *pos, t_tocken *token)
 		}
 		else
 			(*f)[4]++;
-		if ((s[(*f)[6]] == '>' && s[(*f)[6] + 1] == '>')
-			|| (s[(*f)[6]] == '<' && s[(*f)[6] + 1] == '<')
-			|| (s[(*f)[6]] == '<' && s[(*f)[6] + 1] == '>')
-			|| (s[(*f)[6]] == '>' && s[(*f)[6] + 1] == '|'))
+		if (next_belongs_to_operator(s[(*f)[6]], s[(*f)[6] + 1]))
 			(*f)[6]++;
 		if (s[(*f)[6] + 1] == '&')
 			(*f)[6]++;
@@ -47,7 +54,7 @@ t_tocken	*operator(char *s, int (*f)[7], size_t *pos, t_tocken *token)
 	return (token);
 }
 
-t_tocken	*next_token_helper(char *s, size_t *pos, int (*f)[7], t_tocken **t)
+t_tocken	*next_token_helper(char *s, int *pos, int (*f)[7], t_tocken **t)
 {
 	while (s && s[(*f)[6]])
 	{
@@ -79,12 +86,12 @@ t_tocken	*next_token_helper(char *s, size_t *pos, int (*f)[7], t_tocken **t)
 	f[5] - state (0 whitespace, 1 word)
 	f[6] - iterator
 */
-t_tocken	*next_token(char *s, size_t *pos)
+t_tocken	*next_token(char *s, int *pos)
 {
 	int				f[7];
 	t_tocken		*token;
 
-	if (!s || *pos >= ft_strlen(s))
+	if (!s || *pos >= (int)ft_strlen(s))
 		return (0);
 	f[0] = 0;
 	f[1] = 0;
