@@ -12,15 +12,25 @@ int	next_heredoc(t_rdr_l *r)
 	return (0);
 }
 
+void	write_line(char *full_input, int fd_left)
+{
+	int		fd[2];
+
+	pipe(fd);
+	write(fd[1], full_input, ft_strlen(full_input));
+	free(full_input);
+	close(fd[1]);
+	dup2(fd[0], fd_left);
+}
+
 int	handle_heredoc_helper(t_rdr_l *r, int fd_left, int fd_in)
 {
 	char	*line;
 	char	*full_input;
-	int		fd[2];
 
 	if (fd_left < 0)
 		fd_left = fd_in;
-	line = readline("> ");
+	line = readline(HEREDOC_PROMPT);
 	if (is_closed(0))
 		return (1);
 	full_input = (char *)malloc(sizeof(char) * 1);
@@ -35,13 +45,9 @@ int	handle_heredoc_helper(t_rdr_l *r, int fd_left, int fd_in)
 		return (1);
 	}
 	if (!next_heredoc(r))
-	{
-		pipe(fd);
-		write(fd[1], full_input, ft_strlen(full_input));
+		write_line(full_input, fd_left);
+	else
 		free(full_input);
-		close(fd[1]);
-		dup2(fd[0], fd_left);
-	}
 	return (0);
 }
 
