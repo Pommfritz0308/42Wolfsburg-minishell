@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/25 14:52:15 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/25 15:48:56 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void			ch_env(t_env *data, int i, char *arg);
 void			print_args(char **arr, int i);
 void			print_export(t_env *data);
 void			numeric_error(char *str);
-void			check_identifier_err(char *err_msg, char *cmd, char *str);
 bool			check_identifier(char **a, char *cmd, char *str);
 bool			check_range(long long int result, char *numb, int i);
 int				exec_builtin(t_env *env, int fd_in, int fd_out, t_tree *tree);
@@ -119,6 +118,7 @@ char			*retr_env_value(t_env *env, char *var);
 char			**realloc_env(t_env *data, int size);
 char			**identifier_value_pair(char *arg);
 char			**delete_var(t_env *env, int pos);
+char			*check_identifier_err(char *cmd, char *str);
 // Path
 char			*path_to_exec(char *exec, t_env *env);
 // Init

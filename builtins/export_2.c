@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 14:16:48 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/25 14:40:23 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/25 15:47:45 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,18 @@ void	print_export(t_env *data)
 	ft_free_array(data->temp_arr);
 }
 
-void	check_identifier_err(char *err_msg, char *cmd, char *str)
+char	*check_identifier_err(char *cmd, char *str)
 {
 	char	*tmp;
 	char	*tmp_2;
+	char	*err_msg;
 
 	tmp = ft_strjoin("minishell: ", cmd);
 	tmp_2 = ft_strjoin(tmp, ": `");
 	free(tmp);
 	tmp = ft_strjoin(str, "\': not a valid identifier");
 	err_msg = ft_strjoin(tmp_2, tmp);
-	free(tmp);
 	free(tmp_2);
+	free(tmp);
+	return (err_msg);
 }

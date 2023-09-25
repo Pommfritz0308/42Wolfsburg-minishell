@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:58:00 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/25 14:53:45 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/25 15:50:37 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,21 +50,22 @@ bool	check_identifier(char **a, char *cmd, char *str)
 	int		i;
 	char	*err_msg;
 
-	err_msg = NULL;
-	i = -1;
-	check_identifier_err(err_msg, cmd, str);
+	i = 0;
+	err_msg = check_identifier_err(cmd, str);
 	if (!a[0][0] || !a[0])
 	{
 		ft_putendl_fd(err_msg, 2);
 		return (free(err_msg), false);
 	}
-	while (a[0][++i])
+	while (a[0][i])
 	{
-		if ((!ft_isalnum(a[0][i]) && a[0][i] != '_') || !ft_isascii(a[0][i]))
+		if ((i == 0 && (isdigit(a[0][i])
+				&& a[0][i] != '_')) || !ft_isascii(a[0][i]))
 		{
 			ft_putendl_fd(err_msg, 2);
 			return (free(err_msg), false);
 		}
+		i++;
 	}
 	return (free(err_msg), true);
 }
