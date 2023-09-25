@@ -30,10 +30,10 @@
 # include "errnu.h"
 
 // Settings
-// # define SUCCESS_PROMPT	"\e[0;32mminishell\e[0m$ "
-# define SUCCESS_PROMPT	"mini$ "
-// # define FAILED_PROMPT	"\e[0;31mminishell\e[0m$ "
-# define FAILED_PROMPT	"mini$ "
+# define SUCCESS_PROMPT	"\e[0;32mminishell\e[0m$ "
+// # define SUCCESS_PROMPT	"mini$ "
+# define FAILED_PROMPT	"\e[0;31mminishell\e[0m$ "
+// # define FAILED_PROMPT	"mini$ "
 # define HEREDOC_PROMPT	"> "
 # define MINISHELLRC	"/.minishellrc"
 

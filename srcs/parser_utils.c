@@ -192,7 +192,7 @@ int	handle_command(t_tocken **token, char *s, t_tree **ast, int (*fpci)[5])
 	while (*token && (*token)->type <= REDIR_HEREDOC)
 	{
 		handle_word(&buf, *token, *ast, fpci);
-		*token = next_token(s, (size_t *)(*fpci + 4));
+		*token = next_token(s, *fpci + 4);
 	}
 	if (!(*fpci)[1])
 		return (ft_perror(0, SYNTAX, 0));
