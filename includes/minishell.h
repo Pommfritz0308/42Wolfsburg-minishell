@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/26 14:28:04 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/26 17:58:09 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,4 +205,7 @@ char			*handle_wildcard(char **s, int *i);
 char			*resolve_wildcards(char *wildcard);
 int				check(char *wild, char *dir);
 int				rev_search_str(char *dir, char *wild);
+char			**sort_objs(char **old_arr, char *new_str);
+char			**add_row(char **arr, char *str);
+char			*tab_to_str(char **arr);
 #endif

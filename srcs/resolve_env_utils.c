@@ -56,6 +56,9 @@ char	*handle_wildcard(char **s, int *i)
 	end--;
 	buf = str_slice(*s, start, end);
 	resolved = resolve_wildcards(buf);
+	*i = end;
+	if (!resolved)
+		return (free(buf), *s);
 	free(buf);
 	buf = str_replace(*s, start + 1, end, resolved);
 	*i = *i - end + start + ft_strlen(resolved);
