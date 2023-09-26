@@ -1,25 +1,37 @@
 #include "../includes/minishell.h"
 
+bool	check_dots(char *wild, char *file)
+{
+	if (wild[0] == '.')
+		return (true);
+	if (file[0] == '.')
+		return (false);
+	return (true);
+}
+
 char	*dir_iteri(struct dirent *dir, DIR *d, char *wildcard)
 {
+	char	**arr;
 	char	*res;
-	char	*tmp;
 
-	res = ft_strdup("");
-	tmp = NULL;
+	res = NULL;
+	arr = NULL;
 	if (d)
 	{
 		dir = readdir(d);
 		while (dir)
 		{
-			if (check(wildcard, dir->d_name))
+			if (check_dots(wildcard, dir->d_name)
+				&& check(wildcard, dir->d_name))
 			{
-				tmp = ft_strjoin(res, dir->d_name);
-				free(res);
-				res = ft_strjoin(tmp, " ");
-				free(tmp);
+				arr = sort_objs(arr, dir->d_name);
 			}
 			dir = readdir(d);
+		}
+		if (arr)
+		{
+			res = tab_to_str(arr);
+			clean_tab(arr);
 		}
 	}
 	return (res);
@@ -82,7 +94,8 @@ int	check(char *wild, char *dir)
 			if (pos == -1)
 				return (free(temp), false);
 			else
-				return (free(temp), check(wild + (ft_find_pos(wild + 1, '*') + 1), dir + (pos + len)));
+				return (free(temp), check(wild + (ft_find_pos(wild + 1, '*')
+							+ 1), dir + (pos + len)));
 		}
 
 	}
@@ -106,4 +119,77 @@ int	rev_search_str(char *dir, char *wild)
 	if (wild[j] == '*')
 		return (true);
 	return (false);
+}
+
+char	**sort_objs(char **old_arr, char *new_str)
+{
+	int		i;
+	int		j;
+	char	**new;
+	char	*buff;
+	int		n;
+
+	n = 0;
+	i = -1;
+	if (!old_arr)
+	{
+		new = ft_calloc(2, sizeof(char *));
+		new[0] = ft_strdup(new_str);
+		return (new);
+	}
+	new = add_row(old_arr, new_str);
+	while (++i < ft_count_rows(new))
+	{
+		j = i + 1;
+		while (j < ft_count_rows(new))
+		{
+			n = ft_strlen(new[i]);
+			if (ft_strncmp(new[i], new[j], n) > 0)
+			{
+				buff = new[i];
+				new[i] = new[j];
+				new[j] = buff;
+			}
+			j++;
+		}
+	}
+	return (new);
+}
+
+char **add_row(char **arr, char *str)
+{
+	char	**new;
+	int		i;
+
+	i = 0;
+	new = ft_calloc(ft_count_rows(arr) + 2, sizeof(char *));
+	while (arr[i])
+	{
+		new[i] = ft_strdup(arr[i]);
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+	new[ft_count_rows(new)] = ft_strdup(str);
+	return (new);
+}
+
+char	*tab_to_str(char **arr)
+{
+	int		i;
+	char	*ret;
+	char	*tmp;
+
+	i = 0;
+	ret = ft_strdup(arr[i]);
+	i++;
+	while (arr[i])
+	{
+		tmp = ft_strjoin(ret, " ");
+		free(ret);
+		ret = ft_strjoin(tmp, arr[i]);
+		free(tmp);
+		i++;
+	}
+	return (ret);
 }
