@@ -25,3 +25,11 @@ int	is_closed(int fd)
 		return (1);
 	return (0);
 }
+
+void	flush_fd(int fd)
+{
+	char	c;
+
+	while (read(fd, &c, 1) > 0)
+		;
+}

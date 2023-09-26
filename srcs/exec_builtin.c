@@ -55,6 +55,8 @@ int	exec_builtin(t_env *env, int fd_in, int fd_out, t_tree *tree)
 	dup2(fd_out, 1);
 	if (exit_code <= 0)
 		exit_code = exec_builtin_helper(exit_code, args, env);
+	if (fd_in != 0)
+		flush_fd(fd_in);
 	restore_ioe(&ioe);
 	clean_tab(args);
 	return (exit_code);

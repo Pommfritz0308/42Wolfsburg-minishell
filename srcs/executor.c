@@ -51,14 +51,18 @@ int	exec_cmd(t_tree *tree, int fd_in, int fd_out, t_env *env)
 int	exec_cmd_helper(t_env *env, int iow[3], t_tree *tree)
 {
 	int	exit_code;
+	int	pid;
 
-	if (!tree->args->content || !*((char *)tree->args->content))
-		return (ft_perror(0, N_FOUND, 127));
+	if (!tree->args->content || !*((char *)tree->args->content)
+		|| !ft_strncmp(tree->args->content, ".", 2)
+		|| !ft_strncmp(tree->args->content, "..", 3))
+		return (ft_perror(tree->args->content, N_FOUND, 127));
 	exit_code = exec_builtin(env, iow[0], iow[1], tree);
 	if (exit_code == -1)
 	{
-		waitpid(exec_cmd(tree, iow[0], iow[1], env), &exit_code, iow[2]);
-		waitpid(0, 0, iow[2]);
+		pid = exec_cmd(tree, iow[0], iow[1], env);
+		add_pid(env, pid);
+		waitpid(pid, &exit_code, iow[2]);
 		exit_code = WEXITSTATUS(exit_code);
 	}
 	return (exit_code);
@@ -83,7 +87,8 @@ int	exec_recursive(t_tree *tree, t_env *env, int iow[3])
 	else if (tree->redirections)
 		exit_code = exec_redir(tree, iow);
 	if (tree->right)
-		return (exec_recursive(tree->right, env, iow));
+		exit_code = exec_recursive(tree->right, env, iow);
+	wait_all(env, iow[2]);
 	return (exit_code);
 }
 
@@ -95,7 +100,9 @@ int	execute(t_tree *tree, t_env *env)
 	iow[0] = 0;
 	iow[1] = 1;
 	iow[2] = 0;
+	env->pids = 0;
 	exit_code = exec_recursive(tree, env, iow);
-	waitpid(-1, 0, 0);
+	wait_all(env, WNOHANG);
+	clean_pids(env->pids);
 	return (exit_code);
 }

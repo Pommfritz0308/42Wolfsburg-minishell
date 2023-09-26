@@ -1,77 +1,4 @@
 #include "../includes/minishell.h"
-/*
-void	handle_cond(t_tree **ast, t_tocken *token, int (*f)[2])
-{
-	if (!(*ast)->token && !(*ast)->redirections)
-		(*ast)->token = token;
-	else
-		add_new_head(ast, token);
-	(*f)[0] = 0;
-	(*f)[1] = 1;
-}
-
-int	check_token_type(t_tocken_type curr, t_tocken_type prev)
-{
-	if (curr == PIPE && prev > PARANTH_CLOSE)
-		return (ft_perror(0, SY_PIPE, 0));
-	if ((curr == AND || curr == OR) && prev > PARANTH_CLOSE)
-		return (ft_perror(0, SYNTAX, 0));
-	if ((curr == PARANTH_OPEN && prev < PARANTH_OPEN && prev != START))
-		return (ft_perror(0, SYNTAX, 0));
-	return (1);
-}
-
-int	check_init(t_tocken *token, t_tocken_type (*prev_curr)[2], int (*f)[2])
-{
-	if (token && (token->type == AND || token->type == OR
-		|| token->type == PIPE || token->type == PARANTH_CLOSE))
-		return (ft_perror(0, SYNTAX, 0));
-	(*prev_curr)[0] = START;
-	(*f)[0] = 0;
-	(*f)[1] = 1;
-	return (1);
-}
-
-t_tree	*build_ast(char *s, size_t *i)
-{
-	t_tocken		*token;
-	t_tree			*ast;
-	int				f[2];
-	t_tocken_type	prev_curr[2];
-
-	ast = new_tree_node();
-	token = next_token(s, i);
-	if (!check_init(token, &prev_curr, &f))
-		return (clean_tree_tok(ast, token));
-	while (token)
-	{
-		prev_curr[1] = token->type;
-		if (!check_token_type(token->type, prev_curr[0]))
-			return (clean_tree_tok(ast, token));
-		if (token->type == PARANTH_CLOSE)
-			return (ast);
-		else if (token->type == PIPE)
-			handle_pipe(&ast, token, &f);
-		else if (token->type == AND || token->type == OR)
-			handle_cond(&ast, token, &f);
-		else if (token->type == PARANTH_OPEN)
-		{
-			if (!handle_paranth(&ast, &f, i, s))
-				return (clean_tree_tok(ast, token));
-		}
-		else
-		{
-			if (!handle_command(&token, s, i, &f, &ast, prev_curr[0]))
-				return (clean_tree_tok(ast, 0));
-			prev_curr[0] = prev_curr[1];
-			continue ;
-		}
-		prev_curr[0] = prev_curr[1];
-		token = next_token(s, i);
-	}
-	return (ast);
-}
-*/
 
 void	handle_cond(t_tree **ast, t_tocken *token, int (*fcpi)[5])
 {
@@ -111,6 +38,7 @@ int	build_ast_helper(t_tree **ast, t_tocken **token, char *s, int (*fpci)[5])
 	{
 		if (!handle_paranth(ast, s, fpci))
 			return (0);
+		clean_token(*token);
 	}
 	else
 	{
@@ -133,14 +61,14 @@ t_tree	*build_ast(char *s, int (*fpci)[5])
 	token = next_token(s, *fpci + 4);
 	if (token && (token->type == AND || token->type == OR || token->type == PIPE
 			|| token->type == PARANTH_CLOSE) && ft_perror(0, SYNTAX, 1))
-		return (0);
+		return (clean_tree_tok(ast, token));
 	while (token)
 	{
 		res = build_ast_helper(&ast, &token, s, fpci);
 		if (!res)
 			return (clean_tree_tok(ast, token));
 		else if (res == 1)
-			return (ast);
+			return (clean_token(token), ast);
 		else if (res == 2)
 			continue ;
 		else if (res == 3)

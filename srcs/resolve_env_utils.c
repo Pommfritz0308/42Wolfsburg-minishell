@@ -37,6 +37,18 @@ void	check_quotes(char *s, int i, int (*ebqd)[4])
 	(*ebqd)[1] = is_backslash(s, i);
 }
 
+void	find_ends(int *start, int *end, char *s)
+{
+	while (*start >= 0 && (is_backslash(s, *start)
+			|| !str_contains(s[*start], " \t|&()'\"\n")))
+		(*start)--;
+	(*start)++;
+	while (s[*end] && (is_backslash(s, *end)
+			|| !str_contains(s[*end], " \t|&()'\"\n")))
+		(*end)++;
+	(*end)--;
+}
+
 char	*handle_wildcard(char **s, int *i)
 {
 	char	*buf;
@@ -46,21 +58,14 @@ char	*handle_wildcard(char **s, int *i)
 
 	start = *i - 1;
 	end = *i + 1;
-	while (start >= 0 && (is_backslash(*s, start)
-			|| !str_contains((*s)[start], " \t|&()'\"\n")))
-		start--;
-	start++;
-	while ((*s)[end] && (is_backslash(*s, end)
-			|| !str_contains((*s)[end], " \t|&()'\"\n")))
-		end++;
-	end--;
+	find_ends(&start, &end, *s);
 	buf = str_slice(*s, start, end);
 	resolved = resolve_wildcards(buf);
 	*i = end;
 	if (!resolved)
 		return (free(buf), *s);
 	free(buf);
-	buf = str_replace(*s, start + 1, end, resolved);
+	buf = str_replace(*s, start + 1, end + 1, resolved);
 	*i = *i - end + start + ft_strlen(resolved);
 	free(resolved);
 	free(*s);

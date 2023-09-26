@@ -37,3 +37,38 @@ void	add_new_head(t_tree **ast, t_tocken *token)
 	node->left = *ast;
 	*ast = node;
 }
+
+void	add_pid(t_env *env, int pid)
+{
+	t_pidlst	*node;
+	t_pidlst	*buf;
+
+	if (!env)
+		return ;
+	node = (t_pidlst *)malloc(sizeof(t_pidlst));
+	if (!node)
+		return ;
+	node->next = 0;
+	node->pid = pid;
+	if (!(env->pids))
+		env->pids = node;
+	else
+	{
+		buf = env->pids;
+		while (buf && buf->next)
+			buf = buf->next;
+		buf->next = node;
+	}
+}
+
+void	wait_all(t_env *env, int flag)
+{
+	t_pidlst	*buf;
+
+	buf = env->pids;
+	while (buf)
+	{
+		waitpid(buf->pid, 0, flag);
+		buf = buf->next;
+	}
+}

@@ -72,6 +72,11 @@ typedef struct s_tree
 	t_list			*args;
 	t_rdr_l			*redirections;
 }					t_tree;
+typedef struct s_pidlst
+{
+	int				pid;
+	struct s_pidlst	*next;
+}					t_pidlst;
 typedef struct s_env
 {
 	char			**env;
@@ -84,6 +89,7 @@ typedef struct s_env
 	int				curr_exit_code;
 	int				ac;
 	char			**av;
+	t_pidlst		*pids;
 }					t_env;
 
 // Builtins
@@ -160,10 +166,6 @@ int				is_digit(char *s);
 // Resolve env, home etc
 char			*resolve_env(const char *s, t_env *env);
 // Parser utils
-// int				handle_command(t_tocken **token, char *s, size_t *i, int (*f)[2], t_tree **ast, t_tocken_type prev);
-// int				handle_paranth(t_tree **ast, int (*f)[2], size_t *i, char *s);
-// void			handle_pipe(t_tree **ast, t_tocken *token, int (*f)[2]);
-// t_tree			*build_ast(char *s, size_t *i);
 void			handle_pipe(t_tree **ast, t_tocken *token, int (*fpci)[5]);
 int				handle_command(t_tocken **token, char *s, t_tree **ast, int (*fpci)[5]);
 int				handle_paranth(t_tree **ast, char *s, int (*fpci)[5]);
@@ -174,6 +176,8 @@ void			paste_redir(t_rdr_l **redirs, t_tocken *token);
 void			paste_redir_word(t_rdr_l *redirs, char *word);
 void			add_new_head(t_tree **ast, t_tocken *token);
 void			paste_paranth(t_tree **ast, t_tree *subtree);
+void			wait_all(t_env *env, int flag);
+void			add_pid(t_env *env, int pid);
 t_rdr_l			*new_redir(t_tocken *token);
 t_tree			*paste_token(t_tree *ast, t_tocken *token);
 t_tree			*new_tree_node(void);
@@ -190,8 +194,10 @@ void			check_quotes(char *s, int i, int (*ebqd)[4]);
 // Fd utils
 void			restore_ioe(int (*ioe)[3]);
 void			wrap_ioe(int (*ioe)[3]);
+void			flush_fd(int fd);
 int				is_closed(int fd);
 // Clean
+void			clean_pids(t_pidlst *pids);
 void			clean_tree(t_tree *tree);
 void			clean_token(t_tocken *t);
 void			clean_tab(char **t);
