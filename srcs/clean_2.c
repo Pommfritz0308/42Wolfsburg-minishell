@@ -20,5 +20,5 @@ void	clean_pids(t_pidlst *pids)
 		buf = pids;
 		pids = pids->next;
 		free(buf);
-	}	
+	}
 }

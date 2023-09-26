@@ -30,10 +30,10 @@
 # include "errnu.h"
 
 // Settings
-// # define SUCCESS_PROMPT	"\e[0;32mminishell\e[0m$ "
- # define SUCCESS_PROMPT	"mini$ "
-// # define FAILED_PROMPT	"\e[0;31mminishell\e[0m$ "
- # define FAILED_PROMPT	"mini$ "
+# define SUCCESS_PROMPT	"\e[0;32mminishell\e[0m$ "
+// # define SUCCESS_PROMPT	"mini$ "
+# define FAILED_PROMPT	"\e[0;31mminishell\e[0m$ "
+// # define FAILED_PROMPT	"mini$ "
 # define HEREDOC_PROMPT	"> "
 # define MINISHELLRC	"/.minishellrc"
 
@@ -144,9 +144,9 @@ int				handle_heredoc(t_rdr_l *r, int fd1, int fd_in);
 int				ft_perror(char *msg, int err_code, int exit_code);
 char			*ft_strerror(void);
 // Executor
-int				exec_recursive(t_tree *tree, t_env *env, int iow[3], int to_close);
-int				exec_paranth(t_tree *tree, int iow[3], t_env *env, int to_close);
-int				exec_cond(t_tree *tree, t_env *env, int iow[3], int to_close);
+int				exec_recursive(t_tree *tree, t_env *env, int iow[3]);
+int				exec_paranth(t_tree *tree, int iow[3], t_env *env);
+int				exec_cond(t_tree *tree, t_env *env, int iow[3]);
 int				exec_pipe(t_tree *tree, t_env *env, int iow[3]);
 int				exec_redir(t_tree *tree, int iow[3]);
 int				execute(t_tree *tree, t_env *env);
@@ -166,10 +166,6 @@ int				is_digit(char *s);
 // Resolve env, home etc
 char			*resolve_env(const char *s, t_env *env);
 // Parser utils
-// int				handle_command(t_tocken **token, char *s, size_t *i, int (*f)[2], t_tree **ast, t_tocken_type prev);
-// int				handle_paranth(t_tree **ast, int (*f)[2], size_t *i, char *s);
-// void			handle_pipe(t_tree **ast, t_tocken *token, int (*f)[2]);
-// t_tree			*build_ast(char *s, size_t *i);
 void			handle_pipe(t_tree **ast, t_tocken *token, int (*fpci)[5]);
 int				handle_command(t_tocken **token, char *s, t_tree **ast, int (*fpci)[5]);
 int				handle_paranth(t_tree **ast, char *s, int (*fpci)[5]);
@@ -180,6 +176,8 @@ void			paste_redir(t_rdr_l **redirs, t_tocken *token);
 void			paste_redir_word(t_rdr_l *redirs, char *word);
 void			add_new_head(t_tree **ast, t_tocken *token);
 void			paste_paranth(t_tree **ast, t_tree *subtree);
+void			wait_all(t_env *env, int flag);
+void			add_pid(t_env *env, int pid);
 t_rdr_l			*new_redir(t_tocken *token);
 t_tree			*paste_token(t_tree *ast, t_tocken *token);
 t_tree			*new_tree_node(void);

@@ -22,7 +22,7 @@ char	**lst_to_tab(t_list **lst)
 	return (res);
 }
 
-int	exec_cmd(t_tree *tree, int fd_in, int fd_out, t_env *env, int to_close)
+int	exec_cmd(t_tree *tree, int fd_in, int fd_out, t_env *env)
 {
 	int		pid;
 	int		exit_code;
@@ -31,8 +31,6 @@ int	exec_cmd(t_tree *tree, int fd_in, int fd_out, t_env *env, int to_close)
 	pid = fork();
 	if (!pid)
 	{
-		if(to_close)
-			close(to_close);
 		full_cmd = path_to_exec(tree->args->content, env);
 		if (!full_cmd)
 			exit(env->curr_exit_code);
@@ -50,40 +48,19 @@ int	exec_cmd(t_tree *tree, int fd_in, int fd_out, t_env *env, int to_close)
 	return (pid);
 }
 
-void	add_pid(t_env *env, int pid)
-{
-	t_pidlst	*node;
-	t_pidlst	*buf;
-
-	if (!env)
-		return ;
-	node = (t_pidlst *)malloc(sizeof(t_pidlst));
-	if (!node)
-		return ;
-	node->next = 0;
-	node->pid = pid;
-	if (!(env->pids))
-		env->pids = node;
-	else
-	{
-		buf = env->pids;
-		while (buf && buf->next)
-			buf = buf->next;
-		buf->next = node;
-	}
-}
-
-int	exec_cmd_helper(t_env *env, int iow[3], t_tree *tree, int to_close)
+int	exec_cmd_helper(t_env *env, int iow[3], t_tree *tree)
 {
 	int	exit_code;
 	int	pid;
 
-	if (!tree->args->content || !*((char *)tree->args->content))
-		return (ft_perror(0, N_FOUND, 127));
+	if (!tree->args->content || !*((char *)tree->args->content)
+		|| !ft_strncmp(tree->args->content, ".", 2)
+		|| !ft_strncmp(tree->args->content, "..", 3))
+		return (ft_perror(tree->args->content, N_FOUND, 127));
 	exit_code = exec_builtin(env, iow[0], iow[1], tree);
 	if (exit_code == -1)
 	{
-		pid = exec_cmd(tree, iow[0], iow[1], env, to_close);
+		pid = exec_cmd(tree, iow[0], iow[1], env);
 		add_pid(env, pid);
 		waitpid(pid, &exit_code, iow[2]);
 		exit_code = WEXITSTATUS(exit_code);
@@ -91,19 +68,7 @@ int	exec_cmd_helper(t_env *env, int iow[3], t_tree *tree, int to_close)
 	return (exit_code);
 }
 
-void	wait_all(t_env *env, int flag)
-{
-	t_pidlst	*buf;
-
-	buf = env->pids;
-	while (buf)
-	{
-		waitpid(buf->pid, 0, flag);
-		buf = buf->next;
-	}
-}
-
-int	exec_recursive(t_tree *tree, t_env *env, int iow[3], int to_close)
+int	exec_recursive(t_tree *tree, t_env *env, int iow[3])
 {
 	int		exit_code;
 
@@ -111,18 +76,18 @@ int	exec_recursive(t_tree *tree, t_env *env, int iow[3], int to_close)
 	if (tree->token && tree->token->type == PIPE)
 		return (exec_pipe(tree, env, iow));
 	if (tree->token && tree->token->type == PARANTH_OPEN)
-		return (exec_paranth(tree, iow, env, to_close));
+		return (exec_paranth(tree, iow, env));
 	if (tree->left && tree->token
 		&& (tree->token->type == OR || tree->token->type == AND))
-		return (exec_cond(tree, env, iow, to_close));
+		return (exec_cond(tree, env, iow));
 	if (tree->left)
-		exit_code = exec_recursive(tree->left, env, iow, to_close);
+		exit_code = exec_recursive(tree->left, env, iow);
 	if (tree->token && tree->token->type == WORD && tree->args)
-		exit_code = exec_cmd_helper(env, iow, tree, to_close);
+		exit_code = exec_cmd_helper(env, iow, tree);
 	else if (tree->redirections)
 		exit_code = exec_redir(tree, iow);
 	if (tree->right)
-		exit_code = exec_recursive(tree->right, env, iow, to_close);
+		exit_code = exec_recursive(tree->right, env, iow);
 	wait_all(env, iow[2]);
 	return (exit_code);
 }
@@ -136,7 +101,7 @@ int	execute(t_tree *tree, t_env *env)
 	iow[1] = 1;
 	iow[2] = 0;
 	env->pids = 0;
-	exit_code = exec_recursive(tree, env, iow, 0);
+	exit_code = exec_recursive(tree, env, iow);
 	wait_all(env, WNOHANG);
 	clean_pids(env->pids);
 	return (exit_code);
