@@ -202,5 +202,6 @@ void			print_tab(char **t);
 // Wildcard
 bool			check_wildcard(char *dir, char *wildc);
 char			*dir_iteri(struct dirent *dir, DIR *d, char *wildcard);
+char			*handle_wildcard(char **s, int *i);
 char			*resolve_wildcards(char *wildcard);
 #endif

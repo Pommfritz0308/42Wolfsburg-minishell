@@ -36,3 +36,33 @@ void	check_quotes(char *s, int i, int (*ebqd)[4])
 		(*ebqd)[3] = 0;
 	(*ebqd)[1] = is_backslash(s, i);
 }
+
+char	*handle_wildcard(char **s, int *i)
+{
+	char	*buf;
+	char	*resolved;
+	int		start;
+	int		end;
+
+	start = *i - 1;
+	end = *i + 1;
+	while (start >= 0 && (is_backslash(*s, start)
+		|| !str_contains((*s)[start], " \t|&()'\"\n")))
+		start--;
+	start++;
+	while ((*s)[end] && (is_backslash(*s, end)
+		|| !str_contains((*s)[end], " \t|&()'\"\n")))
+		end++;
+	end--;
+	buf = str_slice(*s, start, end);
+	//resolved = resolve_wildcards(buf);
+	resolved = 0;
+	free(buf);
+	buf = str_replace(*s, start, end, resolved);
+	*i = *i - end + start + ft_strlen(resolved);
+	free(resolved);
+	free(*s);
+	if (!buf)
+		return (0);
+	return (buf);
+}

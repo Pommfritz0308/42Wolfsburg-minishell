@@ -146,7 +146,7 @@ void	handle_pipe(t_tree **ast, t_tocken *token, int (*fpci)[5])
 	if (*ast && !(*ast)->token && !((*ast)->redirections))
 		(*ast)->token = token;
 	else if ((*ast)->redirections || ((*ast)->token
-		&& (*ast)->token->type != AND && (*ast)->token->type != OR))
+			&& (*ast)->token->type != AND && (*ast)->token->type != OR))
 		add_new_head(ast, token);
 	else
 	{
