@@ -5,7 +5,7 @@ char	*dir_iteri(struct dirent *dir, DIR *d, char *wildcard)
 	char	*res;
 	char	*tmp;
 
-	res = NULL;
+	res = ft_strdup("");
 	tmp = NULL;
 	if (d)
 	{
@@ -15,6 +15,7 @@ char	*dir_iteri(struct dirent *dir, DIR *d, char *wildcard)
 			if (check(wildcard, dir->d_name))
 			{
 				tmp = ft_strjoin(res, dir->d_name);
+				free(res);
 				res = ft_strjoin(tmp, " ");
 				free(tmp);
 			}
@@ -23,33 +24,6 @@ char	*dir_iteri(struct dirent *dir, DIR *d, char *wildcard)
 	}
 	return (res);
 }
-
-// bool	check_wildcard(char *dir, char *wildc)
-// {
-// 	int		i;
-// 	char	**arr;
-
-
-// 	i = 0;
-// 	if (wildc[0] == '*' && !wildc[1])
-// 		return (true);
-// 	arr = ft_split(wildc, '*');
-// 	if (wildc[i] == '*' && ft_find_substr(dir, arr[i]) == 0)
-// 	{
-// 		ft_free_array(arr);
-// 		return (false);
-// 	}
-// 	while (arr[++i])
-// 	{
-// 		if (ft_find_substr(dir, arr[i]) == -1)
-// 		{
-// 			ft_free_array(arr);
-// 			return (false);
-// 		}
-// 	}
-// 	ft_free_array(arr);
-// 	return (true);
-// }
 
 char	*resolve_wildcards(char *wildcard)
 {
@@ -102,13 +76,13 @@ int	check(char *wild, char *dir)
 		}
 		else
 		{
-			temp = ft_substr(wild + i, 0, ft_find_pos(wild + 1, '*') - 1);
+			temp = ft_substr(wild + i, 0, ft_find_pos(wild + 1, '*'));
 			len = ft_strlen(temp);
 			pos = ft_find_substr(dir, temp);
 			if (pos == -1)
 				return (free(temp), false);
 			else
-				return (free(temp), check(wild + ft_find_pos(wild + 1, '*'), dir + (pos + len))); // continue at wild[i] == '*' & dir[i] == end of match
+				return (free(temp), check(wild + (ft_find_pos(wild + 1, '*') + 1), dir + (pos + len)));
 		}
 
 	}

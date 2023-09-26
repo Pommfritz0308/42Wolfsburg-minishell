@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 12:49:08 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/25 16:30:24 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/26 14:34:20 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ char	*resolve_env(const char *s, t_env *env)
 			res = handle_exit_code(&res, &i, env->prev_exit_code);
 		else if (check_tilda(res, i, ebqd))
 			res = handle_home(&res, &i, env);
-		// else if (res[i] == '*' && !ebqd[1] && !ebqd[2] && !ebqd[3])
-		// 	res = handle_wildcard(&res, &i);
+		else if (res[i] == '*' && !ebqd[1] && !ebqd[2] && !ebqd[3])
+			res = handle_wildcard(&res, &i);
 	}
 	return (res);
 }
