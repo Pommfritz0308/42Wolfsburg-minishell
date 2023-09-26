@@ -19,15 +19,15 @@ int	exec_pipe(t_tree *tree, t_env *env, int iow[3])
 	if (pipe(fd) < 0)
 		return (ft_perror(0, 0, EXIT_FAILURE));
 	set_iow(iow[0], fd[1], WNOHANG, &iow_c);
-	exec_recursive(tree->left, env, iow_c);
+	exec_recursive(tree->left, env, iow_c, fd[0]);
 	close(fd[1]);
 	set_iow(fd[0], iow[1], iow[2], &iow_c);
-	exit_code = exec_recursive(tree->right, env, iow_c);
+	exit_code = exec_recursive(tree->right, env, iow_c, 0);
 	close(fd[0]);
 	return (exit_code);
 }
 
-int	exec_cond(t_tree *tree, t_env *env, int iow[3])
+int	exec_cond(t_tree *tree, t_env *env, int iow[3], int to_close)
 {
 	int	exit_code;
 	int	iow_c[3];
@@ -36,17 +36,17 @@ int	exec_cond(t_tree *tree, t_env *env, int iow[3])
 	if (!tree->right || !tree->left)
 		return (ft_perror(0, COND_ERR, exit_code));
 	set_iow(iow[0], iow[1], 0, &iow_c);
-	exit_code = exec_recursive(tree->left, env, iow_c);
+	exit_code = exec_recursive(tree->left, env, iow_c, to_close);
 	waitpid(-1, 0, 0);
 	if (tree->token->type == AND && !exit_code)
-		exit_code = exec_recursive(tree->right, env, iow);
+		exit_code = exec_recursive(tree->right, env, iow, to_close);
 	else if (tree->token->type == OR && exit_code)
-		exit_code = exec_recursive(tree->right, env, iow);
+		exit_code = exec_recursive(tree->right, env, iow, to_close);
 	waitpid(-1, 0, 0);
 	return (exit_code);
 }
 
-int	exec_paranth(t_tree *tree, int iow[3], t_env *env)
+int	exec_paranth(t_tree *tree, int iow[3], t_env *env, int to_close)
 {
 	int	exit_code;
 	int	ioe[3];
@@ -67,8 +67,8 @@ int	exec_paranth(t_tree *tree, int iow[3], t_env *env)
 		}
 	}
 	if (tree->left)
-		exec_recursive(tree->left, env, iow);
-	exit_code = exec_recursive(tree->right, env, iow);
+		exec_recursive(tree->left, env, iow, to_close);
+	exit_code = exec_recursive(tree->right, env, iow, to_close);
 	waitpid(-1, 0, 0);
 	restore_ioe(&ioe);
 	return (exit_code);

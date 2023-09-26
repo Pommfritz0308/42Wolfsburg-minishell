@@ -8,7 +8,7 @@ int	handle_append(t_rdr_l *r, int fd_left)
 	{
 		if (!check_perms(r->word, 0, 1))
 			return (1);
-		fd_right = open(r->word, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		fd_right = open(r->word, O_WRONLY | O_CREAT | O_APPEND | O_CLOEXEC, 0644);
 		if (last_char(r->token->val) == '&' || r->token->val[0] == '&')
 			dup2(fd_right, 2);
 		dup2(fd_right, fd_left);
@@ -30,7 +30,9 @@ int	handle_out(t_rdr_l *r, int fd_left, int fd_out)
 		{
 			if (!check_perms(r->word, 0, 1))
 				return (1);
-			fd_right = open(r->word, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			fd_right = open(r->word, O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC, 0644);
+			if (fd_right < 0)
+				return (ft_perror(r->word, ENOTDIR, 1));
 			if (last_char(r->token->val) == '&' || r->token->val[0] == '&')
 				dup2(fd_right, 2);
 		}
@@ -51,7 +53,7 @@ int	handle_in(t_rdr_l *r, int fd_left, int fd_in)
 	{
 		if (!check_perms(r->word, 1, 0))
 			return (1);
-		fd_right = open(r->word, O_RDONLY);
+		fd_right = open(r->word, O_RDONLY | O_NONBLOCK | O_CLOEXEC);
 	}
 	dup2(fd_right, fd_left);
 	return (0);
@@ -65,7 +67,7 @@ int	handle_open(t_rdr_l *r, int fd_left, int fd_in)
 		fd_left = fd_in;
 	if (!check_perms(r->word, 1, 1))
 		return (1);
-	fd_right = open(r->word, O_RDWR | O_CREAT, 0644);
+	fd_right = open(r->word, O_RDWR | O_CREAT | O_NONBLOCK | O_CLOEXEC, 0644);
 	if (fd_right != fd_left)
 		dup2(fd_right, fd_left);
 	return (0);

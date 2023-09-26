@@ -30,10 +30,10 @@
 # include "errnu.h"
 
 // Settings
-# define SUCCESS_PROMPT	"\e[0;32mminishell\e[0m$ "
-// # define SUCCESS_PROMPT	"mini$ "
-# define FAILED_PROMPT	"\e[0;31mminishell\e[0m$ "
-// # define FAILED_PROMPT	"mini$ "
+// # define SUCCESS_PROMPT	"\e[0;32mminishell\e[0m$ "
+ # define SUCCESS_PROMPT	"mini$ "
+// # define FAILED_PROMPT	"\e[0;31mminishell\e[0m$ "
+ # define FAILED_PROMPT	"mini$ "
 # define HEREDOC_PROMPT	"> "
 # define MINISHELLRC	"/.minishellrc"
 
@@ -72,6 +72,11 @@ typedef struct s_tree
 	t_list			*args;
 	t_rdr_l			*redirections;
 }					t_tree;
+typedef struct s_pidlst
+{
+	int				pid;
+	struct s_pidlst	*next;
+}					t_pidlst;
 typedef struct s_env
 {
 	char			**env;
@@ -84,6 +89,7 @@ typedef struct s_env
 	int				curr_exit_code;
 	int				ac;
 	char			**av;
+	t_pidlst		*pids;
 }					t_env;
 
 // Builtins
@@ -138,9 +144,9 @@ int				handle_heredoc(t_rdr_l *r, int fd1, int fd_in);
 int				ft_perror(char *msg, int err_code, int exit_code);
 char			*ft_strerror(void);
 // Executor
-int				exec_recursive(t_tree *tree, t_env *env, int iow[3]);
-int				exec_paranth(t_tree *tree, int iow[3], t_env *env);
-int				exec_cond(t_tree *tree, t_env *env, int iow[3]);
+int				exec_recursive(t_tree *tree, t_env *env, int iow[3], int to_close);
+int				exec_paranth(t_tree *tree, int iow[3], t_env *env, int to_close);
+int				exec_cond(t_tree *tree, t_env *env, int iow[3], int to_close);
 int				exec_pipe(t_tree *tree, t_env *env, int iow[3]);
 int				exec_redir(t_tree *tree, int iow[3]);
 int				execute(t_tree *tree, t_env *env);
@@ -190,8 +196,10 @@ void			check_quotes(char *s, int i, int (*ebqd)[4]);
 // Fd utils
 void			restore_ioe(int (*ioe)[3]);
 void			wrap_ioe(int (*ioe)[3]);
+void			flush_fd(int fd);
 int				is_closed(int fd);
 // Clean
+void			clean_pids(t_pidlst *pids);
 void			clean_tree(t_tree *tree);
 void			clean_token(t_tocken *t);
 void			clean_tab(char **t);

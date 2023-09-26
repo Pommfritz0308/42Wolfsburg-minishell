@@ -100,7 +100,6 @@ t_tocken	*next_token(char *s, int *pos)
 	f[5] = 0;
 	f[6] = *pos;
 	token = new_tocken();
-	token->type = WORD;
 	while (s && s[f[6]] && str_contains(s[f[6]], " \t"))
 		f[6]++;
 	token = next_token_helper(s, pos, &f, &token);

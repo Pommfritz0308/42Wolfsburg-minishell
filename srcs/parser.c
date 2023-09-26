@@ -111,6 +111,7 @@ int	build_ast_helper(t_tree **ast, t_tocken **token, char *s, int (*fpci)[5])
 	{
 		if (!handle_paranth(ast, s, fpci))
 			return (0);
+		clean_token(*token);
 	}
 	else
 	{
@@ -133,14 +134,17 @@ t_tree	*build_ast(char *s, int (*fpci)[5])
 	token = next_token(s, *fpci + 4);
 	if (token && (token->type == AND || token->type == OR || token->type == PIPE
 			|| token->type == PARANTH_CLOSE) && ft_perror(0, SYNTAX, 1))
-		return (0);
+		return (clean_tree_tok(ast, token));
 	while (token)
 	{
 		res = build_ast_helper(&ast, &token, s, fpci);
 		if (!res)
 			return (clean_tree_tok(ast, token));
 		else if (res == 1)
+		{
+			clean_token(token);
 			return (ast);
+		}
 		else if (res == 2)
 			continue ;
 		else if (res == 3)

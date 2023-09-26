@@ -17,6 +17,7 @@ t_env	init_env(int ac, char **av, char **env)
 	new.curr_exit_code = EXIT_SUCCESS;
 	new.ac = ac;
 	new.av = av;
+	new.pids = 0;
 	update_shlvl(&new);
 	return (new);
 }
@@ -37,7 +38,7 @@ void	init_settings(void)
 		free(path);
 		return ;
 	}
-	fd = open(path, O_WRONLY | O_CREAT, 0000644);
+	fd = open(path, O_WRONLY | O_CREAT | O_CLOEXEC, 0000644);
 	write(fd, "set colored-stats on\n", 22);
 	write(fd, "set enable-bracketed-paste off\n", 32);
 	close(fd);
