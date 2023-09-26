@@ -79,7 +79,6 @@ int	main(int ac, char **av, char **env)
 	t_env		data;
 	char		*input;
 
-	// resolve_wildcards("*.c");
 	data = init_env(ac, av, env);
 	init_settings();
 	main_sig_mode();

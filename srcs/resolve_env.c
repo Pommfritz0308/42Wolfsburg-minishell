@@ -73,6 +73,15 @@ char	*handle_home(char **s, int *i, t_env *env)
 	return (buf);
 }
 
+int	check_tilda(char *res, int i, int ebqd[4])
+{
+	return (
+		res[i] == '~' && !ebqd[1] && !ebqd[2] && !ebqd[3]
+		&& (i == 0 || str_contains(res[i - 1], " \t"))
+		&& (!res[i + 1] || str_contains(res[i + 1], " \t/"))
+	);
+}
+
 char	*resolve_env(const char *s, t_env *env)
 {
 	int		i;
@@ -93,12 +102,10 @@ char	*resolve_env(const char *s, t_env *env)
 			res = handle_env(&ebqd, &res, &i, env);
 		else if (res[i] == '$' && res[i + 1] == '?' && !ebqd[1] && !ebqd[2])
 			res = handle_exit_code(&res, &i, env->prev_exit_code);
-		else if (res[i] == '~' && !ebqd[1] && !ebqd[2] && !ebqd[3]
-			&& (i == 0 || str_contains(res[i - 1], " \t"))
-			&& (!res[i + 1] || str_contains(res[i + 1], " \t/")))
+		else if (check_tilda(res, i, ebqd))
 			res = handle_home(&res, &i, env);
-		//else if (res[i] == '~' && !ebqd[1] && !ebqd[2] && !ebqd[3])
-		//	res = handle_wildcard(res, i);
+		// else if (res[i] == '*' && !ebqd[1] && !ebqd[2] && !ebqd[3])
+		// 	res = handle_wildcard(&res, &i);
 	}
 	return (res);
 }
