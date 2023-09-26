@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/25 18:45:22 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/26 14:28:04 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,8 +200,9 @@ t_tree			*clean_tree_tok(t_tree *tree, t_tocken *token);
 void			print_tree(t_tree *tree);
 void			print_tab(char **t);
 // Wildcard
-bool			check_wildcard(char *dir, char *wildc);
 char			*dir_iteri(struct dirent *dir, DIR *d, char *wildcard);
 char			*handle_wildcard(char **s, int *i);
 char			*resolve_wildcards(char *wildcard);
+int				check(char *wild, char *dir);
+int				rev_search_str(char *dir, char *wild);
 #endif
