@@ -6,7 +6,7 @@
 #    By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/09/25 18:57:12 by fbohling         ###   ########.fr        #
+#    Updated: 2023/09/26 14:33:23 by fbohling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRC = 			main resolve_env resolve_env_utils init exec_builtin signals \
 				tokenizer tokenizer_utils executor executor_utils env_utils \
 				str_utils str_utils_2 str_utils_3 tree_utils tree_utils_2 \
 				redirections redirections_utils parser parser_utils heredoc \
-				path clean clean_2 fd_utils errors debug
+				path clean clean_2 fd_utils errors debug wildcards
 BUILTINS =		export export_2 pwd env cd cd_2 unset echo exit exit2
 
 OBJS =			$(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(SRC)))
