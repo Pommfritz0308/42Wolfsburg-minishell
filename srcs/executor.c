@@ -52,6 +52,8 @@ int	exec_cmd_helper(t_env *env, int iow[3], t_tree *tree)
 {
 	int	exit_code;
 
+	if (!tree->args->content || !*((char *)tree->args->content))
+		return (ft_perror(0, N_FOUND, 127));
 	exit_code = exec_builtin(env, iow[0], iow[1], tree);
 	if (exit_code == -1)
 	{

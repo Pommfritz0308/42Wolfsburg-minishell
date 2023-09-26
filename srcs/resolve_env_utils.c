@@ -47,11 +47,11 @@ char	*handle_wildcard(char **s, int *i)
 	start = *i - 1;
 	end = *i + 1;
 	while (start >= 0 && (is_backslash(*s, start)
-		|| !str_contains((*s)[start], " \t|&()'\"\n")))
+			|| !str_contains((*s)[start], " \t|&()'\"\n")))
 		start--;
 	start++;
 	while ((*s)[end] && (is_backslash(*s, end)
-		|| !str_contains((*s)[end], " \t|&()'\"\n")))
+			|| !str_contains((*s)[end], " \t|&()'\"\n")))
 		end++;
 	end--;
 	buf = str_slice(*s, start, end);
