@@ -1,13 +1,16 @@
-#include "../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wildcards.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/27 10:12:23 by fbohling          #+#    #+#             */
+/*   Updated: 2023/09/27 11:17:43 by fbohling         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-bool	check_dots(char *wild, char *file)
-{
-	if (wild[0] == '.')
-		return (true);
-	if (file[0] == '.')
-		return (false);
-	return (true);
-}
+#include "../includes/minishell.h"
 
 char	*dir_iteri(struct dirent *dir, DIR *d, char *wildcard)
 {
@@ -52,144 +55,53 @@ char	*resolve_wildcards(char *wildcard)
 
 int	check(char *wild, char *dir)
 {
-	size_t	i;
-	char	*temp;
-	int		pos;
-	int		len;
+	t_wcd	d;
 
-	i = 0;
-	while (wild[i] == '*')
-		i++;
-	if (i == ft_strlen(wild))
+	d.temp = NULL;
+	d.pos = 0;
+	d.len = 0;
+	if (no_pattern(wild))
 		return (true);
-	i = 0;
-	temp = NULL;
-	pos = 0;
-	len = 0;
+	d.i = 0;
 	if (wild[0] != '*')
 	{
-		while (dir[i] == wild[i])
-			i++;
-		if (wild[i] != '*')
+		while (dir[d.i] == wild[d.i])
+			d.i++;
+		if (wild[d.i] != '*')
 			return (false);
 		else
-			return (check(wild + i, dir + i));
+			return (check(wild + d.i, dir + d.i));
 	}
 	else
 	{
-		while (wild[i] == '*')
-			i++;
-		if (!ft_strchr(wild + i, '*'))
+		if (check_helper(wild, dir, &d) == -1)
+			return (check(wild + (ft_find_pos(wild + 1, '*')
+						+ 1), dir + (d.pos + d.len)));
+		else
+			return (d.ret);
+	}
+}
+
+int	check_helper(char *wild, char *dir, t_wcd *d)
+{
+	while (wild[d->i] == '*')
+		d->i++;
+	if (!ft_strchr(wild + d->i, '*'))
+	{
+		d->ret = pattern_at_end(dir, wild);
+		return (d->ret);
+	}
+	else
+	{
+		d->temp = ft_substr(wild + d->i, 0, ft_find_pos(wild + 1, '*'));
+		d->len = ft_strlen(d->temp);
+		d->pos = ft_find_substr(dir, d->temp);
+		if (d->pos == -1)
 		{
-			if (rev_search_str(dir, wild))
-				return (true);
-			else
-				return (false);
+			d->ret = 0;
+			return (free(d->temp), false);
 		}
 		else
-		{
-			temp = ft_substr(wild + i, 0, ft_find_pos(wild + 1, '*'));
-			len = ft_strlen(temp);
-			pos = ft_find_substr(dir, temp);
-			if (pos == -1)
-				return (free(temp), false);
-			else
-				return (free(temp), check(wild + (ft_find_pos(wild + 1, '*')
-							+ 1), dir + (pos + len)));
-		}
-
+			return (free(d->temp), -1);
 	}
-}
-
-int	rev_search_str(char *dir, char *wild)
-{
-	int	i;
-	int	j;
-
-	i = ft_strlen(dir);
-	j = ft_strlen(wild);
-
-	while (wild[j] != '*' && i >= 0)
-	{
-		if (wild[j] != dir[i])
-			return (false);
-		j--;
-		i--;
-	}
-	if (wild[j] == '*')
-		return (true);
-	return (false);
-}
-
-char	**sort_objs(char **old_arr, char *new_str)
-{
-	int		i;
-	int		j;
-	char	**new;
-	char	*buff;
-	int		n;
-
-	n = 0;
-	i = -1;
-	if (!old_arr)
-	{
-		new = ft_calloc(2, sizeof(char *));
-		new[0] = ft_strdup(new_str);
-		return (new);
-	}
-	new = add_row(old_arr, new_str);
-	while (++i < ft_count_rows(new))
-	{
-		j = i + 1;
-		while (j < ft_count_rows(new))
-		{
-			n = ft_strlen(new[i]);
-			if (ft_strncmp(new[i], new[j], n) > 0)
-			{
-				buff = new[i];
-				new[i] = new[j];
-				new[j] = buff;
-			}
-			j++;
-		}
-	}
-	return (new);
-}
-
-char **add_row(char **arr, char *str)
-{
-	char	**new;
-	int		i;
-
-	i = 0;
-	new = ft_calloc(ft_count_rows(arr) + 2, sizeof(char *));
-	while (arr[i])
-	{
-		new[i] = ft_strdup(arr[i]);
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-	new[ft_count_rows(new)] = ft_strdup(str);
-	return (new);
-}
-
-char	*tab_to_str(char **arr)
-{
-	int		i;
-	char	*ret;
-	char	*tmp;
-
-	i = 0;
-	ret = ft_strdup(arr[i]);
-	i++;
-	while (arr[i])
-	{
-		tmp = ft_strjoin(ret, " ");
-		free(ret);
-		ret = ft_strjoin(tmp, arr[i]);
-		free(tmp);
-		i++;
-	}
-	return (ret);
 }

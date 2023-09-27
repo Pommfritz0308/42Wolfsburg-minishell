@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/26 17:58:09 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/27 11:17:08 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,14 @@ typedef struct s_env
 	char			**av;
 	t_pidlst		*pids;
 }					t_env;
-
+typedef struct s_wcd
+{
+	char	*temp;
+	int		i;
+	int		pos;
+	int		len;
+	int		ret;
+}					t_wcd;
 // Builtins
 int				ft_export(t_env *data, char **args);
 int				ft_unset(t_env *env, char **args);
@@ -206,12 +213,17 @@ t_tree			*clean_tree_tok(t_tree *tree, t_tocken *token);
 void			print_tree(t_tree *tree);
 void			print_tab(char **t);
 // Wildcard
+int				check(char *wild, char *dir);
+int				rev_search_str(char *dir, char *wild);
+int				check_helper(char *wild, char *dir, t_wcd *d);
 char			*dir_iteri(struct dirent *dir, DIR *d, char *wildcard);
 char			*handle_wildcard(char **s, int *i);
 char			*resolve_wildcards(char *wildcard);
-int				check(char *wild, char *dir);
-int				rev_search_str(char *dir, char *wild);
 char			**sort_objs(char **old_arr, char *new_str);
 char			**add_row(char **arr, char *str);
 char			*tab_to_str(char **arr);
+char			**handle_empty_arr(char *new_str);
+bool			pattern_at_end(char *dir, char	*wild);
+bool			check_dots(char *wild, char *file);
+bool			no_pattern(char *wild);
 #endif
