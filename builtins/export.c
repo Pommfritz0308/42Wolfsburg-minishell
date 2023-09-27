@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:58:00 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/25 15:50:37 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/27 13:28:03 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	**identifier_value_pair(char *arg)
 	char	*eq_sign;
 
 	eq_sign = ft_strchr(arg, '=');
-	pair = calloc(3, sizeof(char *));
+	pair = ft_calloc(3, sizeof(char *));
 	pair[0] = ft_substr(arg, 0, eq_sign - arg);
 	if (eq_sign)
 		pair[1] = ft_substr(eq_sign, 1, ft_strlen(eq_sign));
@@ -59,7 +59,7 @@ bool	check_identifier(char **a, char *cmd, char *str)
 	}
 	while (a[0][i])
 	{
-		if ((i == 0 && (isdigit(a[0][i])
+		if ((i == 0 && (ft_isdigit(a[0][i])
 				&& a[0][i] != '_')) || !ft_isascii(a[0][i]))
 		{
 			ft_putendl_fd(err_msg, 2);
