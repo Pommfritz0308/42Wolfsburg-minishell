@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   str_utils_3.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/27 12:30:27 by psimonen          #+#    #+#             */
+/*   Updated: 2023/09/27 12:30:28 by psimonen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 char	*str_replace(char *s, size_t start, size_t end, char *in_s)
@@ -10,14 +22,18 @@ char	*str_replace(char *s, size_t start, size_t end, char *in_s)
 		in_len = 0;
 	else
 		in_len = ft_strlen(in_s);
-	after_len = ft_strlen(s + end);
-	res = (char *)malloc(sizeof(char) * (start + in_len + after_len));
+	if (end >= ft_strlen(s))
+		after_len = 1;
+	else
+		after_len = ft_strlen(s + end);
+	res = (char *)ft_calloc(start + in_len + after_len, sizeof(char));
 	if (!res)
 		return (0);
 	ft_strlcpy(res, s, start);
 	if (in_s)
 		ft_strlcpy(res + start - 1, in_s, in_len + 1);
-	ft_strlcpy(res + start + in_len - 1, s + end, after_len + 1);
+	if (end < ft_strlen(s))
+		ft_strlcpy(res + start + in_len - 1, s + end, after_len + 1);
 	return (res);
 }
 

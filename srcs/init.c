@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/27 12:29:38 by psimonen          #+#    #+#             */
+/*   Updated: 2023/09/27 12:29:40 by psimonen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	print_asciiart(void)
@@ -28,7 +40,7 @@ void	init_settings(void)
 	char	*home;
 	char	*path;
 
-	//print_asciiart();
+	print_asciiart();
 	home = getenv("HOME");
 	if (!home || !*home)
 		return ;

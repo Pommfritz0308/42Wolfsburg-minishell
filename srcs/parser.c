@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/27 12:29:51 by psimonen          #+#    #+#             */
+/*   Updated: 2023/09/27 12:29:52 by psimonen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	handle_cond(t_tree **ast, t_tocken *token, int (*fcpi)[5])
@@ -95,6 +107,7 @@ t_tree	*ast(char *s, t_env *env)
 	fpci[0] = 0;
 	fpci[1] = 1;
 	fpci[2] = (int)START;
+	ast = 0;
 	buf = resolve_env(s, env);
 	ast = build_ast(buf, &fpci);
 	if (!ast)

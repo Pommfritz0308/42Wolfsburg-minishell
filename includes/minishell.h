@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/27 11:17:08 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/27 12:34:12 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ int				handle_heredoc(t_rdr_l *r, int fd1, int fd_in);
 int				ft_perror(char *msg, int err_code, int exit_code);
 char			*ft_strerror(void);
 // Executor
+void			set_iow(int fd_in, int fd_out, int wait_flag, int (*iow)[3]);
 int				exec_recursive(t_tree *tree, t_env *env, int iow[3]);
 int				exec_paranth(t_tree *tree, int iow[3], t_env *env);
 int				exec_cond(t_tree *tree, t_env *env, int iow[3]);
@@ -174,7 +175,8 @@ int				is_digit(char *s);
 char			*resolve_env(const char *s, t_env *env);
 // Parser utils
 void			handle_pipe(t_tree **ast, t_tocken *token, int (*fpci)[5]);
-int				handle_command(t_tocken **token, char *s, t_tree **ast, int (*fpci)[5]);
+int				handle_command(t_tocken **token, char *s,
+					t_tree **ast, int (*fpci)[5]);
 int				handle_paranth(t_tree **ast, char *s, int (*fpci)[5]);
 t_tree			*build_ast(char *s, int (*fpci)[5]);
 t_tree			*ast(char *s, t_env *env);
@@ -199,6 +201,7 @@ t_tocken		*new_tocken(void);
 char			*replace_env(char *s, size_t start, int *end, t_env *data);
 void			check_quotes(char *s, int i, int (*ebqd)[4]);
 // Fd utils
+void			dup_close(int to_close, int let);
 void			restore_ioe(int (*ioe)[3]);
 void			wrap_ioe(int (*ioe)[3]);
 void			flush_fd(int fd);

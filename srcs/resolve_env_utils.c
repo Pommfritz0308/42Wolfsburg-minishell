@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   resolve_env_utils.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/27 12:30:08 by psimonen          #+#    #+#             */
+/*   Updated: 2023/09/27 12:30:09 by psimonen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 char	*replace_env(char *s, size_t start, int *end, t_env *data)
@@ -69,7 +81,5 @@ char	*handle_wildcard(char **s, int *i)
 	*i = *i - end + start + ft_strlen(resolved);
 	free(resolved);
 	free(*s);
-	if (!buf)
-		return (0);
 	return (buf);
 }
