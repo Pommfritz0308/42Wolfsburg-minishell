@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   debug.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/27 12:31:32 by psimonen          #+#    #+#             */
+/*   Updated: 2023/09/27 12:31:34 by psimonen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	print_tab(char **t)
@@ -11,6 +23,7 @@ void	print_tab(char **t)
 	printf("\n");
 }
 
+/*
 void	print_tree_helper(t_tree *tree, int pos)
 {
 	int i;
@@ -66,3 +79,4 @@ void	print_tree(t_tree *tree)
 {
 	print_tree_helper(tree, tree_depth(tree));
 }
+*/

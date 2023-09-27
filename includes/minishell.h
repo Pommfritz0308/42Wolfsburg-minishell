@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:45:59 by psimonen          #+#    #+#             */
-/*   Updated: 2023/09/27 11:17:08 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/27 12:34:12 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,8 @@ int				is_digit(char *s);
 char			*resolve_env(const char *s, t_env *env);
 // Parser utils
 void			handle_pipe(t_tree **ast, t_tocken *token, int (*fpci)[5]);
-int				handle_command(t_tocken **token, char *s, t_tree **ast, int (*fpci)[5]);
+int				handle_command(t_tocken **token, char *s,
+					t_tree **ast, int (*fpci)[5]);
 int				handle_paranth(t_tree **ast, char *s, int (*fpci)[5]);
 t_tree			*build_ast(char *s, int (*fpci)[5]);
 t_tree			*ast(char *s, t_env *env);

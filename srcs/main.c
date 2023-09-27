@@ -17,6 +17,7 @@ void	exec_line(char *user_input, t_env *data)
 	t_tree	*tree;
 
 	add_history(user_input);
+	tree = 0;
 	tree = ast(user_input, data);
 	if (tree)
 		data->curr_exit_code = execute(tree, data);

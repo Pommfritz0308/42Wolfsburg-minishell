@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:58:31 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/25 14:25:25 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/27 12:33:37 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	go_back(t_env *env, char *arg, char *cwd)
 
 int	chdir_(char *arg)
 {
-	char *buf;
+	char	*buf;
 
 	if (chdir(arg))
 	{
