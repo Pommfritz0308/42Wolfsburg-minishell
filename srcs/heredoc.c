@@ -20,7 +20,7 @@ void	write_line(char *full_input, int fd_left)
 	write(fd[1], full_input, ft_strlen(full_input));
 	free(full_input);
 	close(fd[1]);
-	dup2(fd[0], fd_left);
+	dup_close(fd[0], fd_left);
 }
 
 int	handle_heredoc_helper(t_rdr_l *r, int fd_left, int fd_in)

@@ -7,26 +7,6 @@ void	set_iow(int fd_in, int fd_out, int wait_flag, int (*iow)[3])
 	(*iow)[2] = wait_flag;
 }
 
-int	exec_pipe(t_tree *tree, t_env *env, int iow[3])
-{
-	int		exit_code;
-	int		iow_c[3];
-	int		fd[2];
-
-	exit_code = 258;
-	if (!tree->left || !tree->right)
-		return (ft_perror(0, SY_PIPE, exit_code));
-	if (pipe(fd) < 0)
-		return (ft_perror(0, 0, EXIT_FAILURE));
-	set_iow(iow[0], fd[1], WNOHANG, &iow_c);
-	exec_recursive(tree->left, env, iow_c);
-	close(fd[1]);
-	set_iow(fd[0], iow[1], iow[2], &iow_c);
-	exit_code = exec_recursive(tree->right, env, iow_c);
-	close(fd[0]);
-	return (exit_code);
-}
-
 int	exec_cond(t_tree *tree, t_env *env, int iow[3])
 {
 	int	exit_code;

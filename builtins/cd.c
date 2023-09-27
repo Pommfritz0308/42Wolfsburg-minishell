@@ -19,7 +19,7 @@ int	ft_cd(t_env *env, char *arg)
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{
-		ft_perror("minishell: cd", 0, 0);
+		ft_perror("cd", 0, 0);
 		return (EXIT_FAILURE);
 	}
 	if (!arg)
@@ -51,7 +51,7 @@ int	update_cwd(t_env *env, char *arg)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
-		ft_perror("minishell: cd", 0, 0);
+		ft_perror("cd", 0, 0);
 		return (EXIT_FAILURE);
 	}
 	update = ft_strjoin("PWD=", cwd);
@@ -73,10 +73,13 @@ int	go_back(t_env *env, char *arg, char *cwd)
 
 int	chdir_(char *arg)
 {
+	char *buf;
+
 	if (chdir(arg))
 	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		ft_perror(arg, 0, 0);
+		buf = ft_strjoin("cd: ", arg);
+		ft_perror(buf, 0, 0);
+		free(buf);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

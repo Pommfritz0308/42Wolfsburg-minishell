@@ -33,3 +33,12 @@ void	flush_fd(int fd)
 	while (read(fd, &c, 1) > 0)
 		;
 }
+
+void	dup_close(int to_close, int let)
+{
+	if (to_close != let)
+	{
+		dup2(to_close, let);
+		close(to_close);
+	}
+}

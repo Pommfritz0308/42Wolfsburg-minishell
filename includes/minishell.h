@@ -151,6 +151,7 @@ int				handle_heredoc(t_rdr_l *r, int fd1, int fd_in);
 int				ft_perror(char *msg, int err_code, int exit_code);
 char			*ft_strerror(void);
 // Executor
+void			set_iow(int fd_in, int fd_out, int wait_flag, int (*iow)[3]);
 int				exec_recursive(t_tree *tree, t_env *env, int iow[3]);
 int				exec_paranth(t_tree *tree, int iow[3], t_env *env);
 int				exec_cond(t_tree *tree, t_env *env, int iow[3]);
@@ -199,6 +200,7 @@ t_tocken		*new_tocken(void);
 char			*replace_env(char *s, size_t start, int *end, t_env *data);
 void			check_quotes(char *s, int i, int (*ebqd)[4]);
 // Fd utils
+void			dup_close(int to_close, int let);
 void			restore_ioe(int (*ioe)[3]);
 void			wrap_ioe(int (*ioe)[3]);
 void			flush_fd(int fd);
