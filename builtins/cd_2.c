@@ -6,7 +6,7 @@
 /*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 14:58:03 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/25 14:19:22 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/27 13:04:58 by fbohling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ int	to_home(t_env *env, char *arg)
 	char	*update;
 
 	home = retr_env_value(env, "HOME=");
-	if (!home[0])
-		return (EXIT_SUCCESS);
 	if (!home)
 	{
 		ft_putendl_fd("minishell: cd: HOME not set", 2);
 		return (EXIT_FAILURE);
 	}
+	if (!home[0])
+		return (EXIT_SUCCESS);
 	if (chdir_(home))
 	{
 		free(home);
