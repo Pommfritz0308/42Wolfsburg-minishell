@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/27 12:30:04 by psimonen          #+#    #+#             */
+/*   Updated: 2023/09/27 12:30:05 by psimonen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 int	handle_append(t_rdr_l *r, int fd_left)
@@ -10,9 +22,11 @@ int	handle_append(t_rdr_l *r, int fd_left)
 			return (1);
 		fd_right = open(r->word,
 				O_WRONLY | O_CREAT | O_APPEND | O_CLOEXEC, 0644);
+		if (fd_right < 0)
+			return (ft_perror(r->word, ENOTDIR, 1));
 		if (last_char(r->token->val) == '&' || r->token->val[0] == '&')
 			dup2(fd_right, 2);
-		dup2(fd_right, fd_left);
+		dup_close(fd_right, fd_left);
 	}
 	return (0);
 }
@@ -38,7 +52,7 @@ int	handle_out(t_rdr_l *r, int fd_left, int fd_out)
 			if (last_char(r->token->val) == '&' || r->token->val[0] == '&')
 				dup2(fd_right, 2);
 		}
-		dup2(fd_right, fd_left);
+		dup_close(fd_right, fd_left);
 	}
 	return (handle_append(r, fd_left));
 }
@@ -56,8 +70,10 @@ int	handle_in(t_rdr_l *r, int fd_left, int fd_in)
 		if (!check_perms(r->word, 1, 0))
 			return (1);
 		fd_right = open(r->word, O_RDONLY | O_NONBLOCK | O_CLOEXEC);
+		if (fd_right < 0)
+			return (ft_perror(r->word, ENOTDIR, 1));
 	}
-	dup2(fd_right, fd_left);
+	dup_close(fd_right, fd_left);
 	return (0);
 }
 
@@ -70,8 +86,9 @@ int	handle_open(t_rdr_l *r, int fd_left, int fd_in)
 	if (!check_perms(r->word, 1, 1))
 		return (1);
 	fd_right = open(r->word, O_RDWR | O_CREAT | O_NONBLOCK | O_CLOEXEC, 0644);
-	if (fd_right != fd_left)
-		dup2(fd_right, fd_left);
+	if (fd_right < 0)
+		return (ft_perror(r->word, ENOTDIR, 1));
+	dup_close(fd_right, fd_left);
 	return (0);
 }
 

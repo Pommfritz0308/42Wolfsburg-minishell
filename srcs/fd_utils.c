@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fd_utils.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/27 12:29:30 by psimonen          #+#    #+#             */
+/*   Updated: 2023/09/27 12:29:31 by psimonen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	wrap_ioe(int (*ioe)[3])
@@ -32,4 +44,13 @@ void	flush_fd(int fd)
 
 	while (read(fd, &c, 1) > 0)
 		;
+}
+
+void	dup_close(int to_close, int let)
+{
+	if (to_close != let)
+	{
+		dup2(to_close, let);
+		close(to_close);
+	}
 }

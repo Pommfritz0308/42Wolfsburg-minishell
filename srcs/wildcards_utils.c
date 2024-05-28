@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 18:41:23 by fbohling          #+#    #+#             */
-/*   Updated: 2023/09/27 11:19:15 by fbohling         ###   ########.fr       */
+/*   Updated: 2023/09/27 12:32:42 by psimonen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

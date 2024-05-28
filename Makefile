@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fbohling <fbohling@student.42wolfsburg.    +#+  +:+       +#+         #
+#    By: psimonen <psimonen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/18 18:32:16 by fbohling          #+#    #+#              #
-#    Updated: 2023/09/27 10:17:49 by fbohling         ###   ########.fr        #
+#    Updated: 2023/09/27 12:32:11 by psimonen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,9 @@ INCL_DIR =		includes
 
 SRC = 			main resolve_env resolve_env_utils init exec_builtin signals \
 				tokenizer tokenizer_utils executor executor_utils env_utils \
-				str_utils str_utils_2 str_utils_3 tree_utils tree_utils_2 \
+				str_utils str_utils_2 str_utils_3 tree_utils tree_utils_2 path \
 				redirections redirections_utils parser parser_utils heredoc \
-				path clean clean_2 fd_utils errors debug wildcards wildcards_utils \
+				clean clean_2 fd_utils errors pipes wildcards wildcards_utils \
 				wildcards_utils_2
 BUILTINS =		export export_2 pwd env cd cd_2 unset echo exit exit2
 
